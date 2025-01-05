@@ -4,8 +4,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkMaxAlternateEncoder;
-import com.revrobotics.spark.SparkRelativeEncoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -19,7 +17,8 @@ public class SwerveModule {
 	public final RelativeEncoder powerEnc;
 	// public final RelativeEncoder spinEnc;
     public final SparkAbsoluteEncoder absSpinEnc;
-    public double spinEncConversion;
+    // public double spinEncConversion;
+	double spinEncConversion = Math.PI*2/21.35;
     public double spinOff = 0;
 
 	/**

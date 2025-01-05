@@ -16,54 +16,28 @@ public class Swerve extends SubsystemBase  {
 	public static final int[] spinPorts = {1, 3, 5, 7};
 	public static final boolean[] powerReversed = {false, true, false, true};
 	public static final boolean[] spinReversed = {false, true, false, true};
+	public static final double[] spinOffs = {0, 0, 0, 0};
 	// public static final int[] spinEncPorts = {9, 10, 11, 12};
 
-	// Robot swerve modules
-	// public final SwerveModule frontLeft =
-	//     new SwerveModule(
-	//         DriveConstants.flpMotorPort,
-	//         DriveConstants.flsMotorPort,
-	//         DriveConstants.flpEncReversed,
-	//         DriveConstants.flsEncReversed);
-	// public final SwerveModule rearLeft =
-	//     new SwerveModule(
-	//         DriveConstants.rlpMotorPort,
-	//         DriveConstants.rlsMotorPort,
-	//         DriveConstants.rlpEncReversed,
-	//         DriveConstants.rlsEncReversed);
-	// public final SwerveModule frontRight =
-	//     new SwerveModule(
-	//         DriveConstants.frpMotorPort,
-	//         DriveConstants.frsMotorPort,
-	//         DriveConstants.frpEncReversed,
-	//         DriveConstants.frsEncReversed);
-	// public final SwerveModule rearRight =
-	//     new SwerveModule(
-	//         DriveConstants.rrpMotorPort,
-	//         DriveConstants.rrsMotorPort,
-	//         DriveConstants.rrpEncReversed,
-	//         DriveConstants.rrsEncReversed);
-
-	double spinEncConversion = Math.PI*2/21.35;
 
 	public final SwerveModule frontLeft = new SwerveModule(
 		powerPorts[0], spinPorts[0],
-		powerReversed[0], spinReversed[0], spinEncConversion
+		powerReversed[0], spinReversed[0], spinOffs[0]
 	);
 
 	public final SwerveModule rearLeft = new SwerveModule(
 		powerPorts[1], spinPorts[1],
-		powerReversed[1], spinReversed[1], spinEncConversion
+		powerReversed[1], spinReversed[1], spinOffs[1]
 	);
 
 	public final SwerveModule frontRight = new SwerveModule(
 		powerPorts[2], spinPorts[2],
-		powerReversed[2], spinReversed[2], spinEncConversion
+		powerReversed[2], spinReversed[2], spinOffs[2]
 	);
 
 	public final SwerveModule rearRight = new SwerveModule(
 		powerPorts[3], spinPorts[3],
-		powerReversed[3], spinReversed[3], spinEncConversion
+		powerReversed[3], spinReversed[3], spinOffs[3]
 	);
 
 	/** An array containing all four wheels */
