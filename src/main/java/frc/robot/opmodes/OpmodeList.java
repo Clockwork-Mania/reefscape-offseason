@@ -1,5 +1,7 @@
 package frc.robot.opmodes;
+import frc.robot.opmodes.auto.*;
 import frc.robot.opmodes.teleop.*;
+import frc.robot.opmodes.test.*;
 
 public class OpmodeList {
     public static class NamedOpmode {
@@ -22,5 +24,6 @@ public class OpmodeList {
     };
 
     public static NamedOpmode test[] = {
+        new NamedOpmode("Debug Printing", Printing.class)
     };
 }
