@@ -11,37 +11,30 @@ import frc.robot.Constants.DriveConstants;
 
 public class Swerve extends SubsystemBase  {
 	// -------------------- CONSTANTS -------------------- //
-	// order is fl, rl, fr, rr
-	public static final int[] powerPorts = {8, 2, 4, 6};
-	public static final int[] spinPorts = {1, 3, 5, 7};
+	// order is fl, bl, fr, br
+	public static final int[] powerPorts = {2, 3, 5, 4};
+	public static final int[] spinPorts = {6, 7, 9, 8};
+	public static final int[] spinEncPorts = {10, 11, 13, 12};
 	public static final boolean[] powerReversed = {false, true, false, true};
 	public static final boolean[] spinReversed = {false, true, false, true};
 	public static final double[] spinOffs = {0, 0, 0, 0};
+
 	// public static final int[] spinEncPorts = {9, 10, 11, 12};
 
 
-	public final SwerveModule frontLeft = new SwerveModule(
-		powerPorts[0], spinPorts[0],
-		powerReversed[0], spinReversed[0], spinOffs[0]
-	);
-
-	public final SwerveModule rearLeft = new SwerveModule(
-		powerPorts[1], spinPorts[1],
-		powerReversed[1], spinReversed[1], spinOffs[1]
-	);
-
-	public final SwerveModule frontRight = new SwerveModule(
-		powerPorts[2], spinPorts[2],
-		powerReversed[2], spinReversed[2], spinOffs[2]
-	);
-
-	public final SwerveModule rearRight = new SwerveModule(
-		powerPorts[3], spinPorts[3],
-		powerReversed[3], spinReversed[3], spinOffs[3]
-	);
+	public SwerveModule frontLeft;
+	public SwerveModule rearLeft;
+	public SwerveModule frontRight;
+	public SwerveModule rearRight;
+	
+	// public final SwerveModule frontLeft = new SwerveModule(2, 6, 10, spinOffs[0]);
+	// public final SwerveModule rearLeft = new SwerveModule(3, 7, 11, spinOffs[1]);
+	// public final SwerveModule frontRight = new SwerveModule(4, 8, 12, spinOffs[2]);
+	// public final SwerveModule rearRight = new SwerveModule(5, 9, 13, spinOffs[3]);
 
 	/** An array containing all four wheels */
-	public final SwerveModule wheels[] = {frontLeft, rearLeft, frontRight, rearRight};
+	// public SwerveModule wheels[] = new SwerveModule[4];
+	public SwerveModule wheels[] = {frontLeft, rearLeft, frontRight, rearRight};
 
 	/** The IMU/gyro */
 	private final ADIS16448_IMU gyro = new ADIS16448_IMU();
@@ -53,8 +46,12 @@ public class Swerve extends SubsystemBase  {
 		getPositions()
 	);
 
-	/** Creates a new DriveSubsystem. */
-	public Swerve() {}
+	public Swerve() {
+		frontLeft = new SwerveModule(powerPorts[0], spinPorts[0], spinEncPorts[0], spinOffs[0]);
+		rearLeft = new SwerveModule(powerPorts[1], spinPorts[1], spinEncPorts[1], spinOffs[1]);
+		frontRight = new SwerveModule(powerPorts[2], spinPorts[2], spinEncPorts[2], spinOffs[2]);
+		rearRight = new SwerveModule(powerPorts[3], spinPorts[3], spinEncPorts[3], spinOffs[3]);
+	}
 
 	@Override
 	public void periodic() {
@@ -104,7 +101,7 @@ public class Swerve extends SubsystemBase  {
 		}
 
 		frontRight.drive(xSpeed, ySpeed, rot, Math.PI*.75);
-		frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*2.25);
+		frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*.25);
 		rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*1.75);
 		rearRight.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
 	}
@@ -153,6 +150,6 @@ public class Swerve extends SubsystemBase  {
 	 * @return The turn rate of the robot, in degrees per second
 	 */
 	public double getTurnRate() {
-		return gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
+		return gyro.getRate() * (DriveConstants.gyroReversed ? -1.0 : 1.0);
 	}
 }

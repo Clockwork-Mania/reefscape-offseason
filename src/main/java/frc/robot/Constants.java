@@ -19,94 +19,66 @@ import edu.wpi.first.wpilibj.TimedRobot;
  */
 public final class Constants {
   public static final class DriveConstants {
-
-    // public static final int flpMotorPort = 8;
-    // public static final int rlpMotorPort = 2;
-    // public static final int frpMotorPort = 4;
-    // public static final int rrpMotorPort = 6;
-
-    // public static final int flsMotorPort = 1;
-    // public static final int rlsMotorPort = 3;
-    // public static final int frsMotorPort = 5;
-    // public static final int rrsMotorPort = 7;
-
-    // public static final boolean flsEncReversed = false;
-    // public static final boolean rlsEncReversed = true;
-    // public static final boolean frsEncReversed = false;
-    // public static final boolean rrsEncReversed = true;
-
-    // public static final boolean flpEncReversed = false;
-    // public static final boolean rlpEncReversed = true;
-    // public static final boolean frpEncReversed = false;
-    // public static final boolean rrpEncReversed = true;
-
     // If you call DriveSubsystem.drive() with a different period make sure to update this.
-    public static final double kDrivePeriod = TimedRobot.kDefaultPeriod;
+    // public static final double kDrivePeriod = TimedRobot.kDefaultPeriod;
 
-    public static final double kTrackWidth = 0.5;
+    public static final double trackWidth = 0.5;
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = 0.7;
+    public static final double wheelBase = 0.7;
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+            new Translation2d(wheelBase / 2, trackWidth / 2),
+            new Translation2d(wheelBase / 2, -trackWidth / 2),
+            new Translation2d(-wheelBase / 2, trackWidth / 2),
+            new Translation2d(-wheelBase / 2, -trackWidth / 2));
 
-    public static final boolean kGyroReversed = false;
+    public static final boolean gyroReversed = false;
 
     // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
     // These characterization values MUST be determined either experimentally or theoretically
     // for *your* robot's drive.
     // The SysId tool provides a convenient method for obtaining these values for your robot.
-    public static final double ksVolts = 1;
-    public static final double kvVoltSecondsPerMeter = 0.8;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.15;
+    // public static final double ksVolts = 1;
+    // public static final double kvVoltSecondsPerMeter = 0.8;
+    // public static final double kaVoltSecondsSquaredPerMeter = 0.15;
 
-    public static final double maxSpeed = 3;
+    // public static final double maxSpeed = 3;
   }
 
-  public static final class ModuleConstants {
-    public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-    public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
+  // public static final class ModuleConstants {
+    // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
+    // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
 
-    public static final int kEncoderCPR = 1024;
-    public static final double kWheelDiameterMeters = 0.15;
-    public static final double kDriveEncoderDistancePerPulse =
+    public static final int encCPR = 2048;
+    public static final double gearRatio = 6.12;
+    public static final double wheelDiam = 4*.0254;
+    public static final double distPerTick =
         // Assumes the encoders are directly mounted on the wheel shafts
-        (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+        (wheelDiam * Math.PI) / (double) encCPR;
 
-    public static final double kTurningEncoderDistancePerPulse =
+    public static final double spinPerTick =
         // Assumes the encoders are on a 1:1 reduction with the module shaft.
-        (2 * Math.PI) / (double) kEncoderCPR;
+        (2 * Math.PI) / (double) encCPR;
 
-    public static final double kPModuleTurningController = 0.3;
+    // public static final double spinKP = 0.3;
 
-    public static final double kPModuleDriveController = 0.3;
-  }
-
-  public static final class OIConstants {
-    public static final int kDriverControllerPort = 0;
-  }
+    // public static final double kPModuleDriveController = 0.3;
+    public static double kAbsEncoderCPR = 4096;
+  // }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-    public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
-    public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
+    // public static final double maxSpeed = 3;
+    // public static final double maxAccel = 3;
+    // public static final double maxAngSpeed = Math.PI;
+    // public static final double maxAngAccel = Math.PI;
 
-    public static final double kPXController = 1;
-    public static final double kPYController = 1;
-    public static final double kPThetaController = 1;
+    // public static final double kPXController = 1;
+    // public static final double kPYController = 1;
+    // public static final double kPThetaController = 1;
 
     // Constraint for the motion profiled robot angle controller
-    public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
-        new TrapezoidProfile.Constraints(
-            kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+    // public static final TrapezoidProfile.Constraints kThetaControllerConstraints =
+    //     new TrapezoidProfile.Constraints(maxAngSpeed, maxAngAccel);
   }
-
-
-  public static final int topMotorPort = 100;
-  public static final int bottomMotorPort = 100;
 }

@@ -7,7 +7,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class TestSwerve {
+public class TestMotors {
 	public static final int[] powerPorts = {8, 2, 4, 6};
 	public static final int[] spinPorts = {1, 3, 5, 7};
     public static final double[] spinOffs = {0, 0, 0, 0};

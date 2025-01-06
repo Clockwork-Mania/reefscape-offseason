@@ -21,4 +21,9 @@ public class MotorPair {
         first.set(speed);
         second.set(speed);
     }
+
+    public void toPos(double pos) {
+        first.toPos(pos);
+        second.toPos(pos);
+    }
 }

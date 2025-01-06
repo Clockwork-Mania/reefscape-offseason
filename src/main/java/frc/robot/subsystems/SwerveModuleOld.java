@@ -1,7 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix6.hardware.CANcoder;
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -10,28 +8,52 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.Utility;
+import frc.robot.Constants;
 
-public class SwerveModule {
-    public Motor powerMotor, spinMotor;
-    // public AbsoluteEncoder absSpinEnc;
-	public CANcoder spinEnc;
+public class SwerveModuleOld {
+    public final SparkMax powerMotor;
+	public final SparkMax spinMotor;
+
+	public final RelativeEncoder powerEnc;
+	// public final RelativeEncoder spinEnc;
+    public final SparkAbsoluteEncoder absSpinEnc;
     // public double spinEncConversion;
+	double spinEncConversion = Math.PI*2/21.35;
     public double spinOff = 0;
 
-	// 6.12
+	/**
+	 * Constructs a SwerveModule.
+	 *
+	 * @param driveMotorChannel The channel of the drive motor.
+	 * @param turningMotorChannel The channel of the turning motor.
+	 * @param driveEncoderReversed Whether the drive encoder is reversed.
+	 * @param turningEncoderReversed Whether the turning encoder is reversed.
+	 */
+	public SwerveModuleOld(
+			int driveMotorChannel,
+			int turningMotorChannel,
+			boolean driveEncoderReversed,
+			boolean turningEncoderReversed,
+			double spinEncConversion) {
 
-	public SwerveModule(int powId, int spinId, int spinEncId, double spinOff) {
-		powerMotor = new Motor(powId);
-		spinMotor = new Motor(spinId);
-		spinEnc = new CANcoder(spinEncId);
-		this.spinOff = spinOff;
+		powerMotor = new SparkMax(driveMotorChannel, MotorType.kBrushless);
+		spinMotor = new SparkMax(turningMotorChannel, MotorType.kBrushless);
+
+		powerEnc = powerMotor.getEncoder();
+		// spinEnc = spinMotor.getEncoder();
+        absSpinEnc = spinMotor.getAbsoluteEncoder();
+
+
+        this.spinEncConversion = spinEncConversion;
+		// powerEnc.setPositionConversionFactor(ModuleConstants.kDriveEncoderDistancePerPulse);
+        // spinEnc.setPositionConversionFactor(spinEncConversion);
+		// spinPID.enableContinuousInput(-Math.PI, Math.PI);
 	}
 
-    public double powerPos() {return Utility.ticks2Meters(powerMotor.getPosition().getValueAsDouble());}
-    public double powerVel() {return Utility.ticks2Meters(powerMotor.getVelocity().getValueAsDouble());}
-    public double spinPos() {return Utility.ticks2Rad(spinEnc.getPosition().getValueAsDouble())-spinOff;}
-    public double spinVel() {return Utility.ticks2Rad(spinEnc.getVelocity().getValueAsDouble());}
+    public double powerPos() {return powerEnc.getPosition() * Constants.distPerTick;}
+    public double powerVel() {return powerEnc.getVelocity() * Constants.distPerTick;}
+    public double spinPos() {return (absSpinEnc.getPosition() * spinEncConversion)-spinOff;}
+    public double spinVel() {return absSpinEnc.getVelocity() * spinEncConversion;}
 
 	/**
 	 * Returns the current state of the module.
@@ -119,6 +141,9 @@ public class SwerveModule {
 
 	/** Zeroes all the SwerveModule encoders. */
 	public void resetEncoders() {
+		powerEnc.setPosition(0);
         spinOff = spinPos();
+		// spinEnc.setPosition(0);
+		// absSpinEnc.setPosition(0.);
 	}
 }
