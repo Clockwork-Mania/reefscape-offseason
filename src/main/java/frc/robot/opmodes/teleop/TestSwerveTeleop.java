@@ -9,8 +9,6 @@ public class TestSwerveTeleop implements Opmode {
     Swerve drive;
     XboxController controller;
 
-    public String name() {return "Swerve Testing";}
-
     public void init() {
         drive = new Swerve();
         controller = new XboxController(0);

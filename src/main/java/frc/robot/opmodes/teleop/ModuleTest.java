@@ -14,8 +14,6 @@ public class ModuleTest implements Opmode {
     // public TalonFX motor0, motor1;
     Swerve sw;
 
-    public String name() {return "Module Testing";}
-
     public void init() {
         controller = new XboxController(0);
         // mod = new SwerveModule[4];

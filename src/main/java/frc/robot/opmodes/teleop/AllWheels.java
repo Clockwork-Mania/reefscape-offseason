@@ -12,8 +12,6 @@ public class AllWheels implements Opmode {
     XboxController controller;
     TalonFX motor0, motor1, motor2, motor3, motor4, motor5, motor6, motor7;
 
-    public String name() {return "All Wheels";}
-
     public void init() {
         controller = new XboxController(0);
         motor0 = new TalonFX(2, "rio");

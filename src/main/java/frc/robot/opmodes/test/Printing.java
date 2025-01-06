@@ -9,8 +9,6 @@ public class Printing implements Opmode {
     Swerve drive;
     XboxController controller;
 
-    public String name() {return "Debug Printing";}
-
     public void init() {
         drive = new Swerve();
     }

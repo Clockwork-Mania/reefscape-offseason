@@ -9,8 +9,6 @@ public class TalonTest implements Opmode {
     public XboxController controller;
     public TalonFX motor0, motor1;
 
-    public String name() {return "Talon Testing";}
-
     public void init() {
         controller = new XboxController(0);
         motor0 = new TalonFX(2, "rio");
