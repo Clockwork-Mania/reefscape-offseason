@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
@@ -10,6 +11,7 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Utility;
 
 public class SwerveModule {
@@ -25,13 +27,16 @@ public class SwerveModule {
 		powerMotor = new Motor(powId);
 		spinMotor = new Motor(spinId);
 		spinEnc = new CANcoder(spinEncId);
+		powerMotor.setNeutralMode(NeutralModeValue.Brake);
 		this.spinOff = spinOff;
 	}
 
     public double powerPos() {return Utility.ticks2Meters(powerMotor.getPosition().getValueAsDouble());}
     public double powerVel() {return Utility.ticks2Meters(powerMotor.getVelocity().getValueAsDouble());}
-    public double spinPos() {return Utility.ticks2Rad(spinEnc.getPosition().getValueAsDouble())-spinOff;}
+    public double spinPos() {return Utility.ticks2Rad(spinEnc.getPosition().getValueAsDouble()-spinOff);}
     public double spinVel() {return Utility.ticks2Rad(spinEnc.getVelocity().getValueAsDouble());}
+    // public double spinPos() {return spinEnc.getPosition().getValueAsDouble()-spinOff;}
+    // public double spinVel() {return spinEnc.getVelocity().getValueAsDouble();}
 
 	/**
 	 * Returns the current state of the module.
@@ -54,7 +59,7 @@ public class SwerveModule {
 	}
 
 	static final double spinDeadband = 0.01;
-	static final double kpSpin = 0.4, kiSpin = 0, kdSpin = 0;
+	static final double kpSpin = 0.2, kiSpin = 0, kdSpin = 0;
 	double errSum = 0;
 	double lastErr = 0;
 
@@ -75,18 +80,17 @@ public class SwerveModule {
 			reversed = !reversed;
 		}
 
-		
-		// SmartDashboard.putNumber(powerMotor.getDeviceId()+" error", err);
+		SmartDashboard.putNumber("error", err);
 
 		// calculate power using kp, ki, kd
 		double power = Math.abs(err) > spinDeadband ?
 			kpSpin * err + kiSpin * errSum + kdSpin * ((err-lastErr)/dt)
 		:0;
 
-		// SmartDashboard.putNumber(powerMotor.getDeviceId()+" power", power);
+		SmartDashboard.putNumber("power", power);
 
 
-		spinMotor.set(power);
+		spinMotor.set(-power);
 
 		// update integral and derivative quanitites
 		errSum += err;
@@ -105,12 +109,20 @@ public class SwerveModule {
 		lastPower = speed;
 	}
 
+	public void stop() {
+		spinMotor.set(0);
+		powerMotor.set(0);
+	}
+
 	public void drive(double x, double y, double r, double theta) {
 		// SmartDashboard.putNumber(powerMotor.getDeviceId()+" x", x);
 		// SmartDashboard.putNumber(powerMotor.getDeviceId()+" y", y);
 		double vx = x + r * Math.cos(theta);
 		double vy = y + r * Math.sin(theta);
-		pidSpin(Math.atan2(vy, vx), .02, Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)));
+		if(Math.abs(vx)>.01||Math.abs(vy)>.01) {
+			pidSpin(Math.atan2(vy, vx), .02, Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)));
+		}
+		else stop();
 	}
 
 	public void setPower(double power) {

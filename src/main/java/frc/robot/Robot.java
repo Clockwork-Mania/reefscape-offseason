@@ -15,6 +15,10 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.*;
+import frc.robot.opmodes.teleop.AllWheels;
+import frc.robot.opmodes.teleop.ModuleTest;
+import frc.robot.opmodes.teleop.TalonTest;
+import frc.robot.opmodes.teleop.TestSwerveTeleop;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -47,13 +51,15 @@ public class Robot extends TimedRobot {
 		m_chooser.addOption("My Auto", kCustomAuto);
 		SmartDashboard.putData("Auto choices", m_chooser);
 
-		autoPicker = opmodePicker("auto");
-		telePicker = opmodePicker("teleop");
-		testPicker = opmodePicker("test");
+		// autoPicker = opmodePicker("auto");
+		// telePicker = opmodePicker("teleop");
+		// testPicker = opmodePicker("test");
 
-		// telePicker.setDefaultOption("All Wheels", "AllWheels");
-		// telePicker.addOption("Talon Testing", "TalonTest");
-		// telePicker.addOption("Module Testing", "ModuleTest");
+		telePicker = new SendableChooser<>();
+		telePicker.setDefaultOption("All Wheels", "AllWheels");
+		telePicker.addOption("Talon Testing", "TalonTest");
+		telePicker.addOption("Module Testing", "ModuleTest");
+		telePicker.addOption("Swerve Testing", "TestSwerveTeleop");
 		
 		// File ftele = new File("opmodes/teleop");
 		// String[] teles = ftele.list();
@@ -95,8 +101,15 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopInit() {
 		String tele = telePicker.getSelected();
-		try{teleop = (Opmode)Class.forName(tele).getDeclaredConstructor().newInstance();}
-		catch(Exception e){}
+		// try{teleop = (Opmode)Class.forName(tele).getDeclaredConstructor().newInstance();}
+		// catch(Exception e){}
+		System.out.println(tele);
+		switch(tele) {
+			case "AllWheels": teleop = new AllWheels(); break;
+			case "TalonTest": teleop = new TalonTest(); break;
+			case "ModuleTest": teleop = new ModuleTest(); break;
+			case "TestSwerveTeleop": teleop = new TestSwerveTeleop(); break;
+		}
 		teleop.init();
 	}
 

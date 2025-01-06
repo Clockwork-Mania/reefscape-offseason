@@ -17,7 +17,7 @@ public class Swerve extends SubsystemBase  {
 	public static final int[] spinEncPorts = {10, 11, 13, 12};
 	public static final boolean[] powerReversed = {false, true, false, true};
 	public static final boolean[] spinReversed = {false, true, false, true};
-	public static final double[] spinOffs = {0, 0, 0, 0};
+	public static final double[] spinOffs = {.354, .956, .808, .768};
 
 	// public static final int[] spinEncPorts = {9, 10, 11, 12};
 
@@ -40,11 +40,11 @@ public class Swerve extends SubsystemBase  {
 	private final ADIS16448_IMU gyro = new ADIS16448_IMU();
 
 	// Odometry class for tracking robot pose
-	SwerveDriveOdometry odometry = new SwerveDriveOdometry(
-		DriveConstants.kDriveKinematics,
-		getRotation2d(),
-		getPositions()
-	);
+	// SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+	// 	DriveConstants.kDriveKinematics,
+	// 	getRotation2d(),
+	// 	getPositions()
+	// );
 
 	public Swerve() {
 		frontLeft = new SwerveModule(powerPorts[0], spinPorts[0], spinEncPorts[0], spinOffs[0]);
@@ -56,10 +56,10 @@ public class Swerve extends SubsystemBase  {
 	@Override
 	public void periodic() {
 		// Update the odometry in the periodic block
-		odometry.update(
-			getRotation2d(),
-			getPositions()
-		);
+		// odometry.update(
+		// 	getRotation2d(),
+		// 	getPositions()
+		// );
 	}
 
 	/**
@@ -67,7 +67,8 @@ public class Swerve extends SubsystemBase  {
 	 * @return The pose.
 	 */
 	public Pose2d getPose() {
-		return odometry.getPoseMeters();
+		// return odometry.getPoseMeters();
+		return null;
 	}
 
 	/**
@@ -75,11 +76,11 @@ public class Swerve extends SubsystemBase  {
 	 * @param pose The pose to which to set the odometry.
 	 */
 	public void resetOdometry(Pose2d pose) {
-		odometry.resetPosition(
-			getRotation2d(),
-			getPositions(),
-			pose
-		);
+		// odometry.resetPosition(
+		// 	getRotation2d(),
+		// 	getPositions(),
+		// 	pose
+		// );
 	}
 
 	/**
@@ -100,10 +101,14 @@ public class Swerve extends SubsystemBase  {
 			ySpeed = mag * Math.sin(ang);
 		}
 
-		frontRight.drive(xSpeed, ySpeed, rot, Math.PI*.75);
-		frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*.25);
-		rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*1.75);
-		rearRight.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
+		// frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*-.25);
+		// frontRight.drive(xSpeed, ySpeed, rot, Math.PI*.25);
+		// rearRight.drive(xSpeed, ySpeed, rot, Math.PI*.75);
+		// rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
+		frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*-.25);
+		rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*.25);
+		rearRight.drive(xSpeed, ySpeed, rot, Math.PI*.75);
+		frontRight.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
 	}
 
 	/** Resets the drive encoders to currently read a position of 0. */

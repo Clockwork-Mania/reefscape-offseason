@@ -18,10 +18,10 @@ public class TestSwerveTeleop implements Opmode {
 
     public void periodic() {
         double
-            x = controller.getLeftX(),
-            y = controller.getLeftY(),
-            r = controller.getRightY();
-        drive.drive(x, y, r, true);
+            x = controller.getLeftX()*.4,
+            y = controller.getLeftY()*.4,
+            r = controller.getRightX()*.4;
+        drive.drive(-y, -x, r, true);
         drive.periodic();
 
         SmartDashboard.putNumber("x", x);
