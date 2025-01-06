@@ -28,6 +28,8 @@ public class SwerveModule {
 		spinMotor = new Motor(spinId);
 		spinEnc = new CANcoder(spinEncId);
 		powerMotor.setNeutralMode(NeutralModeValue.Brake);
+		powerMotor.setDir(Motor.CCW);
+		spinMotor.setDir(Motor.CCW);
 		this.spinOff = spinOff;
 	}
 
@@ -90,7 +92,7 @@ public class SwerveModule {
 		SmartDashboard.putNumber("power", power);
 
 
-		spinMotor.set(-power);
+		spinMotor.set(power);
 
 		// update integral and derivative quanitites
 		errSum += err;

@@ -15,8 +15,6 @@ public class Swerve extends SubsystemBase  {
 	public static final int[] powerPorts = {2, 3, 5, 4};
 	public static final int[] spinPorts = {6, 7, 9, 8};
 	public static final int[] spinEncPorts = {10, 11, 13, 12};
-	public static final boolean[] powerReversed = {false, true, false, true};
-	public static final boolean[] spinReversed = {false, true, false, true};
 	public static final double[] spinOffs = {.354, .956, .808, .768};
 
 	// public static final int[] spinEncPorts = {9, 10, 11, 12};
