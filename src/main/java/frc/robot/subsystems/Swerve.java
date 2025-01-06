@@ -12,9 +12,9 @@ import frc.robot.Constants.DriveConstants;
 public class Swerve extends SubsystemBase  {
 	// -------------------- CONSTANTS -------------------- //
 	// order is fl, bl, fr, br
-	public static final int[] powerPorts = {2, 3, 5, 4};
-	public static final int[] spinPorts = {6, 7, 9, 8};
-	public static final int[] spinEncPorts = {10, 11, 13, 12};
+	public static final int[] powerPorts = {5, 2, 4, 3};
+	public static final int[] spinPorts = {9, 6, 8, 7};
+	public static final int[] spinEncPorts = {13, 10, 12, 11};
 	public static final double[] spinOffs = {.354, .956, .808, .768};
 
 	// public static final int[] spinEncPorts = {9, 10, 11, 12};
