@@ -11,11 +11,11 @@ import frc.robot.Constants.DriveConstants;
 
 public class Swerve extends SubsystemBase  {
 	// -------------------- CONSTANTS -------------------- //
-	// order is fl, bl, fr, br
+	// order is fl, bl, fr, br 2 3 5 4
 	public static final int[] powerPorts = {5, 2, 4, 3};
 	public static final int[] spinPorts = {9, 6, 8, 7};
 	public static final int[] spinEncPorts = {13, 10, 12, 11};
-	public static final double[] spinOffs = {.354, .956, .808, .768};
+	public static final double[] spinOffs = {.808, .354, .768, .956};
 
 	// public static final int[] spinEncPorts = {9, 10, 11, 12};
 
@@ -103,10 +103,18 @@ public class Swerve extends SubsystemBase  {
 		// frontRight.drive(xSpeed, ySpeed, rot, Math.PI*.25);
 		// rearRight.drive(xSpeed, ySpeed, rot, Math.PI*.75);
 		// rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
-		frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*-.25);
-		rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*.25);
-		rearRight.drive(xSpeed, ySpeed, rot, Math.PI*.75);
-		frontRight.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
+		// frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*-.25);
+		// rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*.25);
+		// rearRight.drive(xSpeed, ySpeed, rot, Math.PI*.75);
+		// frontRight.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
+		// frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*.25);
+		// rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*.75);
+		// rearRight.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
+		// frontRight.drive(xSpeed, ySpeed, rot, Math.PI*1.75);
+		frontLeft.drive(xSpeed, ySpeed, rot, Math.PI*.25);
+		frontRight.drive(xSpeed, ySpeed, rot, Math.PI*.75);
+		rearRight.drive(xSpeed, ySpeed, rot, Math.PI*1.25);
+		rearLeft.drive(xSpeed, ySpeed, rot, Math.PI*1.75);
 	}
 
 	/** Resets the drive encoders to currently read a position of 0. */

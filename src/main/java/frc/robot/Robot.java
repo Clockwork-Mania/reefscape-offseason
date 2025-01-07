@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
 
 	SendableChooser<Class<?>> opmodePicker(OpmodeList.NamedOpmode modes[]) {
 		SendableChooser<Class<?>> picker = new SendableChooser<>();
-		picker.setDefaultOption(modes[0].name, modes[0].mode);
+		if(modes.length > 0) picker.setDefaultOption(modes[0].name, modes[0].mode);
 		for(int i = 1; i < modes.length; ++i) picker.addOption(modes[i].name, modes[i].mode);
 		return picker;
 	}
