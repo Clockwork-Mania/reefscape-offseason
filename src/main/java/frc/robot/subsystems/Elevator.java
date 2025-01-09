@@ -6,5 +6,5 @@ public class Elevator {
         mp = new MotorPair(0, 0, Motor.CW, Motor.CCW);
     }
 
-
+    
 }

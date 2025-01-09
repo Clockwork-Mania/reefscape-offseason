@@ -129,7 +129,7 @@ public class Swerve extends SubsystemBase  {
 
 	/**
 	 * Returns the heading of the robot.
-	 * @return the robot's heading in radians, from -180 to 180
+	 * @return the robot's heading in radians, from -PI to PI
 	 */
 	public double getHeading() {
 		return gyro.getGyroAngleZ() * Math.PI/180;

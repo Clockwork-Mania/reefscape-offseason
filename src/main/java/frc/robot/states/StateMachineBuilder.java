@@ -1,5 +1,6 @@
 package frc.robot.states;
 
+import java.time.chrono.ThaiBuddhistChronology;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -50,4 +51,13 @@ public class StateMachineBuilder {
     public StateMachine build() {
         return new StateMachine(map, starting);
     }
+
+    // TODO: add auto moving step
+    public StateMachineBuilder move(double f, double s, double r) {
+        return this
+            .start(()->{})
+            .run(()->{})
+            .end(()->{})
+            .next(()->true, "");
+    } 
 }

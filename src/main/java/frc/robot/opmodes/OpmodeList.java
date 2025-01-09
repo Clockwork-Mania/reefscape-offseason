@@ -24,6 +24,7 @@ public class OpmodeList {
     };
 
     public static NamedOpmode test[] = {
-        new NamedOpmode("Debug Printing", Printing.class)
+        new NamedOpmode("Debug Printing", Printing.class),
+        new NamedOpmode("Compressor Testing", CompressorTest.class)
     };
 }
