@@ -36,7 +36,7 @@ public class ModuleTest implements Opmode {
         // }
         // sw.rearRight.pidSpin(Math.PI/2, .02, .4);
         double a = Math.atan2(controller.getRightY(), controller.getRightX());
-        sw.rearRight.pidSpin(a, .02, controller.getLeftY());
+        sw.backRight.pidSpin(a, .02, controller.getLeftY());
         SmartDashboard.putNumber("ang", a);
         SmartDashboard.putNumber("lx", controller.getLeftX());
         SmartDashboard.putNumber("rx", controller.getRightX());

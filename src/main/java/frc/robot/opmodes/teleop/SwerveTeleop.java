@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
 import frc.robot.subsystems.Swerve;
 
-public class TestSwerveTeleop implements Opmode {
+public class SwerveTeleop implements Opmode {
     Swerve drive;
     XboxController controller;
 
@@ -22,11 +22,12 @@ public class TestSwerveTeleop implements Opmode {
         drive.drive(-s, -f, -r, false);
         drive.periodic();
 
-        SmartDashboard.putNumber("f", f);
-        SmartDashboard.putNumber("s", s);
-        SmartDashboard.putNumber("r", r);
+        SmartDashboard.putNumber("forward", f);
+        SmartDashboard.putNumber("strafe", s);
+        SmartDashboard.putNumber("rotation", r);
+        SmartDashboard.putNumber("heading", drive.getHeading());
 
-        if(controller.getRightBumperButton()) {
+        if(controller.getLeftBumperButton() && controller.getRightBumperButton()) {
             drive.zeroHeading();
         }
     }

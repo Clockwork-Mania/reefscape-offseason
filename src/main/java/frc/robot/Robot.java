@@ -18,7 +18,7 @@ import frc.robot.opmodes.*;
 import frc.robot.opmodes.teleop.AllWheels;
 import frc.robot.opmodes.teleop.ModuleTest;
 import frc.robot.opmodes.teleop.TalonTest;
-import frc.robot.opmodes.teleop.TestSwerveTeleop;
+import frc.robot.opmodes.teleop.SwerveTeleop;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in

@@ -16,7 +16,7 @@ public class Printing implements Opmode {
     public void periodic() {
         SmartDashboard.putNumber("fl", drive.frontLeft.spinPos());
         SmartDashboard.putNumber("fr", drive.frontRight.spinPos());
-        SmartDashboard.putNumber("bl", drive.rearLeft.spinPos());
-        SmartDashboard.putNumber("br", drive.rearRight.spinPos());
+        SmartDashboard.putNumber("bl", drive.backLeft.spinPos());
+        SmartDashboard.putNumber("br", drive.backRight.spinPos());
     }
 }
