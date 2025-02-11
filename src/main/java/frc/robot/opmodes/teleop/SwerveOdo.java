@@ -26,19 +26,18 @@ public class SwerveOdo implements Opmode {
         SmartDashboard.putNumber("forward", f);
         SmartDashboard.putNumber("strafe", s);
         SmartDashboard.putNumber("rotation", r);
-        SmartDashboard.putNumber("heading", drive.getHeading()*180/Math.PI);
+        SmartDashboard.putNumber("heading", drive.heading()*180/Math.PI);
         Pose2d pose = drive.odo.getPoseMeters();
         SmartDashboard.putNumber("odo.x", pose.getX()*39.37);
         SmartDashboard.putNumber("odo.y", pose.getY()*39.37);
-        SmartDashboard.putNumber("odo.h", pose.getRotation().getDegrees());
 
         if(controller.getLeftBumperButton() && controller.getRightBumperButton()) {
-            drive.zeroHeading();
+            drive.resetGyro();
         }
 
-        if(controller.getXButton()) drive.frontLeft.powerMotor.set(.3);
-        if(controller.getAButton()) drive.backLeft.powerMotor.set(.3);
-        if(controller.getYButton()) drive.frontRight.powerMotor.set(.3);
-        if(controller.getBButton()) drive.backRight.powerMotor.set(.3);
+        if(controller.getXButton()) drive.frontLeft.power.set(.3);
+        if(controller.getAButton()) drive.backLeft.power.set(.3);
+        if(controller.getYButton()) drive.frontRight.power.set(.3);
+        if(controller.getBButton()) drive.backRight.power.set(.3);
     }
 }

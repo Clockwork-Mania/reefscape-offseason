@@ -14,4 +14,8 @@ public class Utility {
     public static double fixang(double a) {
         return ((a%TAU+Math.PI)%TAU)-Math.PI;
     }
+
+    public static double clamp(double v, double min, double max) {
+        return Math.min(max, Math.max(v, min));
+    }
 }

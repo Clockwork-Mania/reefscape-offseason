@@ -15,49 +15,31 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Utility;
 
 public class SwerveModule {
-    public Motor powerMotor, spinMotor;
-    // public AbsoluteEncoder absSpinEnc;
-	public CANcoder spinEnc;
-    // public double spinEncConversion;
-    public double spinOff = 0;
+    public Motor power, spin;
+	public CANcoder enc;
+    public double off = 0;
 
-	// 6.12
-
-	public SwerveModule(int powId, int spinId, int spinEncId, double spinOff) {
-		powerMotor = new Motor(powId);
-		spinMotor = new Motor(spinId);
-		spinEnc = new CANcoder(spinEncId);
-		powerMotor.setNeutralMode(NeutralModeValue.Brake);
-		// powerMotor.setDir(Motor.CCW);
-		// spinMotor.setDir(Motor.CCW);
-		this.spinOff = spinOff;
+	public SwerveModule(int powId, int spinId, int encId, double off) {
+		power = new Motor(powId);
+		spin = new Motor(spinId);
+		enc = new CANcoder(encId);
+		power.setNeutralMode(NeutralModeValue.Brake);
+		this.off = off;
 	}
 
-    public double powerPos() {return Utility.ticks2Meters(powerMotor.getPosition().getValueAsDouble());}
-    public double powerVel() {return Utility.ticks2Meters(powerMotor.getVelocity().getValueAsDouble());}
-    public double spinPos() {return Utility.ticks2Rad(spinEnc.getPosition().getValueAsDouble()-spinOff);}
-    public double spinVel() {return Utility.ticks2Rad(spinEnc.getVelocity().getValueAsDouble());}
-    // public double spinPos() {return spinEnc.getPosition().getValueAsDouble()-spinOff;}
-    // public double spinVel() {return spinEnc.getVelocity().getValueAsDouble();}
+    public double powerPos() {return Utility.ticks2Meters(power.getPosition().getValueAsDouble());}
+    public double powerVel() {return Utility.ticks2Meters(power.getVelocity().getValueAsDouble());}
+    public double spinPos() {return Utility.ticks2Rad(enc.getPosition().getValueAsDouble()-off);}
+    public double spinVel() {return Utility.ticks2Rad(enc.getVelocity().getValueAsDouble());}
 
-	/**
-	 * Returns the current state of the module.
-	 * @return The current state of the module.
-	 */
 	public SwerveModuleState getState() {
 		return new SwerveModuleState(
-				// powerEnc.getRate(), new Rotation2d(spinEnc.getDistance()));
-				// powerEnc.getVelocity(), new Rotation2d(spinEnc.getPosition()));
-				powerVel(), new Rotation2d(spinPos()));
+			powerVel(), new Rotation2d(spinPos()));
 	}
 
-	/**
-	 * Returns the current position of the module.
-	 * @return The current position of the module.
-	 */
 	public SwerveModulePosition getPosition() {
 		return new SwerveModulePosition(
-				powerPos(), new Rotation2d(spinPos()));
+			powerPos(), new Rotation2d(spinPos()));
 	}
 
 	static final double spinDeadband = 0.01;
@@ -68,7 +50,6 @@ public class SwerveModule {
 	public double maxAccel = 0.01;
 	public double lastPower = 0; 
 	public void pidSpin(double target, double dt, double speed) {
-		// double err = target - spinEnc.getPosition();
 		double err = target - spinPos();
 		boolean reversed = false;
 
@@ -76,23 +57,20 @@ public class SwerveModule {
 		while(err > Math.PI) {err -= Math.PI; reversed = !reversed;}
 		while(err < -Math.PI) {err += Math.PI; reversed = !reversed;}
 		
-		// flip error if >PI and reverse
+		// flip error if >PI/2 and reverse
 		if (Math.abs(err) > Math.PI / 2) {
 			err = (err < -Math.PI / 2 ? err + Math.PI: err - Math.PI);
 			reversed = !reversed;
 		}
 
-		SmartDashboard.putNumber("error", err);
-
 		// calculate power using kp, ki, kd
-		double power = Math.abs(err) > spinDeadband ?
+		// double turn = Math.abs(err) > spinDeadband ?
+		// 	kpSpin * err + kiSpin * errSum + kdSpin * ((err-lastErr)/dt)
+		// :0;
+		// spin.set(-turn);
+		spin.set(-(Math.abs(err) > spinDeadband ?
 			kpSpin * err + kiSpin * errSum + kdSpin * ((err-lastErr)/dt)
-		:0;
-
-		SmartDashboard.putNumber("power", power);
-
-
-		spinMotor.set(-power);
+		:0));
 
 		// update integral and derivative quanitites
 		errSum += err;
@@ -107,13 +85,8 @@ public class SwerveModule {
 		}
 		// if(speed - lastPower > maxAccel) speed = lastPower + Math.signum(lastPower) * maxAccel;
 		speed = (speed > 1 ? 1 : (speed < -1 ? -1 : speed));
-		powerMotor.set(reversed ? -speed : speed);
+		power.set(reversed ? -speed : speed);
 		lastPower = speed;
-	}
-
-	public void stop() {
-		spinMotor.set(0);
-		powerMotor.set(0);
 	}
 
 	public void drive(double x, double y, double r, double theta) {
@@ -127,12 +100,12 @@ public class SwerveModule {
 		else stop();
 	}
 
-	public void setPower(double power) {
-		// powerMotor.set(backwards ? -power : power);
+	public void stop() {
+		spin.set(0);
+		power.set(0);
 	}
 
-	/** Zeroes all the SwerveModule encoders. */
 	public void resetEncoders() {
-        spinOff = spinPos();
+        off = spinPos();
 	}
 }
