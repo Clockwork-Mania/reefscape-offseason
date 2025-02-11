@@ -14,6 +14,7 @@ public class OpmodeList {
     }
 
     public static NamedOpmode auto[] = {
+        new NamedOpmode("Basic", BasicAuto.class),
     };
 
     public static NamedOpmode teleop[] = {
@@ -22,6 +23,7 @@ public class OpmodeList {
         // new NamedOpmode("Talon Testing", TalonTest.class),
         new NamedOpmode("Swerve Testing", SwerveTeleop.class),
         new NamedOpmode("Odometry Testing", SwerveOdo.class),
+        new NamedOpmode("Main", MainTeleop.class),
     };
 
     public static NamedOpmode test[] = {
