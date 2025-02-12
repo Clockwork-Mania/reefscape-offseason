@@ -90,8 +90,6 @@ public class SwerveModule {
 	}
 
 	public void drive(double x, double y, double r, double theta) {
-		// SmartDashboard.putNumber(powerMotor.getDeviceId()+" x", x);
-		// SmartDashboard.putNumber(powerMotor.getDeviceId()+" y", y);
 		double vx = x + r * Math.cos(theta);
 		double vy = y + r * Math.sin(theta);
 		if(Math.abs(vx)>.01||Math.abs(vy)>.01) {

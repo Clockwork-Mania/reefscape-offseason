@@ -4,40 +4,35 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
-import frc.robot.subsystems.Swerve;
+import frc.robot.subsystems.*;
 
 public class MainTeleop implements Opmode {
-    Swerve drive;
-    XboxController controller;
+    Grinder bot;
+    XboxController con;
 
     public void init() {
-        drive = new Swerve();
-        controller = new XboxController(0);
+        bot = new Grinder();
+        con = new XboxController(0);
     }
 
     public void periodic() {
         double
-            f = -controller.getLeftY()*.4,
-            s = controller.getLeftX()*.4,
-            r = controller.getRightX()*.4;
-        drive.drive(-s, -f, -r, true);
-        drive.periodic();
+            f = -con.getLeftY()*.4,
+            s = con.getLeftX()*.4,
+            r = con.getRightX()*.4;
+        bot.base.drive(-s, -f, -r, true);
+        bot.base.periodic();
 
         SmartDashboard.putNumber("forward", f);
         SmartDashboard.putNumber("strafe", s);
         SmartDashboard.putNumber("rotation", r);
-        SmartDashboard.putNumber("heading", drive.heading()*180/Math.PI);
-        Pose2d pose = drive.odo.getPoseMeters();
-        SmartDashboard.putNumber("odo.x", pose.getX()*39.37);
-        SmartDashboard.putNumber("odo.y", pose.getY()*39.37);
+        SmartDashboard.putNumber("heading", bot.base.heading()*180/Math.PI);
+        Pose2d pose = bot.base.pose();
+        SmartDashboard.putNumber("odo.x", pose.getX());
+        SmartDashboard.putNumber("odo.y", pose.getY());
 
-        if(controller.getLeftBumperButton() && controller.getRightBumperButton()) {
-            drive.resetGyro();
+        if(con.getLeftBumperButton() && con.getRightBumperButton()) {
+            bot.base.resetGyro();
         }
-
-        if(controller.getXButton()) drive.frontLeft.power.set(.3);
-        if(controller.getAButton()) drive.backLeft.power.set(.3);
-        if(controller.getYButton()) drive.frontRight.power.set(.3);
-        if(controller.getBButton()) drive.backRight.power.set(.3);
     }
 }
