@@ -2,6 +2,7 @@ package frc.robot.opmodes.teleop;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
 import frc.robot.subsystems.*;
@@ -9,10 +10,13 @@ import frc.robot.subsystems.*;
 public class MainTeleop implements Opmode {
     Grinder bot;
     XboxController con;
+    Field2d field;
 
     public void init() {
         bot = new Grinder();
         con = new XboxController(0);
+        field = new Field2d();
+        SmartDashboard.putData("Field", field);
     }
 
     public void periodic() {
@@ -23,6 +27,7 @@ public class MainTeleop implements Opmode {
         bot.base.drive(-s, -f, -r, true);
         bot.base.periodic();
 
+        System.out.println("HEY");
         SmartDashboard.putNumber("forward", f);
         SmartDashboard.putNumber("strafe", s);
         SmartDashboard.putNumber("rotation", r);
@@ -34,5 +39,7 @@ public class MainTeleop implements Opmode {
         if(con.getLeftBumperButton() && con.getRightBumperButton()) {
             bot.base.resetGyro();
         }
+
+        field.setRobotPose(bot.base.odo.getPoseMeters());
     }
 }

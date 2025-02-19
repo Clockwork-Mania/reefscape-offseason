@@ -92,6 +92,7 @@ public class SwerveModule {
 	public void drive(double x, double y, double r, double theta) {
 		double vx = x + r * Math.cos(theta);
 		double vy = y + r * Math.sin(theta);
+		System.out.println("vx " + vx + " vy " + vy);
 		if(Math.abs(vx)>.01||Math.abs(vy)>.01) {
 			pidSpin(Math.atan2(vy, vx), .02, Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)));
 		}
