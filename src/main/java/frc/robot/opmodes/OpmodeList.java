@@ -26,6 +26,7 @@ public class OpmodeList {
         new NamedOpmode("Main", MainTeleop.class),
     };
 
+    // added during testing
     public static NamedOpmode test[] = {
         new NamedOpmode("Debug Printing", Printing.class),
         new NamedOpmode("Compressor Testing", CompressorTest.class),
