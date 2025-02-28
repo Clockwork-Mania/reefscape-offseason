@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
+import edu.wpi.first.wpilibj.simulation.AnalogEncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utility;
@@ -22,8 +23,15 @@ public class Swerve extends SubsystemBase  {
 	public SwerveModule wheels[] = {frontLeft, backLeft, frontRight, backRight};
 
 	private final ADIS16448_IMU gyro = new ADIS16448_IMU();
+	private AnalogEncoderSim gyroSim;
 
 	public SwerveDriveOdometry odo;
+
+	public Translation2d pos;
+	public Rotation2d rot;
+	public double tx = 0;
+	public double ty = 0;
+	public double tr = 0;
 
 	double width = 23.5;
 	SwerveDriveKinematics kin = new SwerveDriveKinematics(
@@ -44,10 +52,13 @@ public class Swerve extends SubsystemBase  {
 		frontRight = new SwerveModule(2, 6, 10, .854);
 		backRight  = new SwerveModule(5, 9, 13, .308);
 		odo = new SwerveDriveOdometry(kin, heading2d(), positions());
+		pos = new Translation2d(0, 0);
+		rot = new Rotation2d();
 		targeting = false;
 	}
 
 	public void drive(double x, double y, double r, boolean relative) {
+
 		if(relative) {
 			double mag = Math.sqrt(x*x+y*y);
 			double ang = Math.atan2(y, x);
@@ -55,6 +66,19 @@ public class Swerve extends SubsystemBase  {
 			x = mag * Math.cos(ang);
 			y = mag * Math.sin(ang);
 		}
+		if(Math.abs(r) > 0.05){
+			tr += r;
+		}
+		if(Math.abs(x) > 0.05){
+			tx += x;
+		}
+		if(Math.abs(y) > 0.05){
+			ty += y;
+		}
+		
+		rot = new Rotation2d(tr);
+		pos = new Translation2d(tx, ty);
+
 		frontLeft .drive(x, y, r,  Math.PI*.25);
 		backLeft  .drive(x, y, r,  Math.PI*.75);
 		frontRight.drive(x, y, r, -Math.PI*.25);
@@ -87,6 +111,8 @@ public class Swerve extends SubsystemBase  {
 		}
 		else stop();
 	}
+
+	
 
 	@Override
 	public void periodic() {odo.update(heading2d(), positions());}
