@@ -26,4 +26,10 @@ public class MotorPair {
         first.toPos(pos);
         second.toPos(pos);
     }
+
+    public void goTo(double position, double kp) {
+        first.goTo(position, kp);
+        second.goTo(position, kp);
+    }
+
 }

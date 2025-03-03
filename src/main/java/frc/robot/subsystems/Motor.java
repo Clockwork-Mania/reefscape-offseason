@@ -55,4 +55,10 @@ public class Motor extends TalonFX {
         VelocityVoltage req = new VelocityVoltage(0).withSlot(0);
         setControl(req.withVelocity(vel));
     }
+
+    public void goTo(double position, double kp) {
+        double error = getPosition().getValueAsDouble() - position;
+        set(-kp * error);   
+    }
+
 }
