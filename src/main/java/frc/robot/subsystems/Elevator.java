@@ -5,7 +5,7 @@ public class Elevator {
     double kp = 0.1;
 
     public Elevator() {
-        mp = new MotorPair(0, 0, Motor.CW, Motor.CW); //might be wrong direction
+        mp = new MotorPair(0, 0, Motor.CW, Motor.CW); // FIXME: id not finalized
     }
 
     public void set(double power) {
