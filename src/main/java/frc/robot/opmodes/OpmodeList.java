@@ -15,6 +15,7 @@ public class OpmodeList {
 
     public static NamedOpmode auto[] = {
         new NamedOpmode("Basic", BasicAuto.class),
+        new NamedOpmode("Homing", HomingAuto.class),
     };
 
     public static NamedOpmode teleop[] = {

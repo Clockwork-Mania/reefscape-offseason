@@ -12,15 +12,11 @@ public class Elevator {
         mp.set(power);
     }
 
-    public void lift2(double position) {
-        
-    }
-
     public void goTo(double position) {
         mp.goTo(position, kp);
     }
 
-    public double getHeight() {
+    public double height() {
         return mp.first.getPosition().getValueAsDouble();
     }
 
