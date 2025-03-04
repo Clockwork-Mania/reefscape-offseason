@@ -27,7 +27,6 @@ public class MainTeleop implements Opmode {
         bot.base.drive(-s, -f, -r, true);
         bot.base.periodic();
 
-        System.out.println("HEY");
         SmartDashboard.putNumber("forward", f);
         SmartDashboard.putNumber("strafe", s);
         SmartDashboard.putNumber("rotation", r);
