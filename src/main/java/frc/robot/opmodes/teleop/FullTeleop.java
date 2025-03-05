@@ -76,7 +76,7 @@ public class FullTeleop implements Opmode {
             coral = true;
             intake = true;
         }
-        else if(con.getAButton()) {
+        else if(con.getYButtonPressed()) {
             if(coral) {
                 // Coral to L4
             }
@@ -85,11 +85,11 @@ public class FullTeleop implements Opmode {
             }
             intake = false;
         }
-        else if(con.getRightButtonPressed()) {
+        else if(con.getBButtonPressed()) {
             // Coral to L3
             intake = false;
         }
-        else if(con.getDownButtonPressed()) {
+        else if(con.getAButtonPressed()) {
             if(coral) {
                 // Coral to L2
             }
@@ -98,9 +98,29 @@ public class FullTeleop implements Opmode {
             }
             intake = false;
         }
-        else if(con.getLeftButtonPressed()) {
+        else if(con.getXButtonPressed()) {
             // Coral to L1
             intake = false;
         }
+        
+        if(con.getRightBumperButtonPressed()) {
+            if (coral) {
+                if (intake) {
+                    bot.arm.claw.set(Claw.INTAKE_CORAL);
+                }
+                else {
+                    bot.arm.claw.set(Claw.OUTTAKE_CORAL);
+                }
+            } 
+            else {
+                if (intake) {
+                    bot.arm.claw.set(Claw.INTAKE_ALGAE);
+                }
+                else{
+                    bot.arm.claw.set(Claw.OUTTAKE_ALGAE);
+                }
+            }
+        }
     }
 }
+
