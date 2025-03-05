@@ -1,6 +1,7 @@
 package frc.robot.opmodes.auto;
 
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.Utility;
 import frc.robot.subsystems.*;
 
 public class HomingAuto {
@@ -15,6 +16,6 @@ public class HomingAuto {
         bot.vision.update();
         // home on x
         double err = bot.vision.getX();
-        bot.base.drive(Math.min(1, err), 0, 0, false);
+        bot.base.drive(Utility.clamp(err, -1, 1), 0, 0, false);
     }
 }

@@ -30,4 +30,5 @@ public class Vision {
     public double getX() {return tx.getDouble(0);}
     public double getY() {return ty.getDouble(0);}
     public double getA() {return ta.getDouble(0);}
+    public boolean foundTag() {return ta.getDouble(-1) != -1;}
 }
