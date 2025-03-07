@@ -103,6 +103,11 @@ public class FullTeleop implements Opmode {
             intake = false;
         }
         
+        SmartDashboard.putBoolean("Coral?", coral);
+        SmartDashboard.putBoolean("Intaking?", intake);
+
+        // ---------------- CLAW --------------- //
+    
         if(con.getRightBumperButtonPressed()) {
             if (coral) {
                 if (intake) {
@@ -121,6 +126,7 @@ public class FullTeleop implements Opmode {
                 }
             }
         }
+    
     }
 }
 

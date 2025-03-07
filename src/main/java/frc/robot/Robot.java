@@ -102,27 +102,27 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void robotPeriodic() {
-		double
-            f = -con.getLeftY()*.4,
-            s = con.getLeftX()*.4,
-            r = con.getRightX()*.4;
-        bot.base.drive(-s, -f, -r, true);
-        bot.base.periodic();
+		// double
+        //     f = -con.getLeftY()*.4,
+        //     s = con.getLeftX()*.4,
+        //     r = con.getRightX()*.4;
+        // bot.base.drive(-s, -f, -r, true);
+        // bot.base.periodic();
 
-		System.out.println(bot.base.positions()[0]);
-        SmartDashboard.putNumber("forward", f);
-        SmartDashboard.putNumber("strafe", s);
-        SmartDashboard.putNumber("rotation", r);
-        SmartDashboard.putNumber("heading", bot.base.heading()*180/Math.PI);
-        Pose2d pose = bot.base.pose();
-        SmartDashboard.putNumber("odo.x", pose.getX());
-        SmartDashboard.putNumber("odo.y", pose.getY());
+		// System.out.println(bot.base.positions()[0]);
+        // SmartDashboard.putNumber("forward", f);
+        // SmartDashboard.putNumber("strafe", s);
+        // SmartDashboard.putNumber("rotation", r);
+        // SmartDashboard.putNumber("heading", bot.base.heading()*180/Math.PI);
+        // Pose2d pose = bot.base.pose();
+        // SmartDashboard.putNumber("odo.x", pose.getX());
+        // SmartDashboard.putNumber("odo.y", pose.getY());
 
-        if(con.getLeftBumperButton() && con.getRightBumperButton()) {
-            bot.base.resetGyro();
-        }
+        // if(con.getLeftBumperButton() && con.getRightBumperButton()) {
+        //     bot.base.resetGyro();
+        // }
 
-        field.setRobotPose(bot.base.odo.getPoseMeters());
+        // field.setRobotPose(bot.base.odo.getPoseMeters());
 	}
 
 	Opmode op;
