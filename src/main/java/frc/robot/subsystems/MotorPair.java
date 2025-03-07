@@ -13,8 +13,10 @@ public class MotorPair {
     }
 
     public MotorPair(int id0, int id1, InvertedValue dir0, InvertedValue dir1) {
-        first = new Motor(id0, dir0);
-        second = new Motor(id1, dir1);
+        first = new Motor(id0);
+        first.setDir(dir0);
+        second = new Motor(id1);
+        second.setDir(dir1);
     }
     
     public void set(double speed) {
@@ -26,4 +28,10 @@ public class MotorPair {
         first.toPos(pos);
         second.toPos(pos);
     }
+
+    public void goTo(double position, double kp) {
+        first.goTo(position, kp);
+        second.goTo(position, kp);
+    }
+
 }
