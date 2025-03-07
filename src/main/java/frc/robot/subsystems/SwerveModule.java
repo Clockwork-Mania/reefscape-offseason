@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.sim.CANcoderSimState;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAbsoluteEncoder;
@@ -11,18 +12,21 @@ import com.revrobotics.spark.SparkMax;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Utility;
 
 public class SwerveModule {
     public Motor power, spin;
 	public CANcoder enc;
+	public CANcoderSimState encSim;
     public double off = 0;
 
 	public SwerveModule(int powId, int spinId, int encId, double off) {
 		power = new Motor(powId);
 		spin = new Motor(spinId);
 		enc = new CANcoder(encId);
+		encSim = new CANcoderSimState(enc);
 		power.setNeutralMode(NeutralModeValue.Brake);
 		this.off = off;
 	}
@@ -49,6 +53,7 @@ public class SwerveModule {
 
 	public double maxAccel = 0.01;
 	public double lastPower = 0; 
+
 	public void pidSpin(double target, double dt, double speed) {
 		double err = target - spinPos();
 		boolean reversed = false;
@@ -87,12 +92,15 @@ public class SwerveModule {
 		speed = (speed > 1 ? 1 : (speed < -1 ? -1 : speed));
 		power.set(reversed ? -speed : speed);
 		lastPower = speed;
+
+		// spin.setPID(kpSpin, kiSpin, kdSpin);
+		// power.setPosition(Utility.ticks2Meters(2));
 	}
 
 	public void drive(double x, double y, double r, double theta) {
 		double vx = x + r * Math.cos(theta);
 		double vy = y + r * Math.sin(theta);
-		System.out.println("vx " + vx + " vy " + vy);
+		//System.out.println("vx " + vx + " vy " + vy);
 		if(Math.abs(vx)>.01||Math.abs(vy)>.01) {
 			pidSpin(Math.atan2(vy, vx), .02, Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)));
 		}

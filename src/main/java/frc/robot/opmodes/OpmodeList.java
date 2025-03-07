@@ -28,6 +28,7 @@ public class OpmodeList {
         new NamedOpmode("Full", FullTeleop.class),
     };
 
+    // added in testing
     public static NamedOpmode test[] = {
         new NamedOpmode("Debug Printing", Printing.class),
         new NamedOpmode("Fourteen Motors", FourteenTest.class)
