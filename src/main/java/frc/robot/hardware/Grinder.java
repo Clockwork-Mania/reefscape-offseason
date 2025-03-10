@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.hardware;
 
 public class Grinder {
 	public Swerve base;

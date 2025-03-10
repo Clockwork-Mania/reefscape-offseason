@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.hardware;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -11,22 +11,10 @@ public class MotorPair {
         first = new Motor(id0);
         second = new Motor(id1);
     }
-
-    public MotorPair(int id0, int id1, InvertedValue dir0, InvertedValue dir1) {
-        first = new Motor(id0);
-        first.setDir(dir0);
-        second = new Motor(id1);
-        second.setDir(dir1);
-    }
     
     public void set(double speed) {
         first.set(speed);
         second.set(speed);
-    }
-
-    public void toPos(double pos) {
-        first.toPos(pos);
-        second.toPos(pos);
     }
 
     public void goTo(double position, double kp) {
@@ -34,4 +22,15 @@ public class MotorPair {
         second.goTo(position, kp);
     }
 
+    public void setEnc(Motor.EncoderType encType, int id) {
+        first.setEnc(encType, id);
+    }
+
+    public void setEnc(Motor.EncoderType encType, int id, String bus) {
+        first.setEnc(encType, id, bus);
+    }
+
+    public double getPos() {
+        return first.getPos();
+    }
 }

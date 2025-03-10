@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.hardware;
 
 public class Claw extends Motor {
     // TODO: determine values
@@ -8,6 +8,6 @@ public class Claw extends Motor {
     public static final double OUTTAKE_ALGAE = 0.0;
 
     public Claw() {
-        super(0); // FIXME: find id
+        super(25);
     }
 }

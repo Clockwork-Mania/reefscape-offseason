@@ -1,7 +1,8 @@
-package frc.robot.subsystems;
+package frc.robot.hardware;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -86,6 +87,15 @@ public class Swerve extends SubsystemBase  {
 			drive(vy, vx, dh, true);
 		}
 		else stop();
+	}
+
+	double TR_THRESH = 5, ROT_THRESH = Math.PI/8;
+	public boolean ready() {
+		if(!targeting) return true;
+		Transform2d err = target.minus(pose());
+		return
+			err.getTranslation().getNorm() < TR_THRESH &&
+			err.getRotation().getRadians() < ROT_THRESH;
 	}
 
 	@Override

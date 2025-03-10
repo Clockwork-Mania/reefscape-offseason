@@ -3,7 +3,7 @@ package frc.robot.opmodes.teleop;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
-import frc.robot.subsystems.Swerve;
+import frc.robot.hardware.Swerve;
 
 public class SwerveTeleop implements Opmode {
     Swerve drive;

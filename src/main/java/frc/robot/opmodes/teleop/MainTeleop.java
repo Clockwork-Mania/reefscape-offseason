@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
-import frc.robot.subsystems.*;
+import frc.robot.hardware.*;
 
 public class MainTeleop implements Opmode {
     Grinder bot;

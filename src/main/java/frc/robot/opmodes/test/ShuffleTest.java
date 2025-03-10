@@ -20,6 +20,12 @@ public class ShuffleTest implements Opmode {
         aButton = tab.add("a pressed?", false).getEntry();
     }
 
+    // vision display
+    // coral/algae mode
+    // heading
+    // arm preset
+    // reef image (top-down)
+
     public void periodic() {
         aButton.setBoolean(controller.getAButton());
     }

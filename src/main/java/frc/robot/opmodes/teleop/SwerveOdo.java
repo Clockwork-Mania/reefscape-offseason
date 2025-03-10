@@ -4,7 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
-import frc.robot.subsystems.Swerve;
+import frc.robot.hardware.Swerve;
 
 public class SwerveOdo implements Opmode {
     Swerve drive;

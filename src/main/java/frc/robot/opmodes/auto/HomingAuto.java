@@ -2,7 +2,7 @@ package frc.robot.opmodes.auto;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Utility;
-import frc.robot.subsystems.*;
+import frc.robot.hardware.*;
 
 public class HomingAuto {
     Grinder bot;

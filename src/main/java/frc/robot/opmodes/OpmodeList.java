@@ -30,6 +30,7 @@ public class OpmodeList {
 
     public static NamedOpmode test[] = {
         new NamedOpmode("Debug Printing", Printing.class),
-        new NamedOpmode("Fourteen Motors", FourteenTest.class)
+        new NamedOpmode("Fourteen Motors", FourteenTest.class),
+        new NamedOpmode("Throughbore Test", ThroughboreTest.class)
     };
 }
