@@ -42,6 +42,9 @@ public class Targeting implements Opmode {
         else if(con.getLeftButton()) {
             bot.arm.elevator.goTo(.2);
         }
+        else if(con.getRightButton()) {
+            bot.arm.elevator.goTo(3);
+        }
         else {
             bot.arm.elevator.set(0);
         }

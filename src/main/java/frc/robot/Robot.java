@@ -20,9 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.*;
-import frc.robot.opmodes.teleop.AllWheels;
-import frc.robot.opmodes.teleop.ModuleTest;
-import frc.robot.opmodes.teleop.TalonTest;
 import frc.robot.opmodes.test.ElevatorTest;
 import frc.robot.hardware.*;
 import frc.robot.opmodes.teleop.SwerveTeleop;
@@ -56,18 +53,19 @@ public class Robot extends TimedRobot {
 		telePicker = opmodePicker(OpmodeList.teleop);
 		testPicker = opmodePicker(OpmodeList.test);
 
-		// main = Shuffleboard.getTab("Opmode Selection");
-		// main.add("Auto", autoPicker);//.withWidget(BuiltInWidgets.kComboBoxChooser);
-		// main.add("Teleop", telePicker);//.withWidget(BuiltInWidgets.kComboBoxChooser);
-		// main.add("Test", testPicker);//.withWidget(BuiltInWidgets.kComboBoxChooser);
+		main = Shuffleboard.getTab("Opmode Selection");
+		main.add(autoPicker).withWidget(BuiltInWidgets.kComboBoxChooser);
+		main.add("Teleop", telePicker);//.withWidget(BuiltInWidgets.kComboBoxChooser);
+		main.add("Test", testPicker);//.withWidget(BuiltInWidgets.kComboBoxChooser);
 
-		SmartDashboard.putData("auto", autoPicker);
-		SmartDashboard.putData("teleop", telePicker);
-		SmartDashboard.putData("test", testPicker);
+		// SmartDashboard.putData("auto", autoPicker);
+		// SmartDashboard.putData("teleop", telePicker);
+		// SmartDashboard.putData("test", testPicker);
 
 		bot = new Grinder();
         // con = new XboxController(0);
 	}
+	
 
 	@Override
 	public void robotPeriodic() {
