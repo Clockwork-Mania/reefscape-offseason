@@ -13,7 +13,7 @@ public class ModuleTest implements Opmode {
     // public TalonFX motor0, motor1;
     Swerve sw;
 
-    public void init() {
+    public void init(Grinder bot) {
         controller = new XboxController(0);
         // mod = new SwerveModule[4];
         // mod[0] = new SwerveModule(2, 6, 10, .354);

@@ -18,4 +18,8 @@ public class Utility {
     public static double clamp(double v, double min, double max) {
         return Math.min(max, Math.max(v, min));
     }
+
+    public static double sgnsqr(double a) {
+        return Math.signum(a)*a*a;
+    }
 }

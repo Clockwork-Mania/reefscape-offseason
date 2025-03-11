@@ -2,7 +2,7 @@ package frc.robot.hardware;
 
 public class Wrist extends Motor {
     public Wrist() {
-        super(24);
+        super(24, "canivore");
         this.kp = 0;
         setEnc(EncoderType.DUTY_CYCLE, 9);
     }

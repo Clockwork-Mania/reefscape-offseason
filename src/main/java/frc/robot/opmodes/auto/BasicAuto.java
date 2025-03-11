@@ -6,8 +6,8 @@ import frc.robot.hardware.*;
 public class BasicAuto {
     Grinder bot;
 
-    public void init() {
-        bot = new Grinder();
+    public void init(Grinder bot) {
+        this.bot = bot;
         bot.base.setTarget(0, 40, 0);
     }
 

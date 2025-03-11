@@ -4,33 +4,47 @@ import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
 
-public class MotorPair {
-    public Motor first, second;
+public class MotorPair extends Motor {
+    public Motor other;
 
     public MotorPair(int id0, int id1) {
-        first = new Motor(id0);
-        second = new Motor(id1);
+        super(id0);
+        other = new Motor(id1);
+    }
+    
+    public MotorPair(int id0, int id1, String bus) {
+        super(id0, bus);
+        other = new Motor(id1, bus);
     }
     
     public void set(double speed) {
-        first.set(speed);
-        second.set(speed);
+        super.set(speed);
+        other.set(speed);
+    }
+
+    public void setDir(Direction dir0, Direction dir1) {
+        super.setDir(dir0);
+        other.setDir(dir1);
+    }
+
+    public void stop() {
+        set(0);
     }
 
     public void goTo(double position, double kp) {
-        first.goTo(position, kp);
-        second.goTo(position, kp);
+        super.goTo(position, kp);
+        other.goTo(position, kp);
     }
 
     public void setEnc(Motor.EncoderType encType, int id) {
-        first.setEnc(encType, id);
+        super.setEnc(encType, id);
     }
 
     public void setEnc(Motor.EncoderType encType, int id, String bus) {
-        first.setEnc(encType, id, bus);
+        super.setEnc(encType, id, bus);
     }
 
     public double getPos() {
-        return first.getPos();
+        return super.getPos();
     }
 }

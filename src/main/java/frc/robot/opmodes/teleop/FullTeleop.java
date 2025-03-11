@@ -12,8 +12,8 @@ public class FullTeleop implements Opmode {
     CWController con;
     Field2d field;
 
-    public void init() {
-        bot = new Grinder();
+    public void init(Grinder bot) {
+        this.bot = bot;
         con = new CWController(0);
         field = new Field2d();
         SmartDashboard.putData("Field", field);

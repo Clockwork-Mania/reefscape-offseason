@@ -7,8 +7,8 @@ import frc.robot.hardware.*;
 public class HomingAuto {
     Grinder bot;
 
-    public void init() {
-        bot = new Grinder();
+    public void init(Grinder bot) {
+        this.bot = bot;
         bot.vision.setPipeline(Vision.DETECT_10);
     }
 

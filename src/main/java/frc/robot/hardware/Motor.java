@@ -15,15 +15,18 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 public class Motor extends TalonFX {
     public static enum Direction {CW, CCW};
     public Direction dir = Direction.CW;
+    public Direction encDir = Direction.CW;
 
     public static enum EncoderType {
         NONE,
         CAN,
-        DUTY_CYCLE
+        DUTY_CYCLE,
+        WRAPPING_DC
     };
     EncoderType encType = EncoderType.NONE;
     public CANcoder canEnc = null;
     public DutyCycleEncoder dcEnc = null;
+    public WrappingDutyCycleEncoder wrapEnc = null;
 
     public double kp = 0;
 
@@ -47,6 +50,9 @@ public class Motor extends TalonFX {
             case DUTY_CYCLE:
                 setDcEnc(id);
                 break;
+            case WRAPPING_DC:
+                setWrappingDcEnc(id);
+                break;
             default: break;
         }
     }
@@ -57,7 +63,19 @@ public class Motor extends TalonFX {
 
     @Override
     public void set(double speed) {
-        set(dir == Direction.CW ? speed : -speed);
+        super.set(dir == Direction.CW ? speed : -speed);
+    }
+
+    public void setDir(Direction dir) {
+        this.dir = dir;
+    }
+
+    public void setEncDir(Direction dir) {
+        this.encDir = dir;
+    }
+
+    public void stop() {
+        set(0);
     }
 
     void setCanEnc(int id) {setCanEnc(id, "rio");}
@@ -72,14 +90,22 @@ public class Motor extends TalonFX {
         encType = EncoderType.DUTY_CYCLE;
     }
 
+    void setWrappingDcEnc(int id) {
+        wrapEnc = new WrappingDutyCycleEncoder(id);
+        encType = EncoderType.WRAPPING_DC;
+    }
+
     public double getPos() {
+        double rev = encDir == Direction.CW ? 1 : -1;
         switch(encType) {
             case CAN:
-                return canEnc.getPosition().getValueAsDouble();
+                return rev*canEnc.getPosition().getValueAsDouble();
             case DUTY_CYCLE:
-                return dcEnc.get();
+                return rev*dcEnc.get();
+            case WRAPPING_DC:
+                return rev*wrapEnc.get();
             default:
-                return getPosition().getValueAsDouble();
+                return rev*getPosition().getValueAsDouble();
         }
     }
 
@@ -92,4 +118,9 @@ public class Motor extends TalonFX {
         set(kp * error);
     }
 
+    public void periodic() {
+        if(encType == EncoderType.WRAPPING_DC) {
+            wrapEnc.periodic();
+        }
+    }
 }

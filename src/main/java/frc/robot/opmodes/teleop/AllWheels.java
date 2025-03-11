@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
+import frc.robot.hardware.Grinder;
 import frc.robot.hardware.Swerve;
 
 public class AllWheels implements Opmode {
@@ -12,7 +13,7 @@ public class AllWheels implements Opmode {
     XboxController controller;
     TalonFX motor0, motor1, motor2, motor3, motor4, motor5, motor6, motor7;
 
-    public void init() {
+    public void init(Grinder bot) {
         controller = new XboxController(0);
         motor0 = new TalonFX(2, "rio");
         motor1 = new TalonFX(3, "rio");
