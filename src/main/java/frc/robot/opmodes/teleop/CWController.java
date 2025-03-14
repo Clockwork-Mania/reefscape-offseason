@@ -3,7 +3,7 @@ import edu.wpi.first.wpilibj.XboxController;
 
 // adds better dpad controls
 public class CWController extends XboxController {
-    boolean wasUp, wasRight, wasDown, wasLeft;
+    boolean wasUp, wasRight, wasDown, wasLeft, wasLT, wasRT;
 
     public CWController(int port) {super(port);}
 
@@ -31,10 +31,31 @@ public class CWController extends XboxController {
     public boolean getLeftButtonReleased()  {return !getLeftButton()  && wasLeft;}
 
     // save the current dpad values to check for press/release
-    public void updateDpad() {
+    public void update() {
         wasUp    = getUpButton();
         wasRight = getRightButton();
         wasDown  = getDownButton();
         wasLeft  = getLeftButton();
+        wasLT = getLeftTriggerButton();
+        wasRT = getRightTriggerButton();
+    }
+
+    public boolean getLeftTriggerButton() {
+        return getLeftTriggerAxis() > 0.5;
+    }
+    public boolean getRightTriggerButton() {
+        return getRightTriggerAxis() > 0.5;
+    }
+    public boolean getLeftTriggerButtonPressed()  {
+        return getLeftTriggerButton() && !wasLT;
+    }
+    public boolean getRightTriggerButtonPressed() {
+        return getRightTriggerButton() && !wasRT;
+    }
+    public boolean getLeftTriggerButtonReleased()  {
+        return !getLeftTriggerButton() && wasLT;
+    }
+    public boolean getRightTriggerButtonReleased() {
+        return !getRightTriggerButton() && wasRT;
     }
 }

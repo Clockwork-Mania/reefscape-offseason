@@ -4,11 +4,12 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 public class WrappingDutyCycleEncoder extends DutyCycleEncoder {
     int revs;
-    double last_pos = 0;
+    double last_pos;
 
     public WrappingDutyCycleEncoder(int port) {
         super(port);
         revs = 0;
+        last_pos = get();
     }
 
     public void periodic() {
@@ -25,5 +26,14 @@ public class WrappingDutyCycleEncoder extends DutyCycleEncoder {
 
     public double get() {
         return super.get()+revs;
+    }
+
+    public double getRaw() {
+        return super.get();
+    }
+
+    public void reset() {
+        revs = 0;
+        last_pos = get();
     }
 }

@@ -109,6 +109,15 @@ public class Motor extends TalonFX {
         }
     }
 
+    double target;
+    public void setTarget(double target) {
+        this.target = target;
+    }
+
+    public void goToTarget() {
+        goTo(target);
+    }
+
     public void goTo(double target) {
         goTo(target, kp);
     }

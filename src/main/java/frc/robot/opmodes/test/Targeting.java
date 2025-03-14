@@ -1,8 +1,9 @@
-package frc.robot.opmodes.teleop;
+package frc.robot.opmodes.test;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
+import frc.robot.opmodes.teleop.CWController;
 import frc.robot.Utility;
 import frc.robot.hardware.*;
 
@@ -13,7 +14,10 @@ public class Targeting implements Opmode {
     public void init(Grinder bot) {
         this.bot = bot;
         con = new CWController(0);
+        bot.arm.elevator.reset();
     }
+
+    Arm.Position target;
 
     public void periodic() {
         double
@@ -23,34 +27,85 @@ public class Targeting implements Opmode {
         bot.base.drive(-s, -f, -r, false);
         bot.base.periodic();
 
+
         if(con.getAButton()) {
-            bot.arm.elbow.goTo(.52, 1);
+            target = Arm.CORAL_PREP;
         }
         else if(con.getBButton()) {
-            bot.arm.elbow.goTo(.7, 1);
+            target = Arm.STARTING;
         }
-        else {
-            bot.arm.elbow.stop();
+        else if(con.getXButton()) {
+            target = Arm.CORAL_INTAKE;
         }
-
-        if(con.getDownButton()) {
-            bot.arm.elevator.goTo(1);
+        else if(con.getYButton()) {
+            target = Arm.READY;
         }
         else if(con.getUpButton()) {
-            bot.arm.elevator.goTo(1.8);
+            target = Arm.HELD_READY;
         }
-        else if(con.getLeftButton()) {
-            bot.arm.elevator.goTo(.2);
-        }
-        else if(con.getRightButton()) {
-            bot.arm.elevator.goTo(3);
-        }
-        else {
-            bot.arm.elevator.set(0);
+        else if(con.getDownButton()) {
+            target = Arm.CORAL_L2;
         }
 
-        SmartDashboard.putNumber("wristpow", bot.arm.wrist.get());
-        SmartDashboard.putNumber("elbowpow", bot.arm.elbow.get());
+        // if(con.getAButton()) {
+        //     target = Arm.ALGAE_GROUND;
+        // }
+        // if(con.getXButton()) {
+        //     target = Arm.READY_OUT;
+        // }
+        // if(con.getBButton()) {
+        //     target = Arm.ALGAE_PROC;
+        // }
+        // if(con.getYButton()) {
+        //     target = Arm.READY;
+        // }
+
+        if(target != null) {
+            bot.arm.goTo(target);
+        }
+        else {
+            bot.arm.stop();
+        }
+
+        if(con.getRightBumperButton()) {
+            bot.arm.claw.set(Claw.INTAKE_CORAL);
+        }
+        else if(con.getLeftBumperButton()) {
+            bot.arm.claw.set(Claw.OUTTAKE_CORAL);
+        }
+        else {
+            bot.arm.claw.stop();
+        }
+
+        // if(con.getAButton()) {
+        //     bot.arm.elbow.goTo(.52, 1);
+        // }
+        // else if(con.getBButton()) {
+        //     bot.arm.elbow.goTo(.7, 1);
+        // }
+        // else {
+        //     bot.arm.elbow.stop();
+        // }
+
+        // if(con.getDownButton()) {
+        //     bot.arm.elevator.goTo(1);
+        // }
+        // else if(con.getUpButton()) {
+        //     bot.arm.elevator.goTo(1.8);
+        // }
+        // else if(con.getLeftButton()) {
+        //     bot.arm.elevator.goTo(.2);
+        // }
+        // else if(con.getRightButton()) {
+        //     bot.arm.elevator.goTo(3);
+        // }
+        // else {
+        //     bot.arm.elevator.set(0);
+        // }
+
+        SmartDashboard.putNumber("elevator pow", bot.arm.elbow.get());
+        SmartDashboard.putNumber("wrist pow", bot.arm.wrist.get());
+        SmartDashboard.putNumber("elbow pow", bot.arm.elbow.get());
 
         // double pow = 0.5*Utility.sgnsqr(con.getRightTriggerAxis());
         // if(con.getLeftBumperButton() && con.getRightBumperButton()) {
@@ -95,5 +150,6 @@ public class Targeting implements Opmode {
         SmartDashboard.putNumber("wrist", bot.arm.wrist.getPos());
         SmartDashboard.putNumber("elbow", bot.arm.elbow.getPos());
         SmartDashboard.putNumber("elev", bot.arm.elevator.getPos());
+        SmartDashboard.putNumber("elev raw", bot.arm.elevator.wrapEnc.getRaw());
     }
 }

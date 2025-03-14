@@ -1,6 +1,7 @@
 package frc.robot.opmodes.teleop;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -11,15 +12,15 @@ public class FullTeleop implements Opmode {
     Grinder bot;
     CWController con;
     Field2d field;
+    Timer prepTimer;
 
     public void init(Grinder bot) {
         this.bot = bot;
         con = new CWController(0);
-        field = new Field2d();
-        SmartDashboard.putData("Field", field);
+        prepTimer = new Timer();
     }
 
-    boolean intake = true, coral = false;
+    boolean intake = true, coral = false, coralPrep = false;
 
     public void periodic() {
         double
@@ -43,66 +44,85 @@ public class FullTeleop implements Opmode {
 
 
         // --------------- HOMING -------------- //
-        if(con.getLeftStickButton()) {
-            if(con.getRightX() < -.3) {
-                // home, tilting left
-            }
-            else if(con.getRightX() > .3) {
-                // home, tilting right
-            }
-            else {
-                // home on center
-            }
-        }
+        // if(con.getLeftStickButton()) {
+        //     if(con.getRightX() < -.3) {
+        //         // home, tilting left
+        //     }
+        //     else if(con.getRightX() > .3) {
+        //         // home, tilting right
+        //     }
+        //     else {
+        //         // home on center
+        //     }
+        // }
 
         // ------------- MECHANISM ------------- //
         if(con.getUpButtonPressed()) {
             // Algae from L3
+            bot.arm.setTarget(Arm.ALGAE_L3);
             coral = false;
             intake = true;
         }
         else if(con.getRightButtonPressed()) {
             // Algae from L2
+            bot.arm.setTarget(Arm.ALGAE_L2);
             coral = false;
             intake = true;
         }
         else if(con.getDownButtonPressed()) {
             // Algae from ground
+            bot.arm.setTarget(Arm.ALGAE_GROUND);
             coral = false;
             intake = true;
         }
         else if(con.getLeftButtonPressed()) {
             // Coral from funnel
+            bot.arm.setTarget(Arm.CORAL_PREP);
+            coralPrep = true;
+            prepTimer.reset();
             coral = true;
             intake = true;
         }
         else if(con.getYButtonPressed()) {
             if(coral) {
                 // Coral to L4
+                bot.arm.setTarget(Arm.CORAL_L4);
             }
             else {
                 // Algae to barge
+                bot.arm.setTarget(Arm.ALGAE_BARGE);
             }
             intake = false;
         }
         else if(con.getBButtonPressed()) {
             // Coral to L3
+            bot.arm.setTarget(Arm.CORAL_L3);
             intake = false;
         }
         else if(con.getAButtonPressed()) {
             if(coral) {
                 // Coral to L2
+                bot.arm.setTarget(Arm.CORAL_L2);
             }
             else {
                 // Algae to processor
+                bot.arm.setTarget(Arm.ALGAE_PROC);
             }
             intake = false;
         }
         else if(con.getXButtonPressed()) {
-            // Coral to L1
-            intake = false;
+            // Raise to ready position
+            bot.arm.setTarget(Arm.READY);
+            // // Coral to L1
+            // bot.arm.setTarget(Arm.CORAL_L1);
+            // intake = false;
         }
         
+        if(coralPrep && prepTimer.hasElapsed(2)) {
+            bot.arm.setTarget(Arm.CORAL_INTAKE);
+            coralPrep = false;
+        }
+
         SmartDashboard.putBoolean("Coral?", coral);
         SmartDashboard.putBoolean("Intaking?", intake);
 
