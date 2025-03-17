@@ -28,6 +28,7 @@ public class SwerveTeleop implements Opmode {
         SmartDashboard.putNumber("strafe", s);
         SmartDashboard.putNumber("rotation", r);
         SmartDashboard.putNumber("heading", drive.heading());
+        // SmartDashboard.putNumber("enc", driv)
 
         if(controller.getLeftBumperButton() && controller.getRightBumperButton()) {
             drive.resetGyro();

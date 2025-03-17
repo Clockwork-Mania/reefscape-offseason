@@ -45,7 +45,7 @@ public class PositioningTele implements Opmode {
             s = Utility.sgnsqr(lx),
             r = Utility.sgnsqr(rx);
         bot.base.drive(-s, -f, -r, true);
-        bot.base.periodic();
+        // bot.base.periodic();
 
         double pow = 0.005*(1+4*con1.getLeftTriggerAxis());
         if(con1.getUpButton()) {
@@ -125,5 +125,10 @@ public class PositioningTele implements Opmode {
         SmartDashboard.putNumber("wrist target", target.wrist);
         SmartDashboard.putNumber("elbow target", target.elbow);
         SmartDashboard.putNumber("elev target", target.elev);
+        
+        SmartDashboard.putNumber("flenc", bot.base.frontRight.enc.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("frenc", bot.base.frontLeft.enc.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("brenc", bot.base.backRight.enc.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("blenc", bot.base.backLeft.enc.getPosition().getValueAsDouble());
     }
 }
