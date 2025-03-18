@@ -19,7 +19,7 @@ public class Elevator extends MotorPair {
         integral = 0;
     }
 
-    double target;
+    public double target;
     public void setTarget(double target) {
         this.target = target;
     }

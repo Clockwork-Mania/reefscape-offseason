@@ -40,10 +40,10 @@ public class Swerve extends SubsystemBase  {
 		// frontRight = new SwerveModule(powerIds[2], spinIds[2], encIds[2], spinOffs[2]);
 		// backRight = new SwerveModule(powerIds[3], spinIds[3], encIds[3], spinOffs[3]);
 
-		frontLeft  = new SwerveModule(3, 7, 11, .456);
+		frontLeft  = new SwerveModule(3, 7, 11, .457);
 		backLeft   = new SwerveModule(4, 8, 12, .268);
-		frontRight = new SwerveModule(2, 6, 10, .281);
-		backRight  = new SwerveModule(5, 9, 13, .333);
+		frontRight = new SwerveModule(2, 6, 10, .030);
+		backRight  = new SwerveModule(5, 9, 13, .309);
 		odo = new SwerveDriveOdometry(kin, heading2d(), positions());
 		targeting = false;
 	}

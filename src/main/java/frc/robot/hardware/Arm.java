@@ -13,6 +13,12 @@ public class Arm {
             this.wrist = wrist;
             this.elbow = elbow;
         }
+
+        public void set(Position to) {
+            this.elev = to.elev;
+            this.wrist = to.wrist;
+            this.elbow = to.elbow;
+        }
     }
 
     public static class Sequence {
@@ -25,21 +31,22 @@ public class Arm {
         }
     }
 
-    public static final Position STARTING     = new Position(-0.485, 0.85, 0.95);
-    public static final Position CORAL_L4     = new Position(0, 0, 0);
-    public static final Position CORAL_L3     = new Position(2.88, .514, .637);
-    public static final Position CORAL_L2     = new Position(0.05, 0.68, 0.88);
-    public static final Position CORAL_L1     = new Position(0, 0, 0);
-    public static final Position READY        = new Position(1.71, 0.85, 0.95);
-    public static final Position READY_OUT    = new Position(1.71, 0.39, 0.228);
-    public static final Position CORAL_PREP   = new Position(1.71, 0.708, 0.335);
-    public static final Position CORAL_INTAKE = new Position(1.71, 0.78, 0.17);
-    public static final Position HELD_READY   = new Position(2.5, 0.78, 0.17);
-    public static final Position ALGAE_BARGE  = new Position(0, 0, 0);
-    public static final Position ALGAE_L3     = new Position(0, 0, 0);
-    public static final Position ALGAE_L2     = new Position(0, 0, 0);
-    public static final Position ALGAE_GROUND = new Position(-.44, 0.39, 0.228);
-    public static final Position ALGAE_PROC   = new Position(-.4, 0.31, 0.227);
+    public static final double elevBase = 0.93;
+    public static final Position STARTING     = new Position(elevBase, 0.85, 0.436);
+    public static final Position CORAL_L4     = new Position(elevBase+5.05, .6, 0.5);
+    public static final Position CORAL_L3     = new Position(elevBase+3, .59, .48);
+    public static final Position CORAL_L2     = new Position(elevBase+1.2, .59, .48);
+    public static final Position CORAL_L1     = new Position(elevBase+0, 0, 0);
+    public static final Position READY        = new Position(elevBase+1.71+0.35, 0.85, 0.436);
+    public static final Position READY_OUT    = new Position(elevBase+1.71+0.35, 0.39, 0.228);
+    public static final Position CORAL_PREP   = new Position(elevBase+2.29, 0.70, 0.32);
+    public static final Position CORAL_INTAKE = new Position(elevBase+2.29, 0.75, 0.28);
+    public static final Position HELD_READY   = new Position(elevBase+2.5+0.35, 0.78, 0.17);
+    public static final Position ALGAE_BARGE  = new Position(elevBase+0, 0, 0);
+    public static final Position ALGAE_L3     = new Position(elevBase+0, 0, 0);
+    public static final Position ALGAE_L2     = new Position(elevBase+0, 0, 0);
+    public static final Position ALGAE_GROUND = new Position(elevBase+-.4+0.35, 0.39, 0.228);
+    public static final Position ALGAE_PROC   = new Position(elevBase+-.3+0.35, 0.31, 0.227);
 
     public static final Sequence CORAL_INTAKE_SEQ = new Sequence(List.of(
         Pair.of(CORAL_PREP, 2.),

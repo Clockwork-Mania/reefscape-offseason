@@ -101,9 +101,13 @@ public class Motor extends TalonFX {
             case CAN:
                 return rev*canEnc.getPosition().getValueAsDouble();
             case DUTY_CYCLE:
-                return rev*dcEnc.get();
+                return encDir == Direction.CW ?
+                    dcEnc.get() :
+                    1-dcEnc.get();
             case WRAPPING_DC:
-                return rev*wrapEnc.get();
+                return encDir == Direction.CW ?
+                    wrapEnc.get() :
+                    1-wrapEnc.get();
             default:
                 return rev*getPosition().getValueAsDouble();
         }

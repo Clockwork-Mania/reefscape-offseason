@@ -16,6 +16,7 @@ public class Manual implements Opmode {
     public void init(Grinder bot) {
         this.bot = bot;
         con = new CWController(0);
+        bot.arm.elevator.reset();
     }
 
     public void periodic() {
@@ -92,5 +93,10 @@ public class Manual implements Opmode {
         SmartDashboard.putNumber("wristpow", bot.arm.wrist.get());
         SmartDashboard.putNumber("elbowpow", bot.arm.elbow.get());
         SmartDashboard.putNumber("elevpow", bot.arm.elevator.get());
+
+        SmartDashboard.putNumber("fl", bot.base.frontLeft.enc.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("fr", bot.base.frontRight.enc.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("br", bot.base.backRight.enc.getPosition().getValueAsDouble());
+        SmartDashboard.putNumber("bl", bot.base.backLeft.enc.getPosition().getValueAsDouble());
     }
 }

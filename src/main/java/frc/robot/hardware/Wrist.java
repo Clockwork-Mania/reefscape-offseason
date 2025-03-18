@@ -4,9 +4,9 @@ public class Wrist extends Motor {
     static final double KP = 1;
     static final double CLOSE_KP = 2;
     static final double CLOSE_THRESH = 0.1;
-    static final double KI = 0.002;
-    static final double DECAY = .9995;
-    static final double KD = -0.2;
+    static final double KI = 0.004;
+    static final double DECAY = .9997;
+    static final double KD = -0.3;
 
     public static final double MIN = 0.2, MAX = 0.9;
 
@@ -16,7 +16,7 @@ public class Wrist extends Motor {
         setDir(Direction.CCW);
     }
 
-    double target;
+    public double target;
     public void setTarget(double target) {
         this.target = target;
     }

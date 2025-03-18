@@ -56,10 +56,10 @@ public class PositioningTele implements Opmode {
         }
         target.elev = Utility.clamp(target.elev, Elevator.MIN, Elevator.MAX);
         if(con1.getYButton()) {
-            target.elbow += pow;
+            target.elbow += .5*pow;
         }
         if(con1.getAButton()) {
-            target.elbow -= pow;
+            target.elbow -= .5*pow;
         }
         target.elbow = Utility.clamp(target.elbow, Elbow.MIN, Elbow.MAX);
         if(con1.getXButton()) {
@@ -70,33 +70,19 @@ public class PositioningTele implements Opmode {
         }
         target.wrist = Utility.clamp(target.wrist, Wrist.MIN, Wrist.MAX);
 
-        if(con1.getLeftButton()) {
-            target = Arm.CORAL_PREP;
+        if(con1.getLeftButtonPressed()) {
+            target.set(Arm.CORAL_PREP);
             state = "coral intake";
             timer.reset();
         }
 
-        if(con1.getLeftStickButton()) {
-            target = Arm.CORAL_L3;
+        if(con1.getLeftStickButtonPressed()) {
+            target.set(Arm.CORAL_L3);
         }
-        // if(state == "coral intake" && timer.get() > .5) {
-        //     target = Arm.CORAL_INTAKE;
-        //     state = "";
-        // }
 
         if(con1.getRightButton()) {
-            target = Arm.ALGAE_PROC;
+            target.set(Arm.ALGAE_PROC);
         }
-
-        // if(con1.getRightButton()) {
-        //     target = Arm.HELD_READY;
-        //     state = "coral l2";
-        //     timer.reset();
-        // }
-        // if(state == "coral l2" && timer.get() > 2) {
-        //     target = Arm.CORAL_L2;
-        //     state = "";
-        // }
 
         bot.arm.goTo(target);
 
@@ -125,10 +111,5 @@ public class PositioningTele implements Opmode {
         SmartDashboard.putNumber("wrist target", target.wrist);
         SmartDashboard.putNumber("elbow target", target.elbow);
         SmartDashboard.putNumber("elev target", target.elev);
-        
-        SmartDashboard.putNumber("flenc", bot.base.frontRight.enc.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("frenc", bot.base.frontLeft.enc.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("brenc", bot.base.backRight.enc.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("blenc", bot.base.backLeft.enc.getPosition().getValueAsDouble());
     }
 }
