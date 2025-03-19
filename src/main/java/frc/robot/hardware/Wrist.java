@@ -42,4 +42,9 @@ public class Wrist extends Motor {
     public void goToTarget() {
         goTo(target);
     }
+    
+    public void adjust(double by) {
+        target += by;
+        target = Utility.clamp(target, MIN, MAX);
+    }
 }

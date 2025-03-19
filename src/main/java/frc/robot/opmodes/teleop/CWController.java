@@ -40,22 +40,17 @@ public class CWController extends XboxController {
         wasRT = getRightTriggerButton();
     }
 
-    public boolean getLeftTriggerButton() {
-        return getLeftTriggerAxis() > 0.5;
-    }
-    public boolean getRightTriggerButton() {
-        return getRightTriggerAxis() > 0.5;
-    }
-    public boolean getLeftTriggerButtonPressed()  {
-        return getLeftTriggerButton() && !wasLT;
-    }
-    public boolean getRightTriggerButtonPressed() {
-        return getRightTriggerButton() && !wasRT;
-    }
-    public boolean getLeftTriggerButtonReleased()  {
-        return !getLeftTriggerButton() && wasLT;
-    }
-    public boolean getRightTriggerButtonReleased() {
-        return !getRightTriggerButton() && wasRT;
-    }
+    public boolean getLeftTriggerButton()          {return getLeftTriggerAxis() > 0.5;}
+    public boolean getRightTriggerButton()         {return getRightTriggerAxis() > 0.5;}
+    public boolean getLeftTriggerButtonPressed()   {return getLeftTriggerButton() && !wasLT;}
+    public boolean getRightTriggerButtonPressed()  {return getRightTriggerButton() && !wasRT;}
+    public boolean getLeftTriggerButtonReleased()  {return !getLeftTriggerButton() && wasLT;}
+    public boolean getRightTriggerButtonReleased() {return !getRightTriggerButton() && wasRT;}
+
+    public boolean getM1Button()         {return getBackButton();}
+    public boolean getM1ButtonPressed()  {return getBackButtonPressed();}
+    public boolean getM1ButtonReleased() {return getBackButtonReleased();}
+    public boolean getM2Button()         {return getStartButton();}
+    public boolean getM2ButtonPressed()  {return getStartButtonPressed();}
+    public boolean getM2ButtonReleased() {return getStartButtonReleased();}
 }

@@ -1,6 +1,7 @@
 package frc.robot.hardware;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Utility;
 import frc.robot.hardware.Motor.EncoderType;
 
 public class Elevator extends MotorPair {
@@ -46,5 +47,10 @@ public class Elevator extends MotorPair {
 
     public void reset() {
         wrapEnc.reset();
+    }
+
+    public void adjust(double by) {
+        target += by;
+        target = Utility.clamp(target, MIN, MAX);
     }
 }
