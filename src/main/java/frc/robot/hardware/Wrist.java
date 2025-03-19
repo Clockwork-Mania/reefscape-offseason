@@ -1,12 +1,15 @@
 package frc.robot.hardware;
 
+import frc.robot.Utility;
+
 public class Wrist extends Motor {
     static final double KP = 1;
     static final double CLOSE_KP = 2;
     static final double CLOSE_THRESH = 0.1;
-    static final double KI = 0.004;
-    static final double DECAY = .9997;
-    static final double KD = -0.3;
+    static final double KI = 0.006;
+    static final double INT_CAP = 0.2/KI;
+    // static final double DECAY = .9997;
+    static final double KD = 0;//-0.3;
 
     public static final double MIN = 0.2, MAX = 0.9;
 
@@ -25,7 +28,8 @@ public class Wrist extends Motor {
     double integral = 0;
     public void goTo(double target) {
         double err = target - getPos();
-        integral *= DECAY;
+        // integral *= DECAY;
+        integral = Utility.clamp(integral, -INT_CAP, INT_CAP);
         integral += err;
         set(
             (Math.abs(err)<CLOSE_THRESH?CLOSE_KP:KP)*err+

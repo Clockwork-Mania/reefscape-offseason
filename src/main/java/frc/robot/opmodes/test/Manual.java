@@ -15,7 +15,7 @@ public class Manual implements Opmode {
 
     public void init(Grinder bot) {
         this.bot = bot;
-        con = new CWController(0);
+        con = new CWController(1);
         bot.arm.elevator.reset();
     }
 

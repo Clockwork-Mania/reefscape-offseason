@@ -31,21 +31,24 @@ public class FullTest implements Opmode {
     }
 
     boolean intake = true, coral = false, coralPrep = false;
+    double holdSpeed = 0;
 
     boolean either(Predicate<CWController> cond) {
         return cond.test(con0) || cond.test(con1);
     }
 
+    boolean algaePulling = true;
     public void periodic() {
-        con0.update();
-        con1.update();
-
         double
             f = -con1.getLeftY()*.4,
             s = con1.getLeftX()*.4,
             r = con1.getRightX()*.4;
         bot.base.drive(-s, -f, -r, true);
         bot.base.periodic();
+
+        if(con1.getLeftBumperButton() && con1.getRightBumperButton()) {
+            bot.base.resetGyro();
+        }
 
         SmartDashboard.putNumber("forward", f);
         SmartDashboard.putNumber("strafe", s);
@@ -63,6 +66,7 @@ public class FullTest implements Opmode {
         SmartDashboard.putNumber("wrist target", bot.arm.wrist.target);
         SmartDashboard.putNumber("elbow target", bot.arm.elbow.target);
         SmartDashboard.putNumber("elev target", bot.arm.elevator.target);
+
         // ALGAE PROC
         // CORAL L3
         // CORAL INTAKE
@@ -73,30 +77,96 @@ public class FullTest implements Opmode {
         }
         if(con1.getLeftButton()) {
             bot.arm.setTarget(Arm.CORAL_PREP);
+            coral = true;
+            intake = true;
         }
         if(con1.getRightButton()) {
             bot.arm.setTarget(Arm.CORAL_INTAKE);
+            coral = true;
+            intake = true;
+        }
+        if(con1.getDownButton()) {
+            bot.arm.setTarget(Arm.ALGAE_L2);
+            coral = false;
+            intake = true;
+        }
+        if(con1.getAButton()) {
+            // bot.arm.setTarget(Arm.ALGAE_L2_OUT);
+            // coral = false;
+            // intake = true;
+            bot.arm.setTarget(Arm.ALGAE_L3);
+            coral = false;
+            intake = false;
         }
         if(con1.getYButton()) {
             bot.arm.setTarget(Arm.CORAL_L3);
+            coral = true;
+            intake = false;
         }
         if(con1.getBButton()) {
             bot.arm.setTarget(Arm.CORAL_L2);
+            coral = true;
+            intake = false;
         }
-        // if(con1.getXButton()) {
-        //     bot.arm.setTarget(Arm.ALGAE_PROC);
-        // }
         if(con1.getXButton()) {
-            bot.arm.setTarget(Arm.CORAL_L4);
+            // bot.arm.setTarget(Arm.CORAL_L4);
+            // coral = true;
+            // intake = false;
+            bot.arm.setTarget(Arm.ALGAE_PROC);
+            coral = false;
+            intake = false;
         }
         bot.arm.goToTarget();
 
         // ---------------- CLAW --------------- //
-        bot.arm.claw.set(.2*(
-            con1.getLeftTriggerAxis()-con1.getRightTriggerAxis()
-        ));
+        // bot.arm.claw.set(.2*(
+        //     con1.getLeftTriggerAxis()-con1.getRightTriggerAxis()
+        // ));
 
+        if(con1.getRightTriggerButtonReleased()) {
+            // if(intake) {
+                if(coral) holdSpeed = Claw.HOLD_CORAL;
+                else holdSpeed = Claw.HOLD_ALGAE;
+            // }
+            // else holdSpeed = 0;
+        }
+        if(con1.getLeftTriggerButtonReleased()) {
+            // if(!intake) {
+            //     if(coral) holdSpeed = Claw.HOLD_CORAL;
+            //     else holdSpeed = Claw.HOLD_ALGAE;
+            // }
+            // else holdSpeed = 0;
+            holdSpeed = 0;
+        }
 
+        if(con1.getRightTriggerButton()) {
+            if (coral) {
+                // if (intake) bot.arm.claw.set(Claw.INTAKE_CORAL);
+                // else bot.arm.claw.set(Claw.OUTTAKE_CORAL);
+                bot.arm.claw.set(Claw.INTAKE_CORAL);
+            } 
+            else {
+                bot.arm.claw.set(Claw.INTAKE_ALGAE);
+                // if (intake) bot.arm.claw.set(Claw.INTAKE_ALGAE);
+                // else bot.arm.claw.set(Claw.OUTTAKE_ALGAE);
+            }
+        }
+        else if(con1.getLeftTriggerButton()) {
+            if (coral) {
+                bot.arm.claw.set(Claw.OUTTAKE_CORAL);
+                // if (intake) bot.arm.claw.set(Claw.OUTTAKE_CORAL);
+                // else bot.arm.claw.set(Claw.INTAKE_CORAL);
+            } 
+            else {
+                bot.arm.claw.set(Claw.OUTTAKE_ALGAE);
+                // if (intake) bot.arm.claw.set(Claw.OUTTAKE_ALGAE);
+                // else bot.arm.claw.set(Claw.INTAKE_ALGAE);
+            }
+        }
+        else bot.arm.claw.set(holdSpeed);
+
+        con0.update();
+        con1.update();
     }
 }
 
