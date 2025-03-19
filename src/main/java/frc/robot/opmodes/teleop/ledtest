@@ -1,0 +1,61 @@
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+public class Robot extends TimedRobot {
+
+    private AddressableLED m_led;
+    private AddressableLEDBuffer m_ledBuffer;
+    private final int m_ledCount = 60; // number of leds
+    private final int m_pwmPort = 9; // pwm port number
+
+    @Override
+    public void robotInit() {
+        // Initialize the AddressableLED object
+        m_led = new AddressableLED(m_pwmPort, m_ledCount);
+        m_led.setLength(m_ledCount); // leds in the strip
+
+        // Create an AddressableLEDBuffer object
+        m_ledBuffer = new AddressableLEDBuffer(m_ledCount);
+
+        // Set tthe defult color
+        for (int i = 0; i < m_ledCount; i++) {
+            m_ledBuffer.setRGB(i, 255, 0, 0); // the set color - red test
+        }
+
+        //LED output
+        m_led.setData(m_ledBuffer);
+        m_led.start();
+    }
+
+    @Override
+    public void autonomousPeriodic() {
+        // change of led color
+        for (int i = 0; i < m_ledCount; i++) {
+            m_ledBuffer.setRGB(i, 0, 0, 255); //color - blue test
+        }
+        m_led.setData(m_ledBuffer);
+    }
+
+    @Override
+    public void teleopPeriodic() {
+        // change of led color
+        for (int i = 0; i < m_ledCount; i++) {
+            m_ledBuffer.setRGB(i, 0, 255, 0); // color - green test
+        }
+        m_led.setData(m_ledBuffer);
+    }
+
+    @Override
+    public void disabledInit() {
+        // turn off
+        for (int i = 0; i < m_ledCount; i++) {
+            m_ledBuffer.setRGB(i, 0, 0, 0); // turn Off
+        }
+        m_led.setData(m_ledBuffer);
+    }
+}

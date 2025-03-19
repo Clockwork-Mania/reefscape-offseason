@@ -4,9 +4,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -39,13 +41,28 @@ public class Swerve extends SubsystemBase  {
 		// backLeft = new SwerveModule(powerIds[1], spinIds[1], encIds[1], spinOffs[1]);
 		// frontRight = new SwerveModule(powerIds[2], spinIds[2], encIds[2], spinOffs[2]);
 		// backRight = new SwerveModule(powerIds[3], spinIds[3], encIds[3], spinOffs[3]);
-
 		frontLeft  = new SwerveModule(3, 7, 11, .457);
 		backLeft   = new SwerveModule(4, 8, 12, .268);
 		frontRight = new SwerveModule(2, 6, 10, .030);
 		backRight  = new SwerveModule(5, 9, 13, .309);
 		odo = new SwerveDriveOdometry(kin, heading2d(), positions());
 		targeting = false;
+	}
+
+	public void setSpeeds(ChassisSpeeds speeds) {
+		SwerveModuleState[] moduleStates = kin.toSwerveModuleStates(speeds);
+		SwerveModuleState fL = moduleStates[0];
+		SwerveModuleState fR = moduleStates[1];
+		SwerveModuleState bL = moduleStates[2];
+		SwerveModuleState bR = moduleStates[3];
+
+	
+		frontLeft.pidSpin(fL.angle.getRadians(), 0.02, fL.speedMetersPerSecond);
+		frontRight.pidSpin(fR.angle.getRadians(), 0.02, fR.speedMetersPerSecond);
+		backLeft.pidSpin(bL.angle.getRadians(), 0.02, bL.speedMetersPerSecond);
+		backRight.pidSpin(bR.angle.getRadians(), 0.02, bR.speedMetersPerSecond);
+
+		
 	}
 
 	public void drive(double x, double y, double r, boolean relative) {

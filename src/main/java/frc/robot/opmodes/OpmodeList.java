@@ -14,8 +14,8 @@ public class OpmodeList {
     }
 
     public static NamedOpmode auto[] = {
-        new NamedOpmode("Timed", TimedAuto.class)
-        // new NamedOpmode("Basic", BasicAuto.class),
+        new NamedOpmode("Timed", TimedAuto.class),
+        new NamedOpmode("Basic", BasicAuto.class)
         // new NamedOpmode("Homing", HomingAuto.class),
     };
 
