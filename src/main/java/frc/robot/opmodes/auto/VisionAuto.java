@@ -1,27 +1,13 @@
 package frc.robot.opmodes.auto;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryParameterizer.TrajectoryGenerationException;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.hardware.*;
 import frc.robot.hardware.Arm.Position;
 import frc.robot.opmodes.Opmode;
-import frc.robot.opmodes.teleop.CWController;
 
 public class VisionAuto implements Opmode {
     Grinder bot;
@@ -68,79 +54,93 @@ public class VisionAuto implements Opmode {
 
     }
 
-        //main autonomous code (big ass switch)
-        public void update() {
-            switch (autoState) {
-                case 0:
-                    if (onEnter) {
-                        stateTimer.reset();
-                        // on enter code
-                        bot.arm.setTarget(Arm.READY);
-                        bot.arm.claw.set(Claw.HOLD_CORAL);
-                        onEnter = false;
-                    }
-    
-                    //loop code
-                    
-                    //transition to next state
-                    if (stateTimer.hasElapsed(1.2)) {
-                        onEnter = true;
-                        autoState++;
-                    }
+    //main autonomous code (big ass switch)
+    public void update() {
+        switch (autoState) {
+            case 0:
+                if (onEnter) {
+                    stateTimer.reset();
+                    // on enter code
+                    bot.arm.setTarget(Arm.READY);
+                    bot.arm.claw.set(Claw.HOLD_CORAL);
+                    onEnter = false;
+                }
 
-                    break;
-                case 1:
-                    if (onEnter) {
-                        stateTimer.reset();
-                        bot.base.setTarget(0, -1.1, 0);
-                        bot.arm.setTarget(Arm.CORAL_L3);
-                        onEnter = false;
-                    }
+                //loop code
+                
+                //transition to next state
+                if (stateTimer.hasElapsed(1.2)) {
+                    onEnter = true;
+                    autoState++;
+                }
 
-                    if (bot.base.ready()) {
-                        onEnter = true;
-                        autoState++;
-                    }
-                    break;
-                case 2:
-                    if (onEnter) {
-                        stateTimer.reset();
-                        bot.base.setVisionTarget(0);
-                        onEnter = false;
-                    }
+                break;
+            case 1:
+                if (onEnter) {
+                    stateTimer.reset();
+                    bot.base.setTarget(0, -1.1, 0);
+                    bot.arm.setTarget(Arm.CORAL_L3);
+                    onEnter = false;
+                }
 
-                    if (stateTimer.hasElapsed(1)) {
-                        onEnter = true;
-                        autoState++;
-                    }
-                    break;
-                case 3:
-                    if (onEnter) {
-                        stateTimer.reset();
-                        bot.base.resetOdo();
-                        bot.base.setTarget(0, -0.3, 0);
-                        onEnter = false;
-                    }
+                if (bot.base.ready()) {
+                    onEnter = true;
+                    autoState++;
+                }
+                break;
+            case 2:
+                if (onEnter) {
+                    stateTimer.reset();
+                    bot.base.setVisionTarget(0);
+                    onEnter = false;
+                }
 
-                    if (stateTimer.hasElapsed(0.3)) {
-                        onEnter = true;
-                        autoState++;
-                    }
-                    break;
-                case 4:
-                    if (onEnter) {
-                        stateTimer.reset();
-                        bot.arm.claw.set(Claw.OUTTAKE_CORAL);
-                        onEnter = false;
-                    }
-
-                    if (stateTimer.hasElapsed(1)) {
-                        onEnter = true;
-                        autoState++;
-                    }
-                    break;
-                default:
-                    break;
-            }
+                if (stateTimer.hasElapsed(1)) {
+                    onEnter = true;
+                    autoState++;
+                }
+                break;
+            case 3:
+                if (onEnter) {
+                    stateTimer.reset();
+                    bot.base.resetOdo();
+                    bot.base.setTarget(0, -0.3, 0);
+                    onEnter = false;
+                }
+                
+                transition(stateTimer.hasElapsed(0.3));
+                break;
+            case 4:
+                enter(() -> {
+                    bot.arm.claw.set(Claw.OUTTAKE_CORAL);
+                });
+                transition(stateTimer.hasElapsed(1));
+                break;
+            default:
+                break;
         }
+    }
+
+    public void enter(Runnable runnable) {
+        if (onEnter) {
+            stateTimer.reset();
+            runnable.run();
+            onEnter = false;
+        }
+    }
+
+    public void transition(boolean transitionCondition, Runnable exitRunnable) {
+        if (transitionCondition) {
+            exitRunnable.run();
+            onEnter = true;
+            autoState++;
+        }
+    }
+
+    public void transition(boolean transitionCondition) {
+        if (transitionCondition) {
+            onEnter = true;
+            autoState++;
+        }
+    }
 }

@@ -91,6 +91,12 @@ public class Arm {
         wrist.goToTarget();
     }
 
+    public void goToTarget2() {
+        elevator.goToTarget();
+        elbow.goToTarget();
+        wrist.goToTarget((elbow.getPos()-Elbow.HORIZ)*2*Math.PI);
+    }
+
     public Sequence currSeq = null;
     public void startSeq(Sequence seq) {
         setTarget(seq.steps.get(0).getFirst());
