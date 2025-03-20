@@ -13,14 +13,10 @@ public class TimedAuto implements Opmode {
         this.bot = bot;
         timer = new Timer();
         timer.reset();
+        bot.base.drive(0, -0.3, 0, true);
     }
 
     public void periodic() {
-        if(timer.get() < 2) {
-            bot.base.drive(0, -0.3, 0, true);
-        }
-        else {
-            bot.base.stop();
-        }
+        if(timer.hasElapsed(1)) bot.base.stop();
     }
 }

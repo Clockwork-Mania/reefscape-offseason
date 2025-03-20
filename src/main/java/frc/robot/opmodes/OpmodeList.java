@@ -14,21 +14,24 @@ public class OpmodeList {
     }
 
     public static NamedOpmode auto[] = {
-        new NamedOpmode("Timed", TimedAuto.class),
-        new NamedOpmode("Basic", BasicAuto.class)
+        new NamedOpmode("None", NoAuto.class),
+        new NamedOpmode("Leave", TimedAuto.class),
+        new NamedOpmode("Basic", BasicAuto.class),
+        // new NamedOpmode("New", NewAuto.class),
+        new NamedOpmode("Vision", VisionAuto.class),
         // new NamedOpmode("Homing", HomingAuto.class),
     };
 
     public static NamedOpmode teleop[] = {
-        new NamedOpmode("(THIS ONE) Positioning", PositioningTele.class),
+        // new NamedOpmode("(THIS ONE) Positioning", PositioningTele.class),
         new NamedOpmode("Full", FullTeleop.class),
-        new NamedOpmode("Full Test", FullTest.class),
-        new NamedOpmode("Pre-Full", PreFull.class),
+        // new NamedOpmode("Full Test", FullTest.class),
+        // new NamedOpmode("Pre-Full", PreFull.class),
     };
 
     public static NamedOpmode test[] = {
         new NamedOpmode("Manual", Manual.class),
-        new NamedOpmode("Targeting", Targeting.class)
+        // new NamedOpmode("Targeting", Targeting.class)
         // new NamedOpmode("Position Test", PositionTesting.class),
         // new NamedOpmode("Elevator Test", ElevatorTest.class)
     };

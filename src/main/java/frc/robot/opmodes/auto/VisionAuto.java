@@ -11,7 +11,6 @@ import frc.robot.opmodes.Opmode;
 
 public class VisionAuto implements Opmode {
     Grinder bot;
-    Trajectory currentTrajectory = null;
     double startTime;
     XboxController con;
 
@@ -24,7 +23,7 @@ public class VisionAuto implements Opmode {
 
     public void init(Grinder bot) {
         this.bot = bot;
-        // bot.base.setTarget(0, 0, 0);
+        bot.base.setTarget(0, 0, 0);
         bot.base.resetGyro();
         bot.base.resetOdo();
         bot.arm.setTarget(new Position(
@@ -43,7 +42,6 @@ public class VisionAuto implements Opmode {
         bot.base.driveto();
         bot.arm.goToTarget();
         update();
-        
 
         SmartDashboard.putNumber("X", bot.base.odo.getPoseMeters().getX());
         SmartDashboard.putNumber("Y", bot.base.odo.getPoseMeters().getY());
@@ -51,7 +49,6 @@ public class VisionAuto implements Opmode {
         SmartDashboard.putNumber("state", autoState);
         SmartDashboard.putNumber("state timer", stateTimer.get());
         SmartDashboard.putNumber("elevator yay!", bot.arm.elevator.getPos());
-
     }
 
     //main autonomous code (big ass switch)

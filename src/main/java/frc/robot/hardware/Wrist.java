@@ -15,7 +15,7 @@ public class Wrist extends Motor {
     public static final double MIN = 0.2, MAX = 0.9;
 
     // wrist horizontal value when the elbow is also perfectly horizontal
-    public static final double HORIZ = 0.5;
+    public static final double HORIZ = 0.315;
 
     // https://www.desmos.com/calculator/itw0kyeqhy
 

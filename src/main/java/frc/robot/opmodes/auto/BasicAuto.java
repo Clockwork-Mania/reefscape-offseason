@@ -19,8 +19,9 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.hardware.*;
+import frc.robot.opmodes.Opmode;
 
-public class BasicAuto {
+public class BasicAuto implements Opmode {
     Grinder bot;
     Trajectory currentTrajectory = null;
     double startTime;

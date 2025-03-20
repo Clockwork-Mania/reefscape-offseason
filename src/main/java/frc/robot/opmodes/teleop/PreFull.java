@@ -57,18 +57,18 @@ public class PreFull implements Opmode {
             bot.base.resetGyro();
         }
 
-        if(either(CWController::getXButton)) {
-            bot.arm.startSeq(Arm.CORAL_READY_SEQ);
-        }
-        if(either(CWController::getLeftButton)) {
-            bot.arm.startSeq(Arm.CORAL_INTAKE_SEQ);
-        }
-        if(either(CWController::getBButton)) {
-            bot.arm.startSeq(Arm.CORAL_L2_SEQ);
-        }
-        if(either(CWController::getDownButton)) {
-            bot.arm.endSeq();
-        }
+        // if(either(CWController::getXButton)) {
+        //     bot.arm.startSeq(Arm.CORAL_READY_SEQ);
+        // }
+        // if(either(CWController::getLeftButton)) {
+        //     bot.arm.startSeq(Arm.CORAL_INTAKE_SEQ);
+        // }
+        // if(either(CWController::getBButton)) {
+        //     bot.arm.startSeq(Arm.CORAL_L2_SEQ);
+        // }
+        // if(either(CWController::getDownButton)) {
+        //     bot.arm.endSeq();
+        // }
 
         bot.arm.runSeq();
 

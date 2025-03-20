@@ -40,9 +40,9 @@ public class Targeting implements Opmode {
         else if(con.getYButton()) {
             target = Arm.READY;
         }
-        else if(con.getUpButton()) {
-            target = Arm.HELD_READY;
-        }
+        // else if(con.getUpButton()) {
+        //     target = Arm.HELD_READY;
+        // }
         else if(con.getDownButton()) {
             target = Arm.CORAL_L2;
         }

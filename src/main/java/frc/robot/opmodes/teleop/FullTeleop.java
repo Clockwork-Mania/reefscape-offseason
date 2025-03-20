@@ -24,7 +24,7 @@ public class FullTeleop implements Opmode {
         bot.arm.elevator.reset();
     }
 
-    boolean coral = false, coralPrep = false;
+    boolean coral = true, coralPrep = false;
     double holdSpeed = 0;
 
     public void periodic() {
