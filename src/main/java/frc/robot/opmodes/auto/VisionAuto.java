@@ -104,7 +104,6 @@ public class VisionAuto implements Opmode {
                     bot.base.setTarget(0, -0.3, 0);
                     onEnter = false;
                 }
-                
                 transition(stateTimer.hasElapsed(0.3));
                 break;
             case 4:
@@ -113,6 +112,12 @@ public class VisionAuto implements Opmode {
                 });
                 transition(stateTimer.hasElapsed(1));
                 break;
+            case 5:
+                enter(()->{bot.base.setTarget(0, 0, 0);});
+                transition(bot.base.ready());
+            case 6:
+                enter(()->{bot.arm.setTarget(Arm.STARTING);});
+                transition(stateTimer.hasElapsed(1));
             default:
                 break;
         }

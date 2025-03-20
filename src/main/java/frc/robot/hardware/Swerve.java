@@ -131,7 +131,9 @@ public class Swerve extends SubsystemBase  {
 	public void drivetoVision() {
 		if(vision.foundTag()) {
 			double err = visionTarget-vision.getX();
-			drive(VIS_KP*err, 0, 0, false);
+			double dh = Utility.fixang(target.getRotation().getRadians()-heading());
+			dh = Utility.clamp(dh*DH_KP, -DH_CAP, DH_CAP);
+			drive(VIS_KP*err, 0, -dh, false);
 		}
 		else stop();
 	}

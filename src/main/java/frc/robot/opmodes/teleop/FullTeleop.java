@@ -21,7 +21,7 @@ public class FullTeleop implements Opmode {
         con1 = new CWController(1);
         prepTimer = new Timer();
         bot.arm.setTarget(Arm.STARTING);
-        bot.arm.elevator.reset();
+        // bot.arm.elevator.reset();
     }
 
     boolean coral = true, coralPrep = false;
@@ -105,6 +105,10 @@ public class FullTeleop implements Opmode {
                 if(coral) bot.arm.setTarget(Arm.CORAL_L2);
                 else bot.arm.setTarget(Arm.ALGAE_PROC);
             }
+        }
+
+        if(con1.getM1Button() && con1.getM2Button()) {
+            bot.arm.elevator.reset();
         }
 
         bot.arm.goToTarget();
