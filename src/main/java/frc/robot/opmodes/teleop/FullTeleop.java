@@ -20,6 +20,8 @@ public class FullTeleop implements Opmode {
         con0 = new CWController(0);
         con1 = new CWController(1);
         prepTimer = new Timer();
+        bot.arm.setTarget(Arm.STARTING);
+        bot.arm.elevator.reset();
     }
 
     boolean coral = false, coralPrep = false;
@@ -53,16 +55,16 @@ public class FullTeleop implements Opmode {
                 bot.arm.elevator.adjust(.01);
             }
             if(con1.getDownButton()) {
-                bot.arm.elevator.adjust(.01);
+                bot.arm.elevator.adjust(-.01);
             }
             if(con1.getYButton()) {
                 bot.arm.elbow.adjust(.0005);
             }
             if(con1.getAButton()) {
-                bot.arm.elbow.adjust(.0005);
+                bot.arm.elbow.adjust(-.0005);
             }
             if(con1.getXButton()) {
-                bot.arm.wrist.adjust(.001);
+                bot.arm.wrist.adjust(-.001);
             }
             if(con1.getBButton()) {
                 bot.arm.wrist.adjust(.001);
@@ -120,28 +122,32 @@ public class FullTeleop implements Opmode {
         // --------------- CLAW ---------------- //
         // ------------------------------------- //
 
-        if(con1.getRightTriggerButtonReleased()) {
+        if(con0.getRightTriggerButtonReleased()||con1.getRightTriggerButtonReleased()) {
             holdSpeed = coral ? Claw.HOLD_CORAL : Claw.HOLD_ALGAE;
         }
-        if(con1.getLeftTriggerButtonReleased()) {
+        if(con0.getLeftTriggerButtonReleased()||con1.getLeftTriggerButtonReleased()) {
             holdSpeed = 0;
         }
-        if(con1.getRightTriggerButton()) {
+        if(con0.getRightTriggerButton()||con1.getRightTriggerButton()) {
             bot.arm.claw.set(
-                con1.getRightTriggerAxis() * 
+                Math.max(
+                    con0.getRightTriggerAxis(),
+                    con1.getRightTriggerAxis()
+                ) * 
                 (coral ? Claw.INTAKE_CORAL : Claw.INTAKE_ALGAE)
             );
         }
-        else if(con1.getLeftTriggerButton()) {
-            bot.arm.claw.set(
-                con1.getLeftTriggerAxis() *
+        else if(con0.getLeftTriggerButton()||con1.getLeftTriggerButton()) {
+            bot.arm.claw.set(Math.max(
+                    con0.getLeftTriggerAxis(),
+                    con1.getLeftTriggerAxis()
+                ) * 
                 (coral ? Claw.OUTTAKE_CORAL : Claw.OUTTAKE_ALGAE)
             );
         }
         else bot.arm.claw.set(holdSpeed);
 
         SmartDashboard.putNumber("Claw", bot.arm.claw.get());
-
 
         con0.update();
         con1.update();

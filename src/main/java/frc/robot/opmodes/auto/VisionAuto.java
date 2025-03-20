@@ -85,7 +85,7 @@ public class VisionAuto implements Opmode {
                     //transition to next state
                     if (stateTimer.hasElapsed(1.2)) {
                         onEnter = true;
-                        autoState = 1;
+                        autoState++;
                     }
 
                     break;
