@@ -45,6 +45,10 @@ public class Wrist extends Motor {
         prevErr = err;
     }
 
+    static final double KP2 = 1.4;
+    static final double KI2 = 0.002;
+    static final double INT_CAP2 = 0.2/KI2;
+    static final double KC2 = -0.03;
     //elbowTheta in radians
     public void goTo(double target, double elbowTheta) {
         double wristTheta = (HORIZ - getPos()) * 2.0 * Math.PI;
@@ -54,10 +58,11 @@ public class Wrist extends Motor {
         integral = Utility.clamp(integral, -INT_CAP, INT_CAP);
         integral += err;
         set(
-            (Math.abs(err)<CLOSE_THRESH?CLOSE_KP:KP)*err+
-            KI*integral+
-            KD*(err-prevErr) + 
-            KC*Math.cos(angle)
+            KP2*err+
+            // (Math.abs(err)<CLOSE_THRESH?CLOSE_KP:KP)*err+
+            KI2*integral+
+            // KD*(err-prevErr) + 
+            KC2*Math.cos(angle)
         );
         prevErr = err;
     }

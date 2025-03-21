@@ -79,6 +79,7 @@ public class Swerve extends SubsystemBase  {
 
 	Pose2d target;
 	double visionTarget;
+	double visionHeading;
 	enum TargetMode {
 		None,
 		Odometry,
@@ -92,8 +93,13 @@ public class Swerve extends SubsystemBase  {
 	}
 
 	public void setVisionTarget(double target) {
+		setVisionTarget(target, heading());
+	}
+
+	public void setVisionTarget(double target, double heading) {
 		this.visionTarget = target;
 		targetMode = TargetMode.Vision;
+		visionHeading = heading;
 	}
 
 	public void setTarget(double x, double y, double h) {
@@ -131,7 +137,7 @@ public class Swerve extends SubsystemBase  {
 	public void drivetoVision() {
 		if(vision.foundTag()) {
 			double err = visionTarget-vision.getX();
-			double dh = Utility.fixang(target.getRotation().getRadians()-heading());   //also btw why does this use target thats not even involved with drivetovision() 
+			double dh = Utility.fixang(visionHeading-heading());   //also btw why does this use target thats not even involved with drivetovision() 
 			dh = Utility.clamp(dh*DH_KP, -DH_CAP, DH_CAP);
 			drive(VIS_KP*err, 0, -dh, false);
 		}

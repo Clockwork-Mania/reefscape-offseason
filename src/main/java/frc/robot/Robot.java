@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
 		SmartDashboard.putData("test", testPicker);
 
 		bot = new Grinder();
+		bot.arm.elevator.reset();
         // con = new XboxController(0);
 	}
 	

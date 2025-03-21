@@ -51,6 +51,7 @@ public class Elevator extends MotorPair {
 
     public void adjust(double by) {
         target += by;
-        target = Utility.clamp(target, MIN, MAX);
+        // target = Utility.clamp(target, MIN, MAX);
+        target = Math.min(target, MAX);
     }
 }
