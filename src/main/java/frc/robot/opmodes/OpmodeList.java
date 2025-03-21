@@ -25,6 +25,7 @@ public class OpmodeList {
     public static NamedOpmode teleop[] = {
         // new NamedOpmode("(THIS ONE) Positioning", PositioningTele.class),
         new NamedOpmode("Full", FullTeleop.class),
+        new NamedOpmode("April Tag Align", AprilTagAlign.class),
         // new NamedOpmode("Full Test", FullTest.class),
         // new NamedOpmode("Pre-Full", PreFull.class),
     };
