@@ -126,7 +126,7 @@ public class Swerve extends SubsystemBase  {
 		double mag = tr.getNorm(), ang = tr.getAngle().getRadians();
 		double dh = Utility.fixang(target.getRotation().getRadians()-heading());
 		double vy, vx;
-		mag = Math.min(mag*MAG_KP, 0.5);
+		mag = Math.min(mag*MAG_KP, MAG_CAP);
 		dh = Utility.clamp(dh*DH_KP, -DH_CAP, DH_CAP);
 		vx = mag * Math.cos(ang);
 		vy = mag * Math.sin(ang);

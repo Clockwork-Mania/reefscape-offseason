@@ -34,8 +34,8 @@ public class Arm {
     public static final double elevBase = 0.03, wristBase = 0;
     public static final Position STARTING     = new Position(elevBase, wristBase+0.87, 0.51);
     public static final Position CORAL_L4     = new Position(elevBase+5.05, wristBase+.58, 0.5);
-    public static final Position CORAL_L3     = new Position(elevBase+3.15, wristBase+.525, .39);
-    public static final Position CORAL_L2     = new Position(elevBase+1.35, wristBase+.525, .39);
+    public static final Position CORAL_L3     = new Position(elevBase+3.27, wristBase+.525, .39);
+    public static final Position CORAL_L2     = new Position(elevBase+1.47, wristBase+.525, .39);
     // public static final Position CORAL_L1     = new Position(elevBase+0, wristBase+0, 0);
     public static final Position READY        = new Position(elevBase+1.71+0.35, wristBase+0.87, 0.51);
     // public static final Position READY_OUT    = new Position(elevBase+1.71+0.35, wristBase+0.39, 0.228);
@@ -96,6 +96,7 @@ public class Arm {
         elbow.goToTarget();
         wrist.goToTarget((elbow.getPos()-Elbow.HORIZ)*2*Math.PI);
     }
+
 
     public Sequence currSeq = null;
     public void startSeq(Sequence seq) {

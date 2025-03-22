@@ -8,7 +8,9 @@ public class Elevator extends MotorPair {
     static final double KP = .5;
     static final double KP_DOWN = .3;
     static final double KI = .001;
-    static final double DECAY = .999;
+    // static final double DECAY = .999;
+    static final double INT_CAP = 0.2/KI;
+    static final double POW_CAP = 0.8;
 
     public static final double MIN = -.6, MAX = 4.6;
     
@@ -32,9 +34,8 @@ public class Elevator extends MotorPair {
     double integral;
     public void goTo(double target) {
         double err = target-getPos();
-        integral *= DECAY;
         integral += err;
-        // set(Math.signum(err)*Math.sqrt(Math.min(.25, Math.abs(err/2))));
+        integral = Utility.clamp(integral, -INT_CAP, INT_CAP);
         set(
             (err>0?KP:KP_DOWN)*err+
             KI*integral

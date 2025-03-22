@@ -49,6 +49,7 @@ public class VisionAuto implements Opmode {
         SmartDashboard.putNumber("state", autoState);
         SmartDashboard.putNumber("state timer", stateTimer.get());
         SmartDashboard.putNumber("elevator yay!", bot.arm.elevator.getPos());
+        SmartDashboard.putBoolean("apriltag?", bot.vision.foundTag());
     }
 
     //main autonomous code (big ass switch)
@@ -75,7 +76,7 @@ public class VisionAuto implements Opmode {
             case 1:
                 if (onEnter) {
                     stateTimer.reset();
-                    bot.base.setTarget(0, -1.1, 0);
+                    bot.base.setTarget(0, -0.9, 0);
                     bot.arm.setTarget(Arm.CORAL_L3);
                     onEnter = false;
                 }
@@ -101,10 +102,10 @@ public class VisionAuto implements Opmode {
                 if (onEnter) {
                     stateTimer.reset();
                     bot.base.resetOdo();
-                    bot.base.setTarget(0, -0.3, 0);
+                    bot.base.setTarget(0, -0.5, 0);
                     onEnter = false;
                 }
-                transition(stateTimer.hasElapsed(0.3));
+                transition(stateTimer.hasElapsed(1));
                 break;
             case 4:
                 enter(() -> {
