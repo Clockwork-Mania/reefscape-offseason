@@ -1,5 +1,7 @@
 package frc.robot.hardware;
 
+import org.opencv.imgproc.IntelligentScissorsMB;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Utility;
 import frc.robot.hardware.Motor.EncoderType;
@@ -35,6 +37,9 @@ public class Elevator extends MotorPair {
     public void goTo(double target) {
         double err = target-getPos();
         integral += err;
+        if (Math.abs(integral) > INT_CAP) {
+            integral = 0;
+        }
         integral = Utility.clamp(integral, -INT_CAP, INT_CAP);
         set(
             (err>0?KP:KP_DOWN)*err+

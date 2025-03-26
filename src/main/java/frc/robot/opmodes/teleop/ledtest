@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Robot extends TimedRobot {
-
     private AddressableLED m_led;
     private AddressableLEDBuffer m_ledBuffer;
     private final int m_ledCount = 60; // number of leds

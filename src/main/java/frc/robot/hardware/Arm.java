@@ -34,13 +34,13 @@ public class Arm {
     public static final double elevBase = 0.03, wristBase = 0;
     public static final Position STARTING     = new Position(elevBase, wristBase+0.87, 0.51);
     public static final Position CORAL_L4     = new Position(elevBase+5.05, wristBase+.58, 0.5);
-    public static final Position CORAL_L3     = new Position(elevBase+3.27, wristBase+.525, .39);
-    public static final Position CORAL_L2     = new Position(elevBase+1.47, wristBase+.525, .39);
+    public static final Position CORAL_L3     = new Position(elevBase+3.3, wristBase+.51, .39);
+    public static final Position CORAL_L2     = new Position(elevBase+1.5, wristBase+.52, .39);
     // public static final Position CORAL_L1     = new Position(elevBase+0, wristBase+0, 0);
     public static final Position READY        = new Position(elevBase+1.71+0.35, wristBase+0.87, 0.51);
     // public static final Position READY_OUT    = new Position(elevBase+1.71+0.35, wristBase+0.39, 0.228);
     public static final Position CORAL_PREP   = new Position(elevBase+2.29, wristBase+0.70, 0.32);
-    public static final Position CORAL_INTAKE = new Position(elevBase+2.29, wristBase+0.78, 0.28);
+    public static final Position CORAL_INTAKE = new Position(elevBase+2.29, wristBase+0.78, 0.26);
     // public static final Position HELD_READY   = new Position(elevBase+2.5+0.35, wristBase+0.78, 0.17);
     // public static final Position ALGAE_BARGE  = new Position(elevBase+0, wristBase+0, 0);
     public static final Position ALGAE_L3     = new Position(elevBase+3.35, wristBase+.36, .38);
@@ -91,10 +91,14 @@ public class Arm {
         wrist.goToTarget();
     }
 
-    public void goToTarget() {
+    public void goToTarget(boolean coral) {
         elevator.goToTarget();
         elbow.goToTarget();
-        wrist.goToTarget((elbow.getPos()-Elbow.HORIZ)*2*Math.PI);
+        wrist.goToTarget((elbow.getPos()-Elbow.HORIZ)*2*Math.PI, coral);
+    }
+
+    public void goToTarget() {
+        goToTarget(false);
     }
 
 

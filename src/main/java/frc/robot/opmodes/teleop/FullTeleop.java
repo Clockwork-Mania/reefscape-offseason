@@ -103,6 +103,7 @@ public class FullTeleop implements Opmode {
             }
             if(con1.getBButton()) {
                 bot.arm.setTarget(Arm.CORAL_L3);
+                coral = true;
             }
             if(con1.getAButton()) {
                 if(coral) bot.arm.setTarget(Arm.CORAL_L2);
@@ -114,7 +115,7 @@ public class FullTeleop implements Opmode {
             bot.arm.elevator.reset();
         }
 
-        bot.arm.goToTarget();
+        bot.arm.goToTarget(coral);
         SmartDashboard.putBoolean("Coral?", coral);
         SmartDashboard.putNumber("Wrist", bot.arm.wrist.getPos());
         SmartDashboard.putNumber("Elbow", bot.arm.elbow.getPos());
@@ -135,7 +136,7 @@ public class FullTeleop implements Opmode {
         if(con0.getLeftTriggerButtonReleased()||con1.getLeftTriggerButtonReleased()) {
             holdSpeed = 0;
         }
-        if(con0.getRightTriggerButton()||con1.getRightTriggerButton()) {
+        if(con0.getRightTriggerButton() || con1.getRightTriggerButton()) {
             bot.arm.claw.set(
                 Math.max(
                     con0.getRightTriggerAxis(),

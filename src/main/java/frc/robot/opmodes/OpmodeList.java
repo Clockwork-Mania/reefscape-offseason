@@ -14,11 +14,12 @@ public class OpmodeList {
     }
 
     public static NamedOpmode auto[] = {
-        new NamedOpmode("None", NoAuto.class),
-        new NamedOpmode("Leave", TimedAuto.class),
-        new NamedOpmode("Basic", BasicAuto.class),
-        // new NamedOpmode("New", NewAuto.class),
+        new NamedOpmode("Clipped", ClippedAuto.class),
         new NamedOpmode("Vision", VisionAuto.class),
+        new NamedOpmode("Leave", TimedAuto.class),
+        new NamedOpmode("None", NoAuto.class),
+        // new NamedOpmode("Basic", BasicAuto.class),
+        // new NamedOpmode("New", NewAuto.class),
         // new NamedOpmode("Homing", HomingAuto.class),
     };
 

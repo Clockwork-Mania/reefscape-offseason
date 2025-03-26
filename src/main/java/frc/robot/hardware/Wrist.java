@@ -48,17 +48,24 @@ public class Wrist extends Motor {
     static final double KP2 = 1.4;
     static final double KI2 = 0.002;
     static final double INT_CAP2 = 0.2/KI2;
-    static final double KC2 = -0.04;
+    static final double KC2 = -0.04; //i figured out why its negative its cus the wrist is flipped
+    static final double KC_CORAL = -0.08;
     static final double POW_CAP = 0.6;
-    //elbowTheta in radians
+
     public void goTo(double target, double elbowTheta) {
+        goTo(target, elbowTheta, false);
+    }
+
+    //elbowTheta in radians
+    public void goTo(double target, double elbowTheta, boolean coral) {
         double wristTheta = (HORIZ - getPos()) * 2.0 * Math.PI;
         double angle = wristTheta + elbowTheta;
         
         double err = target - getPos();
         integral = Utility.clamp(integral, -INT_CAP, INT_CAP);
         integral += err;
-        double pow = KP2*err+KI2*integral+KC2*Math.cos(angle);
+        double pow = KP2*err+KI2*integral+
+            (coral ? KC_CORAL : KC) * Math.cos(angle);
         set(Utility.clamp(pow, -POW_CAP, POW_CAP));
         prevErr = err;
     }
@@ -69,6 +76,10 @@ public class Wrist extends Motor {
 
     public void goToTarget(double elbowTheta) {
         goTo(target, elbowTheta);
+    }
+
+    public void goToTarget(double elbowTheta, boolean coral) {
+        goTo(target, elbowTheta, coral);
     }
     
     public void adjust(double by) {
