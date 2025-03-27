@@ -1,3 +1,5 @@
+package frc.robot.opmodes.teleop;
+
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.PWM;
@@ -12,7 +14,7 @@ public class LedTest implements Opmode {
     private AddressableLED led;
     private AddressableLEDBuffer buffer;
     private final int LED_COUNT = 60; // number of leds
-    private final int PORT = 9; // pwm port number
+    private final int PORT = 0; // pwm port number
 
     public void init(Grinder bot) {
         led = new AddressableLED(PORT);
