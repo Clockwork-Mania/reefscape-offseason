@@ -43,7 +43,7 @@ public class FullTest implements Opmode {
             f = -con1.getLeftY()*.4,
             s = con1.getLeftX()*.4,
             r = con1.getRightX()*.4;
-        bot.base.drive(-s, -f, -r, true);
+        bot.base.drive(s, f, r, true);
         bot.base.periodic();
 
         if(con1.getLeftBumperButton() && con1.getRightBumperButton()) {

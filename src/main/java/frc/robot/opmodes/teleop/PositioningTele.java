@@ -44,7 +44,7 @@ public class PositioningTele implements Opmode {
             f = -Utility.sgnsqr(ly),
             s = Utility.sgnsqr(lx),
             r = Utility.sgnsqr(rx);
-        bot.base.drive(-s, -f, -r, true);
+        bot.base.drive(s, f, r, true);
         // bot.base.periodic();
 
         double pow = 0.005*(1+4*con1.getLeftTriggerAxis());

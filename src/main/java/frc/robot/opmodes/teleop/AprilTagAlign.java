@@ -38,7 +38,7 @@ public class AprilTagAlign implements Opmode {
             f = -con0.getLeftY()*.8,
             s = con0.getLeftX()*.8,
             r = con0.getRightX()*.8;
-        bot.base.drive(-s, -f, -r, true);
+        bot.base.drive(s, f, r, true);
         bot.base.periodic();
 
         if(con0.getLeftBumperButton() && con0.getRightBumperButton()) {

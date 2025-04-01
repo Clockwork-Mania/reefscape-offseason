@@ -13,6 +13,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Utility;
+import frc.robot.hardware.Motor.Direction;
 
 public class SwerveModule {
     public Motor power, spin;
@@ -24,6 +25,7 @@ public class SwerveModule {
 		spin = new Motor(spinId);
 		enc = new CANcoder(encId);
 		power.setNeutralMode(NeutralModeValue.Brake);
+		power.setDir(Direction.CCW);
 		this.off = off;
 	}
 
@@ -64,10 +66,6 @@ public class SwerveModule {
 		}
 
 		// calculate power using kp, ki, kd
-		// double turn = Math.abs(err) > spinDeadband ?
-		// 	kpSpin * err + kiSpin * errSum + kdSpin * ((err-lastErr)/dt)
-		// :0;
-		// spin.set(-turn);
 		spin.set(-(Math.abs(err) > spinDeadband ?
 			kpSpin * err + kiSpin * errSum + kdSpin * ((err-lastErr)/dt)
 		:0));

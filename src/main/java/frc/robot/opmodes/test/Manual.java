@@ -24,7 +24,7 @@ public class Manual implements Opmode {
             f = -Utility.sgnsqr(con.getLeftY())*.4,
             s = Utility.sgnsqr(con.getLeftX())*.4,
             r = Utility.sgnsqr(con.getRightX())*.4;
-        bot.base.drive(-s, -f, -r, false);
+        bot.base.drive(s, f, r, false);
         bot.base.periodic();
 
 

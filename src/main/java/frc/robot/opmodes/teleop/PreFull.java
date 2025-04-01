@@ -42,7 +42,7 @@ public class PreFull implements Opmode {
             f = -con0.getLeftY()*.4,
             s = con0.getLeftX()*.4,
             r = con0.getRightX()*.4;
-        bot.base.drive(-s, -f, -r, true);
+        bot.base.drive(s, f, r, true);
         bot.base.periodic();
 
         SmartDashboard.putNumber("forward", f);

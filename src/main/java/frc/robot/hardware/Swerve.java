@@ -16,11 +16,6 @@ import frc.robot.Utility;
 
 public class Swerve extends SubsystemBase  {
 	// order is fl, bl, fr, br
-	// public static final int[] powerIds = {3, 4, 2, 5};
-	// public static final int[] spinIds = {7, 8, 6, 9};
-	// public static final int[] encIds = {11, 12, 10, 13};
-	// public static final double[] spinOffs = {.456, .268, .854, .308};
-
 	public SwerveModule frontLeft, backLeft, frontRight, backRight;
 	public SwerveModule wheels[] = {frontLeft, backLeft, frontRight, backRight};
 

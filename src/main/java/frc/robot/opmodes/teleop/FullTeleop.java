@@ -37,7 +37,7 @@ public class FullTeleop implements Opmode {
             f = -con0.getLeftY()*.8,
             s = con0.getLeftX()*.8,
             r = con0.getRightX()*.8;
-        bot.base.drive(-s, -f, -r, true);
+        bot.base.drive(s, f, r, true);
         bot.base.periodic();
         SmartDashboard.putNumber("odo X", bot.base.pose().getX());
         SmartDashboard.putNumber("odo Y", bot.base.pose().getY());

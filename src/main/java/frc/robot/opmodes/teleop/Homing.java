@@ -33,10 +33,10 @@ public class Homing implements Opmode {
 
         bot.base.periodic();
         if(con.getAButton()) {
-            bot.base.drive(-s, -f, -r, true);
+            bot.base.drive(s, f, r, true);
         }
         else {
-            bot.base.drive(bot.vision.getX()/100, 0., 0., true);
+            bot.base.drive(-bot.vision.getX()/100, 0., 0., true);
         }
     }
 }
