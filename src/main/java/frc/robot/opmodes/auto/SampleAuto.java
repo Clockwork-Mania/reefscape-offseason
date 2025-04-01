@@ -1,5 +1,6 @@
 package frc.robot.opmodes.auto;
 
+import frc.robot.hardware.Grinder;
 import frc.robot.opmodes.Opmode;
 import frc.robot.states.StateMachine;
 import frc.robot.states.StateMachineBuilder;
@@ -7,7 +8,7 @@ import frc.robot.states.StateMachineBuilder;
 public class SampleAuto implements Opmode {
     StateMachine mach;
     
-    public void init() {
+    public void init(Grinder bot) {
         mach = new StateMachineBuilder()
             .state("START")
                 .start(()->{/* set swerve target */})

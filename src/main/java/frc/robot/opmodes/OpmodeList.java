@@ -14,23 +14,30 @@ public class OpmodeList {
     }
 
     public static NamedOpmode auto[] = {
-        new NamedOpmode("Basic", BasicAuto.class),
-        new NamedOpmode("Homing", HomingAuto.class),
+        new NamedOpmode("Clipped", ClippedAuto.class),
+        new NamedOpmode("Vision", VisionAuto.class),
+        new NamedOpmode("Leave", TimedAuto.class),
+        new NamedOpmode("None", NoAuto.class),
+        // new NamedOpmode("Basic", BasicAuto.class),
+        // new NamedOpmode("New", NewAuto.class),
+        // new NamedOpmode("Homing", HomingAuto.class),
     };
 
     public static NamedOpmode teleop[] = {
-        // new NamedOpmode("All Wheels", AllWheels.class),
-        // new NamedOpmode("Module Testing", ModuleTest.class),
-        // new NamedOpmode("Talon Testing", TalonTest.class),
-        new NamedOpmode("Swerve Testing", SwerveTeleop.class),
-        new NamedOpmode("Odometry Testing", SwerveOdo.class),
-        new NamedOpmode("Main", MainTeleop.class),
+        // new NamedOpmode("(THIS ONE) Positioning", PositioningTele.class),
         new NamedOpmode("Full", FullTeleop.class),
+        new NamedOpmode("April Tag Align", AprilTagAlign.class),
+        new NamedOpmode("Sensor Test", Sensors.class),
+        new NamedOpmode("Led Test", LedTest.class),
+        // new NamedOpmode("Full Test", FullTest.class),
+        // new NamedOpmode("Pre-Full", PreFull.class),
     };
 
     // added in testing
     public static NamedOpmode test[] = {
-        new NamedOpmode("Debug Printing", Printing.class),
-        new NamedOpmode("Fourteen Motors", FourteenTest.class)
+        new NamedOpmode("Manual", Manual.class),
+        // new NamedOpmode("Targeting", Targeting.class)
+        // new NamedOpmode("Position Test", PositionTesting.class),
+        // new NamedOpmode("Elevator Test", ElevatorTest.class)
     };
 }

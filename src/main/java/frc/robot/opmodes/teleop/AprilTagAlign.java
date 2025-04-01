@@ -1,15 +1,12 @@
 package frc.robot.opmodes.teleop;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.opmodes.Opmode;
-import frc.robot.Utility;
 import frc.robot.hardware.*;
 
-public class FullTeleop implements Opmode {
+public class AprilTagAlign implements Opmode {
     Grinder bot;
     CWController con0, con1;
     Field2d field;
@@ -21,6 +18,10 @@ public class FullTeleop implements Opmode {
         con1 = new CWController(1);
         prepTimer = new Timer();
         bot.arm.setTarget(Arm.STARTING);
+
+        bot.base.resetOdo();
+        bot.base.addVision(bot.vision);
+
         // bot.arm.elevator.reset();
     }
 
@@ -39,9 +40,6 @@ public class FullTeleop implements Opmode {
             r = con0.getRightX()*.8;
         bot.base.drive(s, f, r, true);
         bot.base.periodic();
-        SmartDashboard.putNumber("odo X", bot.base.pose().getX());
-        SmartDashboard.putNumber("odo Y", bot.base.pose().getY());
-        SmartDashboard.putNumber("odo H", bot.base.pose().getRotation().getRadians());
 
         if(con0.getLeftBumperButton() && con0.getRightBumperButton()) {
             bot.base.resetGyro();
@@ -103,7 +101,6 @@ public class FullTeleop implements Opmode {
             }
             if(con1.getBButton()) {
                 bot.arm.setTarget(Arm.CORAL_L3);
-                coral = true;
             }
             if(con1.getAButton()) {
                 if(coral) bot.arm.setTarget(Arm.CORAL_L2);
@@ -115,7 +112,7 @@ public class FullTeleop implements Opmode {
             bot.arm.elevator.reset();
         }
 
-        bot.arm.goToTarget(coral);
+        bot.arm.goToTarget();
         SmartDashboard.putBoolean("Coral?", coral);
         SmartDashboard.putNumber("Wrist", bot.arm.wrist.getPos());
         SmartDashboard.putNumber("Elbow", bot.arm.elbow.getPos());
@@ -136,7 +133,7 @@ public class FullTeleop implements Opmode {
         if(con0.getLeftTriggerButtonReleased()||con1.getLeftTriggerButtonReleased()) {
             holdSpeed = 0;
         }
-        if(con0.getRightTriggerButton() || con1.getRightTriggerButton()) {
+        if(con0.getRightTriggerButton()||con1.getRightTriggerButton()) {
             bot.arm.claw.set(
                 Math.max(
                     con0.getRightTriggerAxis(),
@@ -159,5 +156,16 @@ public class FullTeleop implements Opmode {
 
         con0.update();
         con1.update();
+    }
+
+    public void alignLeft() {
+        bot.base.setVisionTarget(0);
+        bot.base.driveto();
+    }
+
+    public void alignRight() {
+        // i mean i think from far out it might work /shrug
+        bot.base.setVisionTarget(1);
+        bot.base.driveto();
     }
 }

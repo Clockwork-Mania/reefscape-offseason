@@ -4,7 +4,7 @@ public class Utility {
     public final static double TAU = 2*Math.PI;
 
     public static double ticks2Meters(double ticks) {
-        return ticks * Constants.gearRatio / Constants.encCPR * Constants.wheelDiam * Math.PI;
+        return ticks / Constants.gearRatio * Constants.wheelDiam * Math.PI;
     }
 
     public static double ticks2Rad(double ticks) {
@@ -17,5 +17,9 @@ public class Utility {
 
     public static double clamp(double v, double min, double max) {
         return Math.min(max, Math.max(v, min));
+    }
+
+    public static double sgnsqr(double a) {
+        return Math.signum(a)*a*a;
     }
 }

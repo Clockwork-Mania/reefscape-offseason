@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import static edu.wpi.first.units.Units.Rotation;
@@ -16,7 +12,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.shuffleboard.WidgetType;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,38 +25,20 @@ import frc.robot.opmodes.teleop.ModuleTest;
 import frc.robot.opmodes.teleop.TalonTest;
 import frc.robot.opmodes.teleop.simTest;
 import frc.robot.subsystems.Grinder;
+import frc.robot.opmodes.auto.TimedAuto;
+import frc.robot.hardware.*;
+import frc.robot.opmodes.teleop.FullTeleop;
 import frc.robot.opmodes.teleop.SwerveTeleop;
 
-/**
- * The methods in this class are called automatically corresponding to each mode, as described in
- * the TimedRobot documentation. If you change the name of this class or the package after creating
- * this project, you must also update the Main.java file in the project.
- */
 public class Robot extends TimedRobot {
-	private static final String kDefaultAuto = "Default";
-	private static final String kCustomAuto = "My Auto";
-	private String m_autoSelected;
-	private final SendableChooser<String> m_chooser = new SendableChooser<>();
-	private simTest test = new simTest();
-
 	Grinder bot;
     XboxController con;
     Field2d field;
+	ShuffleboardTab main;
 
-	// String teles[] = {"AllWheels", "TalonTest", "ModuleTest"};
 	SendableChooser<Class<?>> autoPicker, telePicker, testPicker;
 
 	XboxController controller = new XboxController(0);
-
-	// SendableChooser<Class> opmodePicker(String type) {
-	// 	SendableChooser<Class> picker = new SendableChooser<>();
-	// 	File f = new File("opmodes/"+type);
-	// 	String[] ss = f.list();
-	// 	for(String s : ss) s = s.substring(0, s.length()-5);
-	// 	picker.setDefaultOption(ss[0], ss[0]);
-	// 	for(int i = 1; i < ss.length; ++i) picker.addOption(ss[i], ss[i]);
-	// 	return picker;
-	// }
 
 	SendableChooser<Class<?>> opmodePicker(OpmodeList.NamedOpmode modes[]) {
 		SendableChooser<Class<?>> picker = new SendableChooser<>();
@@ -65,42 +46,43 @@ public class Robot extends TimedRobot {
 		for(int i = 1; i < modes.length; ++i) picker.addOption(modes[i].name, modes[i].mode);
 		return picker;
 	}
+	
 
 	void opInit(SendableChooser<Class<?>> picker) {
 		Class<?> mode = picker.getSelected();
 		try{op = (Opmode)mode.getDeclaredConstructor().newInstance();}
 		catch(Exception e){}
-		op.init();
+		op.init(bot);
 	}
 
 	public Robot() {
-		// m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-		// m_chooser.addOption("My Auto", kCustomAuto);
-		// SmartDashboard.putData("Auto choices", m_chooser);
-
 		autoPicker = opmodePicker(OpmodeList.auto);
 		telePicker = opmodePicker(OpmodeList.teleop);
 		testPicker = opmodePicker(OpmodeList.test);
-		// telePicker = new SendableChooser<>();
-		// telePicker.setDefaultOption("All Wheels", AllWheels.class);
-		// telePicker.addOption("Talon Testing", TalonTest.class);
-		// telePicker.addOption("Module Testing", ModuleTest.class);
-		// telePicker.addOption("Swerve Testing", TestSwerveTeleop.class);
-		
-		// File ftele = new File("opmodes/teleop");
-		// String[] teles = ftele.list();
-		// for(String t : teles) t = t.substring(0, t.length()-5);
-		// telePicker.setDefaultOption(OpmodeList.teleops[0].name, OpmodeList.teleops[0].mode);
-		// telePicker.setDefaultOption(OpmodeList.teleops[0].name, OpmodeList.teleops[0].mode);
-		// for(int i = 1; i < teles.length; ++i) telePicker.addOption(teles[i], teles[i]);
 
-		SmartDashboard.putData("Auto", autoPicker);
-		SmartDashboard.putData("Teleop", telePicker);
-		SmartDashboard.putData("Test", testPicker);
+		// main = Shuffleboard.getTab("Opmode Selection");
+		// main.add(autoPicker).withWidget(BuiltInWidgets.kComboBoxChooser);
+		// main.add("Teleop", telePicker);//.withWidget(BuiltInWidgets.kComboBoxChooser);
+		// main.add("Test", testPicker);//.withWidget(BuiltInWidgets.kComboBoxChooser);
+
+		// SendableChooser<String> chooser = new SendableChooser<String>();
+
+		// Shuffleboard.getTab("New tab")
+		// 	.add("test!", "yay!");
+
+		SmartDashboard.putData("auto", autoPicker);
+		SmartDashboard.putData("teleop", telePicker);
+		SmartDashboard.putData("test", testPicker);
+
+		bot = new Grinder();
+		bot.arm.elevator.reset();
+        // con = new XboxController(0);
 	}
+	
 
 	@Override
 	public void robotPeriodic() {
+		bot.arm.elevator.periodic();
 	}
 
 	Opmode op;
@@ -117,34 +99,24 @@ public class Robot extends TimedRobot {
 
 	@Override
 	public void teleopInit() {
-		test.init();
-		// System.out.println(tele);
-		// switch(tele) {
-		// 	case "AllWheels": teleop = new AllWheels(); break;
-		// 	case "TalonTest": teleop = new TalonTest(); break;
-		// 	case "ModuleTest": teleop = new ModuleTest(); break;
-		// 	case "TestSwerveTeleop": teleop = new TestSwerveTeleop(); break;
-		// }
-
-		// bot = new Grinder();
-        // con = new XboxController(0);
-        // field = new Field2d();
-        // SmartDashboard.putData("Field", field);
+		opInit(telePicker);
 	}
 
 	@Override
 	public void teleopPeriodic() {
-		test.periodic();
+		op.periodic();
     }
 
 	@Override
 	public void testInit() {
+		// test = new ElevatorTest();
+		// test.init();
 		opInit(testPicker);
 	}
 
-	// TestSwerve swerve;
 	@Override
 	public void testPeriodic() {
 		op.periodic();
+		// test.periodic();
 	}
 }

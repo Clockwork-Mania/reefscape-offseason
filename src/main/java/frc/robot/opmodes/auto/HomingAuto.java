@@ -2,13 +2,14 @@ package frc.robot.opmodes.auto;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Utility;
-import frc.robot.subsystems.*;
+import frc.robot.hardware.*;
+import frc.robot.opmodes.Opmode;
 
-public class HomingAuto {
+public class HomingAuto implements Opmode {
     Grinder bot;
 
-    public void init() {
-        bot = new Grinder();
+    public void init(Grinder bot) {
+        this.bot = bot;
         bot.vision.setPipeline(Vision.DETECT_10);
     }
 

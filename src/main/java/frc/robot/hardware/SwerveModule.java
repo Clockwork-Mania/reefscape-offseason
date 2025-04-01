@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.hardware;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Utility;
+import frc.robot.hardware.Motor.Direction;
 
 public class SwerveModule {
     public Motor power, spin;
@@ -28,6 +29,7 @@ public class SwerveModule {
 		enc = new CANcoder(encId);
 		encSim = new CANcoderSimState(enc);
 		power.setNeutralMode(NeutralModeValue.Brake);
+		power.setDir(Direction.CCW);
 		this.off = off;
 	}
 
@@ -69,10 +71,6 @@ public class SwerveModule {
 		}
 
 		// calculate power using kp, ki, kd
-		// double turn = Math.abs(err) > spinDeadband ?
-		// 	kpSpin * err + kiSpin * errSum + kdSpin * ((err-lastErr)/dt)
-		// :0;
-		// spin.set(-turn);
 		spin.set(-(Math.abs(err) > spinDeadband ?
 			kpSpin * err + kiSpin * errSum + kdSpin * ((err-lastErr)/dt)
 		:0));
@@ -100,9 +98,8 @@ public class SwerveModule {
 	public void drive(double x, double y, double r, double theta) {
 		double vx = x + r * Math.cos(theta);
 		double vy = y + r * Math.sin(theta);
-		//System.out.println("vx " + vx + " vy " + vy);
 		if(Math.abs(vx)>.01||Math.abs(vy)>.01) {
-			pidSpin(Math.atan2(vy, vx), .02, Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)));
+			pidSpin(Math.atan2(vy, vx), .02, Math.sqrt(vx*vx+vy*vy));
 		}
 		else stop();
 	}
