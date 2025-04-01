@@ -13,11 +13,7 @@ public class TimedAuto implements Opmode {
         this.bot = bot;
         timer = new Timer();
         timer.reset();
-<<<<<<< Updated upstream
-        bot.base.drive(0, -0.3, 0, false);
-=======
         bot.base.drive(0, 0.3, 0, true);
->>>>>>> Stashed changes
     }
 
     public void periodic() {

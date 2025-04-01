@@ -15,19 +15,21 @@ public class LedTest implements Opmode {
     private AddressableLED led;
     private AddressableLEDBuffer buffer;
     private final int LED_COUNT = 60; // number of leds
-    private final int PORT = 1; // pwm port number
+    private final int PORT = 5; // pwm port number
 
     public void init(Grinder bot) {
+        SmartDashboard.putBoolean("initialized", false);
         led = new AddressableLED(PORT);
         led.setLength(LED_COUNT);
         buffer = new AddressableLEDBuffer(LED_COUNT);
 
-        for (int i = 0; i < LED_COUNT; i++) {
-            buffer.setRGB(i, 255, 0, 0); //red test
-        }
+        // for (int i = 0; i < LED_COUNT; i++) {
+        //     buffer.setRGB(i, 255, 0, 0); //red test
+        // }
 
         led.setData(buffer);
         led.start();
+        SmartDashboard.putBoolean("initialized", true);
     }
 
     @Override
