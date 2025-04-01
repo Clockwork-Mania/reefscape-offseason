@@ -37,6 +37,7 @@ public class Robot extends TimedRobot {
 		for(int i = 1; i < modes.length; ++i) picker.addOption(modes[i].name, modes[i].mode);
 		return picker;
 	}
+	
 
 	void opInit(SendableChooser<Class<?>> picker) {
 		Class<?> mode = picker.getSelected();

@@ -2,6 +2,7 @@ package frc.robot.opmodes.teleop;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -14,7 +15,7 @@ public class LedTest implements Opmode {
     private AddressableLED led;
     private AddressableLEDBuffer buffer;
     private final int LED_COUNT = 60; // number of leds
-    private final int PORT = 0; // pwm port number
+    private final int PORT = 1; // pwm port number
 
     public void init(Grinder bot) {
         led = new AddressableLED(PORT);
@@ -22,7 +23,7 @@ public class LedTest implements Opmode {
         buffer = new AddressableLEDBuffer(LED_COUNT);
 
         for (int i = 0; i < LED_COUNT; i++) {
-            buffer.setRGB(i, 255, 0, 0);
+            buffer.setRGB(i, 255, 0, 0); //red test
         }
 
         led.setData(buffer);
@@ -32,9 +33,12 @@ public class LedTest implements Opmode {
     @Override
     public void periodic() {
         // change of led color
-        for (int i = 0; i < LED_COUNT; i++) {
-            buffer.setRGB(i, 0, 255, 0); // color - green test
-        }
+
+        LEDPattern rainbow = LEDPattern.rainbow(255, 128);
+        rainbow.applyTo(buffer);
+        // for (int i = 0; i < LED_COUNT; i++) {
+            // buffer.setRGB(i, 0, 255, 0); // color - green test
+        // }
         led.setData(buffer);
     }
 }
