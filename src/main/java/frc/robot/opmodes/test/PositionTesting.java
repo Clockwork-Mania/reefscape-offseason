@@ -6,17 +6,17 @@ import frc.robot.opmodes.Opmode;
 import frc.robot.opmodes.teleop.CWController;
 import frc.robot.Utility;
 import frc.robot.hardware.*;
+import frc.robot.hardware.Arm.Position;
 
-public class Targeting implements Opmode {
+public class PositionTesting implements Opmode {
     Grinder bot;
     CWController con;
 
     public void init(Grinder bot) {
         this.bot = bot;
-        con = new CWController(0);
+        con = new CWController(1);
+        bot.arm.setTarget(bot.arm.getPos());
     }
-
-    Arm.Position target;
 
     public void periodic() {
         double
@@ -28,53 +28,17 @@ public class Targeting implements Opmode {
 
 
         if(con.getAButton()) {
-            target = Arm.CORAL_PREP;
+            bot.arm.setTarget(Arm.STARTING);
         }
-        else if(con.getBButton()) {
-            target = Arm.STARTING;
+        if(con.getXButton()) {
+            bot.arm.setTarget(Arm.READY);
         }
-        else if(con.getXButton()) {
-            target = Arm.CORAL_INTAKE;
-        }
-        else if(con.getYButton()) {
-            target = Arm.READY;
-        }
-        // else if(con.getUpButton()) {
-        //     target = Arm.HELD_READY;
-        // }
-        else if(con.getDownButton()) {
-            target = Arm.CORAL_L2;
-        }
+        bot.arm.goToTarget();
 
-        // if(con.getAButton()) {
-        //     target = Arm.ALGAE_GROUND;
-        // }
-        // if(con.getXButton()) {
-        //     target = Arm.READY_OUT;
-        // }
-        // if(con.getBButton()) {
-        //     target = Arm.ALGAE_PROC;
-        // }
-        // if(con.getYButton()) {
-        //     target = Arm.READY;
-        // }
-
-        if(target != null) {
-            bot.arm.goTo(target);
-        }
-        else {
-            bot.arm.stop();
-        }
-
-        if(con.getRightBumperButton()) {
-            bot.arm.claw.set(Claw.INTAKE_CORAL);
-        }
-        else if(con.getLeftBumperButton()) {
-            bot.arm.claw.set(Claw.OUTTAKE_CORAL);
-        }
-        else {
-            bot.arm.claw.stop();
-        }
+        bot.arm.claw.set(
+            .2*con.getLeftTriggerAxis()
+            -.2*con.getRightTriggerAxis()
+        );
 
         // if(con.getAButton()) {
         //     bot.arm.elbow.goTo(.52, 1);

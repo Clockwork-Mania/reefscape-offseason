@@ -27,7 +27,6 @@ public class FullTest implements Opmode {
         prepTimer = new Timer();
         state = "";
         bot.arm.setTarget(Arm.STARTING);
-        bot.arm.elevator.reset();
     }
 
     boolean intake = true, coral = false, coralPrep = false;

@@ -33,9 +33,13 @@ public class Swerve extends SubsystemBase  {
 	);
 
 	public Swerve() {
-		frontLeft  = new SwerveModule(3, 7, 11, .457);
-		backLeft   = new SwerveModule(4, 8, 12, .268);
-		frontRight = new SwerveModule(2, 6, 10, .030);
+		// frontLeft  = new SwerveModule(3, 7, 11, .457);
+		// backLeft   = new SwerveModule(4, 8, 12, .268);
+		// frontRight = new SwerveModule(2, 6, 10, .030);
+		// backRight  = new SwerveModule(5, 9, 13, .309);
+		frontLeft  = new SwerveModule(3, 7, 11, .455);
+		backLeft   = new SwerveModule(4, 8, 12, .536);
+		frontRight = new SwerveModule(2, 6, 10, .770);
 		backRight  = new SwerveModule(5, 9, 13, .309);
 		odo = new SwerveDriveOdometry(kin, heading2d(), positions());
 		targetMode = TargetMode.None;

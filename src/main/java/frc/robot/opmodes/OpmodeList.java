@@ -36,6 +36,8 @@ public class OpmodeList {
     // added in testing
     public static NamedOpmode test[] = {
         new NamedOpmode("Manual", Manual.class),
+        new NamedOpmode("New Targeting", NewTargeting.class),
+        new NamedOpmode("Position Testing", PositionTesting.class),
         // new NamedOpmode("Targeting", Targeting.class)
         // new NamedOpmode("Position Test", PositionTesting.class),
         // new NamedOpmode("Elevator Test", ElevatorTest.class)

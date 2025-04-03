@@ -13,7 +13,6 @@ public class Homing implements Opmode {
     public void init(Grinder bot) {
         this.bot = bot;
         con = new CWController(0);
-        bot.arm.elevator.reset();
     }
 
     Arm.Position target;

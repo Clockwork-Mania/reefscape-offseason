@@ -7,7 +7,7 @@ import frc.robot.opmodes.teleop.CWController;
 import frc.robot.Utility;
 import frc.robot.hardware.*;
 
-public class Manual implements Opmode {
+public class NewTargeting implements Opmode {
     Grinder bot;
     CWController con;
 
@@ -16,6 +16,9 @@ public class Manual implements Opmode {
     public void init(Grinder bot) {
         this.bot = bot;
         con = new CWController(1);
+        bot.arm.elevator.setTarget(.4);
+        bot.arm.elbow.setTarget(.1);
+        bot.arm.wrist.setTarget(.35);
     }
 
     public void periodic() {
@@ -26,60 +29,58 @@ public class Manual implements Opmode {
         bot.base.drive(s, f, r, false);
         bot.base.periodic();
 
-
         double pow = 0.5*Utility.sgnsqr(con.getRightTriggerAxis());
         SmartDashboard.putNumber("pow", pow);
         if(con.getLeftBumperButton() && con.getRightBumperButton()) {
             bot.base.resetGyro();
         }
 
-        if(con.getUpButton()) {
-            bot.arm.wrist.set(pow);
+        if(con.getYButton()) {
+            bot.arm.elevator.setTarget(0.7);
         }
-        else if(con.getDownButton()) {
-            bot.arm.wrist.set(-pow);
-        }
-        else {
-            bot.arm.wrist.set(0);
-        }
-
         if(con.getAButton()) {
-            bot.arm.elbow.set(-pow);
+            bot.arm.elevator.setTarget(0.6);
         }
-        else if(con.getYButton()) {
-            bot.arm.elbow.set(pow);
-        }
-        else {
-            bot.arm.elbow.set(0);
-        }
-
         if(con.getXButton()) {
-            bot.arm.elevator.set(pow);
+            bot.arm.elevator.setTarget(0.5);
         }
-        else if(con.getBButton()) {
-            bot.arm.elevator.set(-pow);
+        if(con.getBButton()) {
+            bot.arm.elevator.setTarget(0.4);
         }
-        else {
-            bot.arm.elevator.set(0);
-        }
+        bot.arm.elevator.goToTarget();
 
+        if(con.getRightButton()) {
+            bot.arm.elbow.setTarget(.3);
+        }
+        if(con.getUpButton()) {
+            bot.arm.elbow.setTarget(.2);
+        }
+        if(con.getLeftButton()) {
+            bot.arm.elbow.setTarget(.15);
+        }
+        if(con.getDownButton()) {
+            bot.arm.elbow.setTarget(.1);
+        }
+        bot.arm.elbow.goToTarget();
 
+        if(con.getLeftBumperButton()) {
+            bot.arm.wrist.setTarget(.2);
+        }
+        if(con.getM1Button()) {
+            bot.arm.wrist.setTarget(.35);
+        }
+        if(con.getM2Button()) {
+            bot.arm.wrist.setTarget(.55);
+        }
         if(con.getRightBumperButton()) {
-            holding = true;
-            bot.arm.claw.set(0.2);
+            bot.arm.wrist.setTarget(.7);
         }
-        else if(con.getLeftBumperButton()) {
-            bot.arm.claw.set(-0.2);
-            holding = false;
-        }
-        else {
-            if(holding) {
-                bot.arm.claw.set(0.1);
-            }
-            else {
-                bot.arm.claw.stop();
-            }
-        }
+        bot.arm.wrist.goToTarget((bot.arm.elbow.getPos()-Elbow.HORIZ)*2*Math.PI);
+
+        bot.arm.claw.set(
+            .2*con.getLeftTriggerAxis()
+            -.2*con.getRightTriggerAxis()
+        );
 
         SmartDashboard.putNumber("forward", f);
         SmartDashboard.putNumber("strafe", s);

@@ -31,13 +31,14 @@ public class Arm {
         }
     }
 
-    public static final double elevBase = 0.03, wristBase = 0;
-    public static final Position STARTING     = new Position(elevBase, wristBase+0.87, 0.51);
+    public static final double elevBase = 0, wristBase = 0;
+    public static final Position STARTING     = new Position(elevBase+0.37, wristBase+0.77, 0.104);
+    public static final Position READY     = new Position(elevBase+0.%5, wristBase+0.77, 0.104);
+    
     public static final Position CORAL_L4     = new Position(elevBase+5.05, wristBase+.58, 0.5);
     public static final Position CORAL_L3     = new Position(elevBase+3.3, wristBase+.51, .39);
     public static final Position CORAL_L2     = new Position(elevBase+1.5, wristBase+.52, .39);
     // public static final Position CORAL_L1     = new Position(elevBase+0, wristBase+0, 0);
-    public static final Position READY        = new Position(elevBase+1.71+0.35, wristBase+0.87, 0.51);
     // public static final Position READY_OUT    = new Position(elevBase+1.71+0.35, wristBase+0.39, 0.228);
     public static final Position CORAL_PREP   = new Position(elevBase+2.29, wristBase+0.70, 0.32);
     public static final Position CORAL_INTAKE = new Position(elevBase+2.29, wristBase+0.78, 0.26);
@@ -135,6 +136,10 @@ public class Arm {
             elbow.getPos(),
             wrist.getPos()
         );
+    }
+
+    public void hold() {
+        setTarget(getPos());
     }
 
     public void stop() {

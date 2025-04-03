@@ -9,7 +9,7 @@ public class Claw extends Motor {
     public static final double HOLD_ALGAE = 0.2;    
 
     public Claw() {
-        super(25, "canivore");
+        super(24, "canivore");
         setDir(Direction.CCW);
     }
 }

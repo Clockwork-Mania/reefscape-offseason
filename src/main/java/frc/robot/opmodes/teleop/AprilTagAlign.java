@@ -107,11 +107,7 @@ public class AprilTagAlign implements Opmode {
                 else bot.arm.setTarget(Arm.ALGAE_PROC);
             }
         }
-
-        if(con1.getM1Button() && con1.getM2Button()) {
-            bot.arm.elevator.reset();
-        }
-
+        
         bot.arm.goToTarget();
         SmartDashboard.putBoolean("Coral?", coral);
         SmartDashboard.putNumber("Wrist", bot.arm.wrist.getPos());

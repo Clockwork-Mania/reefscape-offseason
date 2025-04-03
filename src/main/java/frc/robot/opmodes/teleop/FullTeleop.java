@@ -111,10 +111,6 @@ public class FullTeleop implements Opmode {
             }
         }
 
-        if(con1.getM1Button() && con1.getM2Button()) {
-            bot.arm.elevator.reset();
-        }
-
         bot.arm.goToTarget(coral);
         SmartDashboard.putBoolean("Coral?", coral);
         SmartDashboard.putNumber("Wrist", bot.arm.wrist.getPos());

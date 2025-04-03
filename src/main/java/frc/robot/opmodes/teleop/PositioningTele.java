@@ -21,7 +21,6 @@ public class PositioningTele implements Opmode {
         this.bot = bot;
         con0 = new CWController(0);
         con1 = new CWController(1);
-        bot.arm.elevator.reset();
         target = new Position(
             bot.arm.elevator.getPos(),
             bot.arm.wrist.getPos(),
@@ -49,10 +48,10 @@ public class PositioningTele implements Opmode {
 
         double pow = 0.005*(1+4*con1.getLeftTriggerAxis());
         if(con1.getUpButton()) {
-            target.elev += 4*pow;
+            target.elev += .5*pow;
         }
         if(con1.getDownButton()) {
-            target.elev -= 4*pow;
+            target.elev -= .5*pow;
         }
         target.elev = Utility.clamp(target.elev, Elevator.MIN, Elevator.MAX);
         if(con1.getYButton()) {

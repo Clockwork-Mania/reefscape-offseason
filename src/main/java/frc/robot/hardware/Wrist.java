@@ -3,31 +3,32 @@ package frc.robot.hardware;
 import frc.robot.Utility;
 
 public class Wrist extends Motor {
-    static final double KP = 1;
+    static final double KP = 2;
     static final double CLOSE_KP = 2;
     static final double CLOSE_THRESH = 0.1;
-    static final double KI = 0.006;
+    static final double KI = 0.005;
     static final double INT_CAP = 0.2/KI;
     // static final double DECAY = .9997;
     static final double KC = .1;
     static final double KD = 0;//-0.3;
 
-    public static final double MIN = 0.2, MAX = 0.9;
+    public static final double MIN = 0.17, MAX = 0.74;
 
     // wrist horizontal value when the elbow is also perfectly horizontal
-    public static final double HORIZ = 0.315;
+    public static final double HORIZ = 0.329;
 
     // https://www.desmos.com/calculator/itw0kyeqhy
 
     public Wrist() {
-        super(24, "canivore");
-        setEnc(EncoderType.DUTY_CYCLE, 9);
-        setDir(Direction.CCW);
+        super(25, "canivore");
+        setEnc(EncoderType.DUTY_CYCLE, 7);
+        // setDir(Direction.CCW);
     }
 
     public double target;
     public void setTarget(double target) {
         this.target = target;
+        integral = 0;
     }
 
     double prevErr = 0;
@@ -64,9 +65,15 @@ public class Wrist extends Motor {
         double err = target - getPos();
         integral = Utility.clamp(integral, -INT_CAP, INT_CAP);
         integral += err;
-        double pow = KP2*err+KI2*integral+
-            (coral ? KC_CORAL : KC) * Math.cos(angle);
-        set(Utility.clamp(pow, -POW_CAP, POW_CAP));
+        // double pow = KP2*err+KI2*integral+
+        //     (coral ? KC_CORAL : KC) * Math.cos(angle);
+        // set(Utility.clamp(pow, -POW_CAP, POW_CAP));
+        set(
+            Utility.clamp(
+                KP*err, -POW_CAP, POW_CAP
+            )
+            +KI*integral
+        );
         prevErr = err;
     }
 
