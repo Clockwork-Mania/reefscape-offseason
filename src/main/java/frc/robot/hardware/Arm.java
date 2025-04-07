@@ -32,16 +32,18 @@ public class Arm {
     }
 
     public static final double elevBase = 0, wristBase = 0;
-    public static final Position STARTING     = new Position(elevBase+0.39, wristBase+0.58, 0.63);
-    public static final Position READY     = new Position(elevBase+0.39, wristBase+0.58, 0.63);
+    // public static final Position STARTING     = new Position(elevBase+0.37, wristBase+0.77, 0.104);
+    // public static final Position READY     = new Position(elevBase+0.45, wristBase+0.77, 0.104);
+    public static final Position STARTING     = new Position(elevBase+0.469, wristBase+0.77, 0.64);
+    public static final Position READY     = new Position(elevBase+0.519, wristBase+0.77, 0.55);
     
-    public static final Position CORAL_L4     = new Position(elevBase+0.760, wristBase+.51, 0.765); //THIS ONE
-    public static final Position CORAL_L3     = new Position(elevBase+0.64, wristBase+.51, .765);//lower elevator, higher elbow
-    public static final Position CORAL_L2     = new Position(elevBase+0.465, wristBase+.548, 0.791);
+    public static final Position CORAL_L4     = new Position(elevBase+0.845, wristBase+.314, 0.671); //THIS ONE
+    public static final Position CORAL_L3     = new Position(elevBase+0.76, wristBase+.46, .565);//lower elevator, higher elbow
+    public static final Position CORAL_L2     = new Position(elevBase+0.76, wristBase+.545, 0.434);
     // public static final Position CORAL_L1     = new Position(elevBase+0, wristBase+0, 0);$
     // public static final Position READY_OUT    = new Position(elevBase+1.71+0.35, wristBase+0.39, 0.228);
     public static final Position CORAL_PREP   = new Position(elevBase+2.29, wristBase+0.70, 0.32);
-    public static final Position CORAL_INTAKE = new Position(elevBase+0.65, wristBase+0.71, 0.649);
+    public static final Position CORAL_INTAKE = new Position(elevBase+0.593, wristBase+0.676, 0.631);
     // public static final Position HELD_READY   = new Position(elevBase+2.5+0.35, wristBase+0.78, 0.17);
     public static final Position ALGAE_BARGE  = new Position(elevBase+0, wristBase+0, 0); //THIS ONE
     public static final Position ALGAE_L3     = new Position(elevBase+0.709, wristBase+.552, .615);

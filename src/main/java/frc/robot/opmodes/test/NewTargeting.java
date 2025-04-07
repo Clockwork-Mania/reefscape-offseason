@@ -16,9 +16,10 @@ public class NewTargeting implements Opmode {
     public void init(Grinder bot) {
         this.bot = bot;
         con = new CWController(1);
-        bot.arm.elevator.setTarget(.4);
-        bot.arm.elbow.setTarget(.1);
-        bot.arm.wrist.setTarget(.35);
+        // bot.arm.elevator.setTarget();
+        // bot.arm.elbow.setTarget(.1);
+        // bot.arm.wrist.setTarget(.35);
+        bot.arm.hold();
     }
 
     public void periodic() {

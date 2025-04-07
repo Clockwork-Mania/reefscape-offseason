@@ -81,6 +81,7 @@ public class SwerveModule {
 
 		// clip and set speed
 		if(speed > 0) {
+			// speed = Math.min(speed)
 			if(speed - lastPower > maxAccel) speed = lastPower + maxAccel;
 		}
 		else {

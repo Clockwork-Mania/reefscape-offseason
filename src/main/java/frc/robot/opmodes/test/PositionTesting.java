@@ -113,5 +113,9 @@ public class PositionTesting implements Opmode {
         SmartDashboard.putNumber("wrist", bot.arm.wrist.getPos());
         SmartDashboard.putNumber("elbow", bot.arm.elbow.getPos());
         SmartDashboard.putNumber("elev", bot.arm.elevator.getPos());
+
+        SmartDashboard.putNumber("wrist target", bot.arm.wrist.target);
+        SmartDashboard.putNumber("elbow target", bot.arm.elbow.target);
+        SmartDashboard.putNumber("elev target", bot.arm.elevator.target);
     }
 }

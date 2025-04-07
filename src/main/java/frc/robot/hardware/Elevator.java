@@ -12,9 +12,10 @@ public class Elevator extends MotorPair {
     static final double KI = 0.002;
     // static final double DECAY = .999;
     static final double INT_CAP = 0.2/KI;
-    static final double POW_CAP = 0.8;
+    // static final double POW_CAP = 0.8;
+    static final double POW_CAP = 0.5;
 
-    public static final double MIN = .363, MAX = .745;
+    public static final double MIN = .46, MAX = .845;
     
     public Elevator() {
         super(21, 22, "canivore");

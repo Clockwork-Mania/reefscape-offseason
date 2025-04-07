@@ -4,7 +4,7 @@ import frc.robot.Utility;
 
 public class Elbow extends Motor {
     static final double KP = 4.5;
-    static final double CLOSE_KP = 4;
+    static final double CLOSE_KP = 4.5;
     static final double CLOSE_THRESH = 0.04;
     static final double KI = .0003;
     static final double INT_CAP = 0.1/KI;
@@ -12,7 +12,7 @@ public class Elbow extends Motor {
     static final double KC = .04;
     static final double POW_CAP = .3;
 
-    public static final double MIN = .07, MAX = .35;
+    public static final double MIN = .07, MAX = 1;
     public static final double HORIZ = 0.182;
 
     public Elbow() {
