@@ -87,7 +87,7 @@ public class FullTeleop implements Opmode {
                 coral = false;
             }
             if(con1.getLeftButton()) {
-                bot.arm.setTarget(Arm.CORAL_PREP);
+                bot.arm.setTarget(Arm.ALGAE_PROC);
                 coral = true;
             }
             if(con1.getDownButton()) {
@@ -95,19 +95,24 @@ public class FullTeleop implements Opmode {
                 coral = true;
             }
 
-            if(con1.getXButton()) {
-                bot.arm.setTarget(Arm.READY);
-            }
+            // if(con1.getXButton()) {
+            //     bot.arm.setTarget(Arm.READY);
+            // }
             if(con1.getYButton()) {
                 bot.arm.setTarget(Arm.CORAL_L4);
+                coral = true;
             }
             if(con1.getBButton()) {
                 bot.arm.setTarget(Arm.CORAL_L3);
                 coral = true;
             }
             if(con1.getAButton()) {
-                if(coral) bot.arm.setTarget(Arm.CORAL_L2);
-                else bot.arm.setTarget(Arm.ALGAE_PROC);
+                 if(coral) bot.arm.setTarget(Arm.CORAL_L2);
+                // else bot.arm.setTarget(Arm.ALGAE_PROC);
+            }
+            if(con1.getLeftBumperButton()) {
+                bot.arm.setTarget(Arm.ALGAE_GROUND);
+                coral = true;
             }
         }
 

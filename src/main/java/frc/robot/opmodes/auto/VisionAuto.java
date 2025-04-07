@@ -23,26 +23,44 @@ public class VisionAuto implements Opmode {
 
     public void init(Grinder bot) {
         this.bot = bot;
+
+        //odo reset
         bot.base.setTarget(0, 0, 0);
         bot.base.resetGyro();
         bot.base.resetOdo();
+
+        // set initial arm target to its current position
         bot.arm.setTarget(new Position(
             bot.arm.elevator.getPos(),
             bot.arm.wrist.getPos(), 
             bot.arm.elbow.getPos()
         ));
+
+        //initialize controller
         con = new XboxController(0);
+
+        //reset timers
         stateTimer = new Timer();
         stateTimer.start();
+
+        //add vision
         bot.base.addVision(bot.vision);
     }
 
     public void periodic() {
+        //update swerve PID
         bot.base.periodic();
-        bot.base.driveto();
-        bot.arm.goToTarget();
-        update();
 
+        //update movement PID
+        bot.base.driveto();
+
+        //update arm PID
+        bot.arm.goToTarget();
+
+        //update auto state machine
+        update(); // actual autonomous sequence
+
+        //telemetry data
         SmartDashboard.putNumber("X", bot.base.odo.getPoseMeters().getX());
         SmartDashboard.putNumber("Y", bot.base.odo.getPoseMeters().getY());
         SmartDashboard.putBoolean("ready", bot.base.ready());

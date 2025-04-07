@@ -90,13 +90,13 @@ public class Manual implements Opmode {
         SmartDashboard.putNumber("elbow", bot.arm.elbow.getPos());
         SmartDashboard.putNumber("elev", bot.arm.elevator.getPos());
         
-        SmartDashboard.putNumber("wristpow", bot.arm.wrist.get());
-        SmartDashboard.putNumber("elbowpow", bot.arm.elbow.get());
-        SmartDashboard.putNumber("elevpow", bot.arm.elevator.get());
+        // SmartDashboard.putNumber("wristpow", bot.arm.wrist.get());
+        // SmartDashboard.putNumber("elbowpow", bot.arm.elbow.get());
+        // SmartDashboard.putNumber("elevpow", bot.arm.elevator.get());
 
-        SmartDashboard.putNumber("fl", bot.base.frontLeft.enc.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("fr", bot.base.frontRight.enc.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("br", bot.base.backRight.enc.getPosition().getValueAsDouble());
-        SmartDashboard.putNumber("bl", bot.base.backLeft.enc.getPosition().getValueAsDouble());
+        // SmartDashboard.putNumber("fl", bot.base.frontLeft.enc.getPosition().getValueAsDouble());
+        // SmartDashboard.putNumber("fr", bot.base.frontRight.enc.getPosition().getValueAsDouble());
+        // SmartDashboard.putNumber("br", bot.base.backRight.enc.getPosition().getValueAsDouble());
+        // SmartDashboard.putNumber("bl", bot.base.backLeft.enc.getPosition().getValueAsDouble());
     }
 }
