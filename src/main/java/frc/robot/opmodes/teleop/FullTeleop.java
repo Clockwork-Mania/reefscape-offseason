@@ -33,14 +33,14 @@ public class FullTeleop implements Opmode {
         // --------------- BASE ---------------- //
         // ------------------------------------- //
 
-        // double
-        //     f = -con0.getLeftY()*.8,
-        //     s = con0.getLeftX()*.8,
-        //     r = con0.getRightX()*.8;
         double
-            f = -con1.getLeftY()*.8,
-            s = con1.getLeftX()*.8,
-            r = con1.getRightX()*.8;
+            f = -con0.getLeftY()*.8,
+            s = con0.getLeftX()*.8,
+            r = con0.getRightX()*.8;
+        // double
+        //     f = -con1.getLeftY()*.8,
+        //     s = con1.getLeftX()*.8,
+        //     r = con1.getRightX()*.8;
         bot.base.drive(s, f, r, true);
         bot.base.periodic();
         SmartDashboard.putNumber("odo X", bot.base.pose().getX());
@@ -92,7 +92,7 @@ public class FullTeleop implements Opmode {
             }
             if(con1.getLeftButton()) {
                 bot.arm.setTarget(Arm.ALGAE_PROC);
-                coral = true;
+                coral = false;
             }
             if(con1.getDownButton()) {
                 bot.arm.setTarget(Arm.CORAL_INTAKE);

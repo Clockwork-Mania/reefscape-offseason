@@ -13,7 +13,8 @@ public class Elevator extends MotorPair {
     // static final double DECAY = .999;
     static final double INT_CAP = 0.2/KI;
     // static final double POW_CAP = 0.8;
-    static final double POW_CAP = 0.5;
+    static final double UP_PCAP = 0.5;
+    static final double DOWN_PCAP = 0.4;
 
     public static final double MIN = .46, MAX = .845;
     
@@ -28,6 +29,7 @@ public class Elevator extends MotorPair {
     public double target;
     public void setTarget(double target) {
         this.target = target;
+        integral = 0;
     }
 
     public void goToTarget() {
@@ -42,8 +44,9 @@ public class Elevator extends MotorPair {
             integral = 0;
         }
         integral = Utility.clamp(integral, -INT_CAP, INT_CAP);
+        double pow = Utility.clamp(KP*err, -DOWN_PCAP, UP_PCAP);
         set(
-            KP*err+
+            pow+
             KI*integral
         );
         SmartDashboard.putNumber("eleverr", err);
