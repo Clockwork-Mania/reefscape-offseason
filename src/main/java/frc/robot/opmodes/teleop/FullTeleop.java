@@ -1,5 +1,9 @@
 package frc.robot.opmodes.teleop;
 
+import java.util.List;
+
+import org.photonvision.targeting.PhotonPipelineResult;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
@@ -112,12 +116,13 @@ public class FullTeleop implements Opmode {
             }
 
             if(con1.getAButton()) {
-                 if(coral) bot.arm.setTarget(Arm.CORAL_L2);
+                bot.arm.setTarget(Arm.CORAL_L2);
+                //  if(coral) bot.arm.setTarget(Arm.CORAL_L2);
                 // else bot.arm.setTarget(Arm.ALGAE_PROC);
             }
             if(con1.getLeftBumperButton()) {
                 bot.arm.setTarget(Arm.ALGAE_GROUND);
-                coral = true;
+                coral = false;
             }
         }
 
@@ -130,7 +135,14 @@ public class FullTeleop implements Opmode {
         SmartDashboard.putNumber("Elbow Target", bot.arm.elbow.target);
         SmartDashboard.putNumber("Elevator Target", bot.arm.elevator.target);
 
-        
+
+        List<PhotonPipelineResult> camResults = bot.vision.cam1.getAllUnreadResults();
+        if(camResults.size() > 0) {
+            SmartDashboard.putNumber("Camera Detection", camResults.get(0).getBestTarget().fiducialId);
+        }
+        else {
+            SmartDashboard.putNumber("Camera Detection",-1);
+        }
 
         // ------------------------------------- //
         // --------------- CLAW ---------------- //

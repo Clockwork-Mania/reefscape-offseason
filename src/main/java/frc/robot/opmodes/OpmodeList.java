@@ -18,6 +18,7 @@ public class OpmodeList {
         new NamedOpmode("Vision", VisionAuto.class),
         new NamedOpmode("Leave", TimedAuto.class),
         new NamedOpmode("None", NoAuto.class),
+        new NamedOpmode("AprilTag", AprilTagAuto.class)
         // new NamedOpmode("Basic", BasicAuto.class),
         // new NamedOpmode("New", NewAuto.class),
         // new NamedOpmode("Homing", HomingAuto.class),

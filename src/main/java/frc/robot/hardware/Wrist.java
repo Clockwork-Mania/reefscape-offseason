@@ -12,7 +12,7 @@ public class Wrist extends Motor {
     static final double KC = .1;
     static final double KD = 0;//-0.3;
 
-    public static final double MIN = 0.17, MAX = 0.74;
+    public static final double MIN = 0.046, MAX = 0.616; //.74
 
     // wrist horizontal value when the elbow is also perfectly horizontal
     public static final double HORIZ = 0.329;
