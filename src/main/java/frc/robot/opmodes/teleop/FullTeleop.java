@@ -136,14 +136,15 @@ public class FullTeleop implements Opmode {
         SmartDashboard.putNumber("Elevator Target", bot.arm.elevator.target);
 
 
-        List<PhotonPipelineResult> camResults = bot.vision.cam1.getAllUnreadResults();
-        if(camResults.size() > 0) {
-            SmartDashboard.putNumber("Camera Detection", camResults.get(0).getBestTarget().fiducialId);
-        }
-        else {
-            SmartDashboard.putNumber("Camera Detection",-1);
-        }
+        // List<PhotonPipelineResult> camResults = bot.vision.cam1.getAllUnreadResults();
+        // if(camResults.size() > 0) {
+            // SmartDashboard.putNumber("Camera Detection", camResults.get(0).getBestTarget().fiducialId);
+        // }
+        // else {
+            // SmartDashboard.putNumber("Camera Detection",-1);
+        // }
 
+        
         // ------------------------------------- //
         // --------------- CLAW ---------------- //
         // ------------------------------------- //

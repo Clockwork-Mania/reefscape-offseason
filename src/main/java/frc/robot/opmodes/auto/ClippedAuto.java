@@ -32,13 +32,13 @@ public class ClippedAuto implements Opmode {
         ));
         stateTimer = new Timer();
         stateTimer.start();
-        bot.base.addVision(bot.vision);
+        // bot.base.addVision(bot.vision);
     }
 
     public void periodic() {
         bot.base.periodic();
         bot.base.driveto();
-        bot.arm.goToTarget();
+        bot.arm.goToTarget(true);
         update();
 
         SmartDashboard.putNumber("X", bot.base.odo.getPoseMeters().getX());
