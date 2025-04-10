@@ -9,8 +9,27 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision {
+    public class CamTarget {
+        double yaw, pitch, area, skew;
+        public CamTarget(double yaw, double pitch, double area, double skew) {
+            this.yaw = yaw;
+            this.pitch = pitch;
+            this.area = area;
+            this.skew = skew;
+        }
+        public CamTarget(double yaw, double pitch, double area) {
+            this(yaw, pitch, area, 0);
+        }
+    }
+
+    public class BaseTarget {
+        CamTarget t1, t2;
+    }
+
     public PhotonCamera cam1 = new PhotonCamera("arduzz1"),
                         cam2 = new PhotonCamera("arduzz2");
+
+    public PhotonPipelineResult view1, view2;
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry pipeline = table.getEntry("pipeline");
@@ -30,7 +49,8 @@ public class Vision {
     }
 
     public void update() {
-
+        view1 = cam1.getLatestResult();
+        view2 = cam2.getLatestResult();
 
         SmartDashboard.putNumber("LimelightX", getX());
         SmartDashboard.putNumber("LimelightY", getY());
