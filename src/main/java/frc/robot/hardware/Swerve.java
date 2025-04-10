@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utility;
+import frc.robot.hardware.Vision.BaseTarget;
 
 public class Swerve extends SubsystemBase  {
 	// order is fl, bl, fr, br
@@ -78,11 +79,13 @@ public class Swerve extends SubsystemBase  {
 
 	Pose2d target;
 	double visionTarget;
+	BaseTarget baseVisionTarget;
 	double visionHeading;
 	enum TargetMode {
 		None,
 		Odometry,
-		Vision
+		Vision,
+		BaseVision
 	};
 	TargetMode targetMode;
 
@@ -101,6 +104,12 @@ public class Swerve extends SubsystemBase  {
 		visionHeading = heading;
 	}
 
+	public void setBaseVisionTarget(BaseTarget target, double heading) {
+		this.baseVisionTarget = target;
+		targetMode = TargetMode.BaseVision;
+		visionHeading = heading;
+	}
+
 	public void setTarget(double x, double y, double h) {
 		setTarget(new Pose2d(x, y, new Rotation2d(h)));
 	}
@@ -112,6 +121,9 @@ public class Swerve extends SubsystemBase  {
 				break;
 			case Vision:
 				drivetoVision();
+				break;
+			case BaseVision:
+				drivetoBaseVision();
 				break;
 			default:
 				stop();
@@ -129,7 +141,7 @@ public class Swerve extends SubsystemBase  {
 		dh = Utility.clamp(dh*DH_KP, -DH_CAP, DH_CAP);
 		vx = mag * Math.cos(ang);
 		vy = mag * Math.sin(ang);
-		drive(vx, vy, -dh, true);
+		drive(vx, vy, dh, true);
 	}
 
 	double VIS_KP = 0.01;
@@ -138,13 +150,47 @@ public class Swerve extends SubsystemBase  {
 			double err = visionTarget-vision.getX();
 			double dh = Utility.fixang(visionHeading-heading());   //also btw why does this use target thats not even involved with drivetovision() 
 			dh = Utility.clamp(dh*DH_KP, -DH_CAP, DH_CAP);
-			drive(VIS_KP*err, 0, -dh, false);
+			drive(VIS_KP*err, 0, dh, false);
 		}
 		else stop();
 	}
 
+	double BVIS_YAW_KP = 0.015, BVIS_YAW_KI = 0.0001, BVIS_YAW_ICAP = 0.1/BVIS_YAW_KI;
+	double BVIS_AREA_KP = 0.035, BVIS_AREA_KI = 0.0001, BVIS_AREA_ICAP = 0.1/BVIS_AREA_KI;
+	double yawSum, areaSum;
+	public void drivetoBaseVision() {
+		SmartDashboard.putNumber("target yaw", baseVisionTarget.t2.yaw);
+		SmartDashboard.putNumber("target area", baseVisionTarget.t2.area);
+		SmartDashboard.putNumber("target area", baseVisionTarget.t2.area);
+		// TODO check id and such
+		if(vision.view2.hasTargets() && vision.view2.getBestTarget() != null) {
+			SmartDashboard.putNumber("yaw", vision.view2.getBestTarget().getYaw());
+			SmartDashboard.putNumber("area", vision.view2.getBestTarget().getArea());
+			double yawErr = vision.view2.getBestTarget().getYaw()-baseVisionTarget.t2.yaw;
+			double areaErr = Math.sqrt(baseVisionTarget.t2.area-vision.view2.getBestTarget().getArea());
+			yawSum += yawErr;
+			yawSum = Utility.clamp(yawSum, BVIS_YAW_ICAP);
+			areaSum += areaErr;
+			areaSum = Utility.clamp(areaSum, BVIS_AREA_ICAP);
+			double dh = Utility.fixang(visionHeading-heading());
+			drive(
+				BVIS_YAW_KP*yawErr+BVIS_YAW_KI*yawSum,
+				BVIS_AREA_KP*areaErr+BVIS_AREA_KI*areaSum,
+			dh, false);
+		}
+		else stop();
+		// if(vision.foundTag()) {
+		// 	double err = visionTarget-vision.getX();
+		// 	double dh = Utility.fixang(visionHeading-heading());   //also btw why does this use target thats not even involved with drivetovision() 
+		// 	dh = Utility.clamp(dh*DH_KP, -DH_CAP, DH_CAP);
+		// 	drive(VIS_KP*err, 0, -dh, false);
+		// }
+		// else stop();
+	}
+
 	double TR_THRESH = 0.05, ROT_THRESH = Math.PI/8;
 	double VIS_THRESH = 0.2;
+	double BVIS_YAW_THRESH = 2, BVIS_AREA_THRESH = 0.2;
 	public boolean ready() {
 		switch(targetMode) {
 			case Odometry:
@@ -154,6 +200,11 @@ public class Swerve extends SubsystemBase  {
 					err.getRotation().getRadians() < ROT_THRESH;
 			case Vision:
 				return Math.abs(visionTarget-vision.getX())<VIS_THRESH;
+			case BaseVision:
+				return
+					vision.view2.getBestTarget() == null ? false : 
+					Math.abs(baseVisionTarget.t2.yaw-vision.view2.getBestTarget().getYaw())<BVIS_YAW_THRESH &&
+					Math.abs(baseVisionTarget.t2.area-vision.view2.getBestTarget().getArea())<BVIS_AREA_THRESH;
 			default: return true;
 		}
 	}

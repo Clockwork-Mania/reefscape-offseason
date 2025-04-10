@@ -19,6 +19,10 @@ public class Utility {
         return Math.min(max, Math.max(v, min));
     }
 
+    public static double clamp(double v, double max) {
+        return Math.min(max, Math.max(v, -max));
+    }
+
     public static double sgnsqr(double a) {
         return Math.signum(a)*a*a;
     }

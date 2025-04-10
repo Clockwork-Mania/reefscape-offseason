@@ -34,7 +34,8 @@ public class Arm {
     public static final double elevBase = -.1, wristBase = -.194;
     // public static final Position STARTING     = new Position(elevBase+0.37, wristBase+0.77, 0.104);
     // public static final Position READY     = new Position(elevBase+0.45, wristBase+0.77, 0.104);
-    public static final Position STARTING     = new Position(elevBase+0.469, wristBase+0.85, 0.64);
+    // public static final Position STARTING     = new Position(elevBase+0.469, wristBase+0.85, 0.64); //old starting before thurs
+    public static final Position STARTING  = new Position(elevBase + 0.518, wristBase+0.194+0.165, 0.628);
     public static final Position READY     = new Position(elevBase+0.519, wristBase+0.85, 0.53);
     
     public static final Position CORAL_L4     = new Position(elevBase+0.897, wristBase+0.194+.19, 0.686); //THIS ONE

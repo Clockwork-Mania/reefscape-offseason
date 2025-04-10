@@ -1,6 +1,7 @@
 package frc.robot.hardware;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTable;
@@ -10,21 +11,35 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision {
     public class CamTarget {
-        double yaw, pitch, area, skew;
-        public CamTarget(double yaw, double pitch, double area, double skew) {
+        public double yaw, area, skew;
+        public int id;
+        public CamTarget(int id, double yaw, double area, double skew) {
             this.yaw = yaw;
-            this.pitch = pitch;
             this.area = area;
             this.skew = skew;
         }
-        public CamTarget(double yaw, double pitch, double area) {
-            this(yaw, pitch, area, 0);
+        public CamTarget(int id, double yaw, double area) {
+            this(id, yaw, area, 0);
         }
     }
 
     public class BaseTarget {
-        CamTarget t1, t2;
+        public CamTarget t1, t2;
+        public BaseTarget(CamTarget t1, CamTarget t2) {
+            this.t1 = t1;
+            this.t2 = t2;
+        }
     }
+
+    public BaseTarget REEF_LEFT = new BaseTarget(
+        new CamTarget(10, 0, 0),
+        new CamTarget(10, 0, 0)
+    );
+
+    public BaseTarget REEF_RIGHT = new BaseTarget(
+        new CamTarget(10, 0, 0),
+        new CamTarget(10, 8.23, 6.17)
+    );
 
     public PhotonCamera cam1 = new PhotonCamera("arduzz1"),
                         cam2 = new PhotonCamera("arduzz2");
