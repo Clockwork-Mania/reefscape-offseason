@@ -24,8 +24,8 @@ public class Swerve extends SubsystemBase  {
 	public SwerveDriveOdometry odo;
 	Vision vision;
 
-	double width = 23.5;
-	SwerveDriveKinematics kin = new SwerveDriveKinematics(
+	double width = 23.5; //width in inches of the base of the robot
+	SwerveDriveKinematics kin = new SwerveDriveKinematics( //kinematics object that converts data into speed and angle to be used for odometry
 		new Translation2d( width/2,  width/2),
 		new Translation2d( width/2, -width/2),
 		new Translation2d(-width/2,  width/2),
@@ -37,20 +37,19 @@ public class Swerve extends SubsystemBase  {
 		// backLeft   = new SwerveModule(4, 8, 12, .268);
 		// frontRight = new SwerveModule(2, 6, 10, .030);
 		// backRight  = new SwerveModule(5, 9, 13, .309);
-		frontLeft  = new SwerveModule(3, 7, 11, .455);
-		backLeft   = new SwerveModule(4, 8, 12, .536);
-		frontRight = new SwerveModule(2, 6, 10, .770);
+		frontLeft  = new SwerveModule(3, 7, 11, .455); //define each power motor id, spin motor id,
+		backLeft   = new SwerveModule(4, 8, 12, .536); // encoder id, and each wheel's encoder reading  
+		frontRight = new SwerveModule(2, 6, 10, .770); // when pointed at 0 radians
 		backRight  = new SwerveModule(5, 9, 13, .309);
-		odo = new SwerveDriveOdometry(kin, heading2d(), positions());
-		targetMode = TargetMode.None;
+		odo = new SwerveDriveOdometry(kin, heading2d(), positions()); //create odometry object using the kinematics object, gyro, 
+		targetMode = TargetMode.None;								  // and individual swerve module positions>
 	}
-
 	public void addVision(Vision vision) {
 		this.vision = vision;
 	}
 
 	public void setSpeeds(ChassisSpeeds speeds) {
-		SwerveModuleState[] moduleStates = kin.toSwerveModuleStates(speeds);
+		SwerveModuleState[] moduleStates = kin.toSwerveModuleStates(speeds); 
 		SwerveModuleState fL = moduleStates[0];
 		SwerveModuleState bL = moduleStates[1];
 		SwerveModuleState fR = moduleStates[2];
