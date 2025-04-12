@@ -11,23 +11,36 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Vision {
     public class CamTarget {
-        public double yaw, area, skew;
+        public double yaw, area;
         public int id;
-        public CamTarget(int id, double yaw, double area, double skew) {
+        public CamTarget(int id, double yaw, double area) {
             this.yaw = yaw;
             this.area = area;
-            this.skew = skew;
         }
-        public CamTarget(int id, double yaw, double area) {
-            this(id, yaw, area, 0);
+    }
+
+    public class CamPitchTarget {
+        public double yaw, pitch;
+        public int id;
+        public CamPitchTarget(int id, double yaw, double pitch) {
+            this.yaw = yaw;
+            this.pitch = pitch;
         }
     }
 
     public class BaseTarget {
-        public CamTarget t1, t2;
-        public BaseTarget(CamTarget t1, CamTarget t2) {
-            this.t1 = t1;
-            this.t2 = t2;
+        public CamTarget left, right;
+        public BaseTarget(CamTarget left, CamTarget right) {
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    public class BasePitchTarget {
+        public CamPitchTarget left, right;
+        public BasePitchTarget(CamPitchTarget left, CamPitchTarget right) {
+            this.left = left;
+            this.right = right;
         }
     }
 
@@ -36,15 +49,24 @@ public class Vision {
         new CamTarget(10, 0, 0)
     );
 
+    // public BaseTarget REEF_RIGHT = new BaseTarget(
+    //     new CamTarget(10, 8.23, 6.17),
+    //     new CamTarget(10, 0, 0)
+    // );
     public BaseTarget REEF_RIGHT = new BaseTarget(
-        new CamTarget(10, 0, 0),
-        new CamTarget(10, 8.23, 6.17)
+        new CamTarget(10, 8.30, 2.77),
+        new CamTarget(10, -19.92, 1.96)
     );
 
-    public PhotonCamera cam1 = new PhotonCamera("arduzz1"),
-                        cam2 = new PhotonCamera("arduzz2");
+    public BasePitchTarget P_REEF_RIGHT = new BasePitchTarget(
+        new CamPitchTarget(10, 3.86, -5.11),
+        new CamPitchTarget(10, -20.167, -5.85)
+    );
 
-    public PhotonPipelineResult view1, view2;
+    public PhotonCamera leftCam = new PhotonCamera("arduzz2"),
+                        rightCam = new PhotonCamera("arduzz1");
+
+    public PhotonPipelineResult rightView, leftView;
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
     NetworkTableEntry pipeline = table.getEntry("pipeline");
@@ -64,8 +86,8 @@ public class Vision {
     }
 
     public void update() {
-        view1 = cam1.getLatestResult();
-        view2 = cam2.getLatestResult();
+        rightView = rightCam.getLatestResult();
+        leftView = leftCam.getLatestResult();
 
         SmartDashboard.putNumber("LimelightX", getX());
         SmartDashboard.putNumber("LimelightY", getY());

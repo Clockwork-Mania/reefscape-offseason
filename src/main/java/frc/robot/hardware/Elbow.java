@@ -9,7 +9,7 @@ public class Elbow extends Motor {
     static final double KI = .0003;
     static final double INT_CAP = 0.1/KI;
     static final double DECAY = .9995;
-    static final double KC = .04;
+    static final double KC = .045;
     static final double POW_CAP = .3;
 
     public static final double MIN = .07, MAX = 0.76;

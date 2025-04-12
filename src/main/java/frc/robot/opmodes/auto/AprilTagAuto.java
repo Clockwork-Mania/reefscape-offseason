@@ -18,7 +18,7 @@ public class AprilTagAuto implements Opmode {
 
     @Override
     public void periodic() {
-        List<PhotonPipelineResult> camResults = bot.vision.cam1.getAllUnreadResults();
+        List<PhotonPipelineResult> camResults = bot.vision.rightCam.getAllUnreadResults();
         if(camResults.size() > 0) {
             if (camResults.get(0).hasTargets()) {
                 SmartDashboard.putNumber("Camera Detection", camResults.get(0).getBestTarget().fiducialId);

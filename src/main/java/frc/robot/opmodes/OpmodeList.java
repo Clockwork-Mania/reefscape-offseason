@@ -31,6 +31,7 @@ public class OpmodeList {
         new NamedOpmode("April Tag Align", AprilTagAlign.class),
         new NamedOpmode("Sensor Test", Sensors.class),
         new NamedOpmode("Led Test", LedTest.class),
+        new NamedOpmode("IMU Test", LedTest.class),
         // new NamedOpmode("Full Test", FullTest.class),
         // new NamedOpmode("Pre-Full", PreFull.class),
     };

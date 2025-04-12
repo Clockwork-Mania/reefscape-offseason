@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.ADIS16448_IMU;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Utility;
+import frc.robot.hardware.Vision.BasePitchTarget;
 import frc.robot.hardware.Vision.BaseTarget;
 
 public class Swerve extends SubsystemBase  {
@@ -77,17 +78,19 @@ public class Swerve extends SubsystemBase  {
 		backRight .drive(x, y, r, -Math.PI*.75);
 	}
 
-	Pose2d target;
-	double visionTarget;
-	BaseTarget baseVisionTarget;
-	double visionHeading;
-	enum TargetMode {
+	public Pose2d target;
+	public double visionTarget;
+	public BaseTarget baseVisionTarget;
+	public BasePitchTarget basePitchVisionTarget;
+	public double visionHeading;
+	public enum TargetMode {
 		None,
 		Odometry,
 		Vision,
-		BaseVision
+		BaseVision,
+		BasePitchVision
 	};
-	TargetMode targetMode;
+	public TargetMode targetMode;
 
 	public void setTarget(Pose2d target) {
 		this.target = target;
@@ -110,6 +113,13 @@ public class Swerve extends SubsystemBase  {
 		visionHeading = heading;
 	}
 
+	public void setBasePitchVisionTarget(BasePitchTarget target, double heading) {
+		this.basePitchVisionTarget = target;
+		targetMode = TargetMode.BasePitchVision;
+		visionHeading = heading;
+		yawSum = 0; areaSum = 0;
+	}
+
 	public void setTarget(double x, double y, double h) {
 		setTarget(new Pose2d(x, y, new Rotation2d(h)));
 	}
@@ -125,13 +135,16 @@ public class Swerve extends SubsystemBase  {
 			case BaseVision:
 				drivetoBaseVision();
 				break;
+			case BasePitchVision:
+				drivetoBasePitchVision();
+				break;
 			default:
 				stop();
 		}
 	}
 
-	double MAG_KP = .4, DH_KP = .1;
-	double MAG_CAP = .5, DH_CAP = .2;
+	double MAG_KP = .4, DH_KP = .2;
+	double MAG_CAP = .4, DH_CAP = .2;
 	public void drivetoOdo() {
 		Translation2d tr = target.minus(pose()).getTranslation();
 		double mag = tr.getNorm(), ang = tr.getAngle().getRadians();
@@ -155,42 +168,122 @@ public class Swerve extends SubsystemBase  {
 		else stop();
 	}
 
-	double BVIS_YAW_KP = 0.015, BVIS_YAW_KI = 0.0001, BVIS_YAW_ICAP = 0.1/BVIS_YAW_KI;
-	double BVIS_AREA_KP = 0.035, BVIS_AREA_KI = 0.0001, BVIS_AREA_ICAP = 0.1/BVIS_AREA_KI;
+	double BVIS_YAW_KP = 0.006, BVIS_YAW_KI = 0.00003, BVIS_YAW_ICAP = 0.1/BVIS_YAW_KI;
+	double BVIS_AREA_KP = .09/*0.2*/, BVIS_AREA_KI = .00017/*0.0005*/, BVIS_AREA_ICAP = 0.2/BVIS_AREA_KI;
+	double BVIS_AREA_INT_THRESH = 0.5, BVYIT = 4;
+	double BVYC = 0.4, BVAC = 0.4;
 	double yawSum, areaSum;
+
 	public void drivetoBaseVision() {
-		SmartDashboard.putNumber("target yaw", baseVisionTarget.t2.yaw);
-		SmartDashboard.putNumber("target area", baseVisionTarget.t2.area);
-		SmartDashboard.putNumber("target area", baseVisionTarget.t2.area);
+		SmartDashboard.putNumber("left target yaw", baseVisionTarget.left.yaw);
+		SmartDashboard.putNumber("left target area", baseVisionTarget.left.area);
+		SmartDashboard.putNumber("right target yaw", baseVisionTarget.left.yaw);
+		SmartDashboard.putNumber("right target area", baseVisionTarget.left.area);
+		SmartDashboard.putNumber("yaw sum", yawSum);
+		SmartDashboard.putNumber("area sum", areaSum);
+		boolean leftSaw = false, rightSaw = false;
 		// TODO check id and such
-		if(vision.view2.hasTargets() && vision.view2.getBestTarget() != null) {
-			SmartDashboard.putNumber("yaw", vision.view2.getBestTarget().getYaw());
-			SmartDashboard.putNumber("area", vision.view2.getBestTarget().getArea());
-			double yawErr = vision.view2.getBestTarget().getYaw()-baseVisionTarget.t2.yaw;
-			double areaErr = Math.sqrt(baseVisionTarget.t2.area-vision.view2.getBestTarget().getArea());
-			yawSum += yawErr;
+		double yawErr = 0, areaErr = 0;
+		if(vision.leftView.hasTargets() && vision.leftView.getBestTarget() != null) {
+			leftSaw = true;
+			SmartDashboard.putNumber("left yaw", vision.leftView.getBestTarget().getYaw());
+			SmartDashboard.putNumber("left area", vision.leftView.getBestTarget().getArea());
+			yawErr += vision.leftView.getBestTarget().getYaw()-baseVisionTarget.left.yaw;
+
+			yawErr /= Math.sqrt(vision.leftView.getBestTarget().getArea());
+			// areaErr += Math.sqrt(baseVisionTarget.left.area)-Math.sqrt(vision.leftView.getBestTarget().getArea());
+			areaErr += baseVisionTarget.left.area-vision.leftView.getBestTarget().getArea();
+		}
+		if(vision.rightView.hasTargets() && vision.rightView.getBestTarget() != null) {
+			rightSaw = true;
+			SmartDashboard.putNumber("right yaw", vision.rightView.getBestTarget().getYaw());
+			SmartDashboard.putNumber("right area", vision.rightView.getBestTarget().getArea());
+			yawErr += vision.rightView.getBestTarget().getYaw()-baseVisionTarget.right.yaw;
+			// areaErr += Math.sqrt(baseVisionTarget.right.area)-Math.sqrt(vision.rightView.getBestTarget().getArea());
+		}
+		double mod = leftSaw && rightSaw ? 0.5 : 1;
+		if(leftSaw || rightSaw) {
+			if(Math.signum(yawErr) != Math.signum(yawSum)) {
+				yawSum = 0;
+			}
+			if(Math.abs(yawErr) < BVYIT) {
+				yawSum += yawErr;
+			}
 			yawSum = Utility.clamp(yawSum, BVIS_YAW_ICAP);
-			areaSum += areaErr;
+			if(Math.abs(areaErr) < BVIS_AREA_INT_THRESH) {
+				areaSum += areaErr;
+			}
 			areaSum = Utility.clamp(areaSum, BVIS_AREA_ICAP);
 			double dh = Utility.fixang(visionHeading-heading());
 			drive(
-				BVIS_YAW_KP*yawErr+BVIS_YAW_KI*yawSum,
-				BVIS_AREA_KP*areaErr+BVIS_AREA_KI*areaSum,
+				Utility.clamp(mod*(BVIS_YAW_KP*yawErr+BVIS_YAW_KI*yawSum), BVYC),
+				Utility.clamp(BVIS_AREA_KP*areaErr+BVIS_AREA_KI*areaSum, BVAC),
 			dh, false);
+			// 0, false);
 		}
 		else stop();
-		// if(vision.foundTag()) {
-		// 	double err = visionTarget-vision.getX();
-		// 	double dh = Utility.fixang(visionHeading-heading());   //also btw why does this use target thats not even involved with drivetovision() 
-		// 	dh = Utility.clamp(dh*DH_KP, -DH_CAP, DH_CAP);
-		// 	drive(VIS_KP*err, 0, -dh, false);
-		// }
+	}
+
+	double BVIS_PITCH_KP = 0.1, BVIS_PITCH_KI = 0.00012, BVIS_PITCH_ICAP = 0.1/BVIS_PITCH_KI;
+	double pitchSum;
+
+	public double pitchFix(double p) {
+		return Math.tan(Math.toRadians(p+Math.PI/18));
+	}
+
+	public void drivetoBasePitchVision() {
+		SmartDashboard.putNumber("left target yaw", basePitchVisionTarget.left.yaw);
+		SmartDashboard.putNumber("left target pitch", basePitchVisionTarget.left.pitch);
+		SmartDashboard.putNumber("right target yaw", basePitchVisionTarget.right.yaw);
+		SmartDashboard.putNumber("right target pitch", basePitchVisionTarget.right.pitch);
+		boolean leftSaw = false, rightSaw = false;
+		// TODO check id and such
+		double yawErr = 0, pitchErr = 0;
+		if(vision.leftView.hasTargets() && vision.leftView.getBestTarget() != null) {
+			leftSaw = true;
+			SmartDashboard.putNumber("left yaw", vision.leftView.getBestTarget().getYaw());
+			SmartDashboard.putNumber("left pitch", vision.leftView.getBestTarget().getPitch());
+			yawErr += vision.leftView.getBestTarget().getYaw()-basePitchVisionTarget.left.yaw;
+			pitchErr +=
+				// Math.tan(Math.toRadians(basePitchVisionTarget.left.pitch)+Math.PI/18)
+				// -Math.tan(Math.toRadians(vision.leftView.getBestTarget().getPitch())+Math.PI/18);
+				pitchFix(basePitchVisionTarget.left.pitch)
+				-pitchFix(vision.leftView.getBestTarget().getPitch());
+		}
+		if(vision.rightView.hasTargets() && vision.rightView.getBestTarget() != null) {
+			rightSaw = true;
+			SmartDashboard.putNumber("right yaw", vision.rightView.getBestTarget().getYaw());
+			SmartDashboard.putNumber("right pitch", vision.rightView.getBestTarget().getPitch());
+			yawErr += vision.rightView.getBestTarget().getYaw()-basePitchVisionTarget.right.yaw;
+			pitchErr +=
+				// Math.tan(Math.toRadians(basePitchVisionTarget.right.pitch)+Math.PI/18)
+				// -Math.tan(Math.toRadians(vision.rightView.getBestTarget().getPitch())+Math.PI/18);
+				pitchFix(basePitchVisionTarget.right.pitch)
+				-pitchFix(vision.rightView.getBestTarget().getPitch());
+		}
+		double mod = leftSaw && rightSaw ? 0.5 : 1;
+		if(leftSaw || rightSaw) {
+			yawSum += yawErr;
+			yawSum = Utility.clamp(yawSum, BVIS_YAW_ICAP);
+			pitchSum += pitchErr;
+			pitchSum = Utility.clamp(pitchSum, BVIS_PITCH_ICAP);
+			double dh = Utility.fixang(visionHeading-heading());
+			drive(
+				mod*(BVIS_YAW_KP*yawErr+BVIS_YAW_KI*yawSum),
+				mod*(BVIS_PITCH_KP*pitchErr+BVIS_PITCH_KI*pitchSum),
+			dh, false);
+		}
+
+		SmartDashboard.putNumber("pitch err", pitchErr);
+		SmartDashboard.putNumber("pitch sum", pitchSum);
+		SmartDashboard.putNumber("pitch pow", mod*(BVIS_PITCH_KP*pitchErr+BVIS_PITCH_KI*pitchSum));
+		// PhotonUtils.calculateDistanceToTargetMeters(0.09, 0.13, Math)
 		// else stop();
 	}
 
 	double TR_THRESH = 0.05, ROT_THRESH = Math.PI/8;
 	double VIS_THRESH = 0.2;
-	double BVIS_YAW_THRESH = 2, BVIS_AREA_THRESH = 0.2;
+	double BVIS_YAW_THRESH = 1, BVIS_AREA_THRESH = 0.1, BVIS_PITCH_THRESH = 2;
 	public boolean ready() {
 		switch(targetMode) {
 			case Odometry:
@@ -202,9 +295,14 @@ public class Swerve extends SubsystemBase  {
 				return Math.abs(visionTarget-vision.getX())<VIS_THRESH;
 			case BaseVision:
 				return
-					vision.view2.getBestTarget() == null ? false : 
-					Math.abs(baseVisionTarget.t2.yaw-vision.view2.getBestTarget().getYaw())<BVIS_YAW_THRESH &&
-					Math.abs(baseVisionTarget.t2.area-vision.view2.getBestTarget().getArea())<BVIS_AREA_THRESH;
+					vision.leftView.getBestTarget() == null ? false : 
+					Math.abs(baseVisionTarget.left.yaw-vision.leftView.getBestTarget().getYaw())<BVIS_YAW_THRESH &&
+					Math.abs(baseVisionTarget.left.area-vision.leftView.getBestTarget().getArea())<BVIS_AREA_THRESH;
+			case BasePitchVision:
+				return
+					vision.leftView.getBestTarget() == null ? false : 
+					Math.abs(basePitchVisionTarget.left.yaw-vision.leftView.getBestTarget().getYaw())<BVIS_YAW_THRESH &&
+					Math.abs(basePitchVisionTarget.left.pitch-vision.leftView.getBestTarget().getPitch())<BVIS_PITCH_THRESH;
 			default: return true;
 		}
 	}

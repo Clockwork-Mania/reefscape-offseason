@@ -26,4 +26,8 @@ public class Utility {
     public static double sgnsqr(double a) {
         return Math.signum(a)*a*a;
     }
+
+    public static double toRad(double a) {
+        return a*Math.PI/180;
+    }
 }

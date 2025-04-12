@@ -51,7 +51,7 @@ public class Wrist extends Motor {
     static final double INT_CAP2 = 0.2/KI2;
     static final double KC2 = -0.04; //i figured out why its negative its cus the wrist is flipped
     static final double KC_CORAL = -0.08;
-    static final double POW_CAP = 0.6;
+    static final double POW_CAP = .4;//0.6;
 
     public void goTo(double target, double elbowTheta) {
         goTo(target, elbowTheta, false);

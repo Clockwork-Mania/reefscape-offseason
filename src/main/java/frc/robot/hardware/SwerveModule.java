@@ -30,11 +30,12 @@ public class SwerveModule {
 		encSim = new CANcoderSimState(enc);
 		power.setNeutralMode(NeutralModeValue.Brake);
 		power.setDir(Direction.CCW);
+		power.setEncDir(Direction.CCW);
 		this.off = off;
 	}
 
-    public double powerPos() {return Utility.ticks2Meters(power.getPosition().getValueAsDouble());}
-    public double powerVel() {return Utility.ticks2Meters(power.getVelocity().getValueAsDouble());}
+    public double powerPos() {return Utility.ticks2Meters(power.getPos());}
+    public double powerVel() {return Utility.ticks2Meters(power.getVelocity().getValueAsDouble());} // DONT USE
     public double spinPos() {return Utility.ticks2Rad(enc.getPosition().getValueAsDouble()-off);}
     public double spinVel() {return Utility.ticks2Rad(enc.getVelocity().getValueAsDouble());}
 

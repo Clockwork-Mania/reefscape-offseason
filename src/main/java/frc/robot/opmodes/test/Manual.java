@@ -26,7 +26,6 @@ public class Manual implements Opmode {
         bot.base.drive(s, f, r, false);
         bot.base.periodic();
 
-
         double pow = 0.5*Utility.sgnsqr(con.getRightTriggerAxis());
         SmartDashboard.putNumber("pow", pow);
         if(con.getLeftBumperButton() && con.getRightBumperButton()) {
@@ -65,7 +64,7 @@ public class Manual implements Opmode {
 
 
         if(con.getRightBumperButton()) {
-            holding = true;
+            // holding = true;
             bot.arm.claw.set(0.2);
         }
         else if(con.getLeftBumperButton()) {
@@ -89,6 +88,9 @@ public class Manual implements Opmode {
         SmartDashboard.putNumber("wrist", bot.arm.wrist.getPos());
         SmartDashboard.putNumber("elbow", bot.arm.elbow.getPos());
         SmartDashboard.putNumber("elev", bot.arm.elevator.getPos());
+
+        SmartDashboard.putNumber("odo x", bot.base.odo.getPoseMeters().getX());
+        SmartDashboard.putNumber("odo y", bot.base.odo.getPoseMeters().getY());
         
         // SmartDashboard.putNumber("wristpow", bot.arm.wrist.get());
         // SmartDashboard.putNumber("elbowpow", bot.arm.elbow.get());
@@ -98,5 +100,30 @@ public class Manual implements Opmode {
         // SmartDashboard.putNumber("fr", bot.base.frontRight.enc.getPosition().getValueAsDouble());
         // SmartDashboard.putNumber("br", bot.base.backRight.enc.getPosition().getValueAsDouble());
         // SmartDashboard.putNumber("bl", bot.base.backLeft.enc.getPosition().getValueAsDouble());
+
+        // vision
+        bot.vision.update();
+        if(bot.vision.rightView.getBestTarget() != null) {
+            SmartDashboard.putBoolean("right target", true);
+            SmartDashboard.putNumber("yaw right", bot.vision.rightView.getBestTarget().getYaw());
+            SmartDashboard.putNumber("area right", bot.vision.rightView.getBestTarget().getArea());
+            SmartDashboard.putNumber("pitch right", bot.vision.rightView.getBestTarget().getPitch());
+            SmartDashboard.putNumber("id right", bot.vision.rightView.getBestTarget().getFiducialId());
+        }
+        else {
+            SmartDashboard.putBoolean("right target", false);
+        }
+        if(bot.vision.leftView.getBestTarget() != null) {
+            SmartDashboard.putBoolean("left target", true);
+            SmartDashboard.putNumber("yaw left", bot.vision.leftView.getBestTarget().getYaw());
+            SmartDashboard.putNumber("area left", bot.vision.leftView.getBestTarget().getArea());
+            SmartDashboard.putNumber("pitch left", bot.vision.leftView.getBestTarget().getPitch());
+            SmartDashboard.putNumber("id left", bot.vision.leftView.getBestTarget().getFiducialId());
+        }
+        else {
+            SmartDashboard.putBoolean("left target", false);
+        }
+        
+        SmartDashboard.putNumber("IMU value", bot.base.heading());
     }
 }

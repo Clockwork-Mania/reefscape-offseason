@@ -29,6 +29,7 @@ public class FullTeleop implements Opmode {
     }
 
     boolean coral = true, coralPrep = false;
+    boolean barge = false;
     double holdSpeed = 0;
 
     public void periodic() {
@@ -46,6 +47,7 @@ public class FullTeleop implements Opmode {
         //     s = con1.getLeftX()*.8,
         //     r = con1.getRightX()*.8;
         bot.base.drive(s, f, r, true);
+
         bot.base.periodic();
         SmartDashboard.putNumber("odo X", bot.base.pose().getX());
         SmartDashboard.putNumber("odo Y", bot.base.pose().getY());
@@ -89,14 +91,17 @@ public class FullTeleop implements Opmode {
             if(con1.getUpButton()) {
                 bot.arm.setTarget(Arm.ALGAE_L3);
                 coral = false;
+                barge = false;
             }
             if(con1.getRightButton()) {
                 bot.arm.setTarget(Arm.ALGAE_L2);
                 coral = false;
+                barge = false;
             }
             if(con1.getLeftButton()) {
                 bot.arm.setTarget(Arm.ALGAE_PROC);
                 coral = false;
+                barge = false;
             }
             if(con1.getDownButton()) {
                 bot.arm.setTarget(Arm.CORAL_INTAKE);
@@ -123,11 +128,18 @@ public class FullTeleop implements Opmode {
             if(con1.getLeftBumperButton()) {
                 bot.arm.setTarget(Arm.ALGAE_GROUND);
                 coral = false;
+                barge = false;
+            }
+            if(con1.getRightBumperButton()) {
+                bot.arm.setTarget(Arm.ALGAE_BARGE);
+                coral = false;
+                barge = true;
             }
         }
 
         bot.arm.goToTarget(coral);
         SmartDashboard.putBoolean("Coral?", coral);
+        SmartDashboard.putBoolean("holding coral", bot.arm.claw.hasCoral());
         SmartDashboard.putNumber("Wrist", bot.arm.wrist.getPos());
         SmartDashboard.putNumber("Elbow", bot.arm.elbow.getPos());
         SmartDashboard.putNumber("Elevator", bot.arm.elevator.getPos());
@@ -149,9 +161,9 @@ public class FullTeleop implements Opmode {
         // --------------- CLAW ---------------- //
         // ------------------------------------- //
 
-        if(con0.getRightTriggerButtonReleased()||con1.getRightTriggerButtonReleased()) {
-            holdSpeed = coral ? Claw.HOLD_CORAL : Claw.HOLD_ALGAE;
-        }
+        // if(con0.getRightTriggerButtonReleased()||con1.getRightTriggerButtonReleased()) {
+        //     holdSpeed = coral ? Claw.HOLD_CORAL : Claw.HOLD_ALGAE;
+        // }
         if(con0.getLeftTriggerButtonReleased()||con1.getLeftTriggerButtonReleased()) {
             holdSpeed = 0;
         }
@@ -169,14 +181,42 @@ public class FullTeleop implements Opmode {
                     con0.getLeftTriggerAxis(),
                     con1.getLeftTriggerAxis()
                 ) * 
-                (coral ? Claw.OUTTAKE_CORAL : Claw.OUTTAKE_ALGAE)
+                (coral ? Claw.OUTTAKE_CORAL : (barge ? Claw.OUTTAKE_BARGE : Claw.OUTTAKE_ALGAE))
             );
         }
         else bot.arm.claw.set(holdSpeed);
 
-        SmartDashboard.putNumber("Claw", bot.arm.claw.get());
+        SmartDashboard.putNumber("Claw", bot.arm.claw.getPos());
 
         con0.update();
         con1.update();
+
+        if(con0.getM1Button() && con0.getM2Button()) {
+            bot.base.resetOdo();
+        }
+
+        SmartDashboard.putNumber("odo x", bot.base.odo.getPoseMeters().getX());
+        SmartDashboard.putNumber("odo y", bot.base.odo.getPoseMeters().getY());
+
+        // vision
+        bot.vision.update();
+        if(bot.vision.rightView.getBestTarget() != null) {
+            SmartDashboard.putBoolean("right target", true);
+            SmartDashboard.putNumber("yaw right", bot.vision.rightView.getBestTarget().getYaw());
+            SmartDashboard.putNumber("area right", bot.vision.rightView.getBestTarget().getArea());
+            SmartDashboard.putNumber("id right", bot.vision.rightView.getBestTarget().getFiducialId());
+        }
+        else {
+            SmartDashboard.putBoolean("right target", false);
+        }
+        if(bot.vision.leftView.getBestTarget() != null) {
+            SmartDashboard.putBoolean("left target", true);
+            SmartDashboard.putNumber("yaw left", bot.vision.leftView.getBestTarget().getYaw());
+            SmartDashboard.putNumber("area left", bot.vision.leftView.getBestTarget().getArea());
+            SmartDashboard.putNumber("id left", bot.vision.leftView.getBestTarget().getFiducialId());
+        }
+        else {
+            SmartDashboard.putBoolean("left target", false);
+        }
     }
 }

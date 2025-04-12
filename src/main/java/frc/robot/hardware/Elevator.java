@@ -16,7 +16,7 @@ public class Elevator extends MotorPair {
     static final double UP_PCAP = 0.5;
     static final double DOWN_PCAP = 0.4;
 
-    public static final double MIN = .412, MAX = .797;
+    public static final double MIN = .412, MAX = .793;
     
     public Elevator() {
         super(21, 22, "canivore");
